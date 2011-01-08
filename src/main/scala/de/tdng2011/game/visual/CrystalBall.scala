@@ -1,8 +1,10 @@
 package de.tdng2011.game.visual
 
+import java.io.File
+import javax.imageio.ImageIO
 import swing._
 import de.tdng2011.game.kernel._
-import java.awt.{Color, Graphics2D, Graphics, Font}
+import java.awt.{Color, Graphics2D, Graphics, Font, Toolkit}
 import math._
 import scala.actors.threadpool._
 
@@ -13,6 +15,12 @@ object CrystalBall extends Runnable {
 	var currentMonsterList : List[Monster] = List[Monster]()
 	
 	var frame = new MainFrame {
+		
+		
+		val url = getClass().getClassLoader().getResource("de/tdng2011/game/resources/background.jpg")
+		val bgImage = ImageIO.read(new File(url.getFile))
+		
+
 		
 		title = "Crystal Ball"
 		var mainPanel = new Panel() {
@@ -28,11 +36,19 @@ object CrystalBall extends Runnable {
 			//bounds_=(new Rectangle(0,0,WorldDefs.size + 100, WorldDefs.size))
 			
 			override def paint(g: Graphics2D) {
+				
+				
+
+				
 				g.setColor(Color.black)
 				g.fillRect(0, 0, size.width, size.height)
 				
+
 				g.setColor(Color.white)
 				g.drawRect(0, 0, WorldDefs.size, WorldDefs.size-1)
+				println(bgImage)
+				g.drawImage(bgImage, 0, 0, null);
+
 				
 				currentMonsterList = currentMonsterList.sort(_.score > _.score )
 				
