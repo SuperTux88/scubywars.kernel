@@ -68,7 +68,8 @@ object CrystalBall extends Runnable {
 		}
 		else {
 			g.setColor(Color.RED)
-			g.drawOval(pos.x.toInt, pos.y .toInt, 2, 2)
+			g.fillOval(pos.x.toInt - 2, pos.y.toInt - 2, 4, 4)
+			
 		}
 	}
 	
