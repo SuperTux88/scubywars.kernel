@@ -16,7 +16,8 @@ object Main {
 	 	  game.monsterAction(m2,false,true,true,false)
 	 	  game.monsterAction(m3, true, true, true, false)
 	 	  
-	 	  println(game.think(100/1000.0))
+	 	  game.think(100/1000.0)
+	 	  println(game getWorld)
 	  }	  
   }
 }
