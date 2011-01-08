@@ -18,4 +18,9 @@
 		<servlet-name>gameServlet</servlet-name>
 		<url-pattern>/gameService</url-pattern>
 	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>gameServlet</servlet-name>
+		<url-pattern>/gameService/*</url-pattern>
+	</servlet-mapping>
 </web-app>

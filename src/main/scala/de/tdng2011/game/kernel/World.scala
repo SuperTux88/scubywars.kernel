@@ -21,7 +21,7 @@ case class World(monsters : List[Monster]) extends JsonSerializable {
 		var msgBox=Map[String,Msg]()
 		for (a <- monsters)
 			for (b <- monsters)
-				if ((a.pos - b.pos).length < WorldDefs.monsterSize*2)
+				if ((a.pos - b.pos).length < a.getSize + b.getSize)
 					if (a.publicId != b.publicId) 
 						if (! (a.publicId == b.parentId ))
 							if (!(b.publicId == a.parentId)) {
@@ -47,6 +47,8 @@ case class World(monsters : List[Monster]) extends JsonSerializable {
 	}
 	
 	def findShotFrom(id:String) = !monsters.find(_.isShotFrom(id)).isEmpty
+	
+	def findMonsterByName(name:String) = monsters.find(_.name == name)
 
 	def toJson = "{\"players\":" + Json.build(monsters.filter(!_.isShot)) + ",\"shots\":" + Json.build(monsters.filter(_.isShot)) + "}"
 	

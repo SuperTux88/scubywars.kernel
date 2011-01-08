@@ -10,7 +10,7 @@ import scala.actors.threadpool._
 
 object CrystalBall extends Runnable {
 	
-	val lineLength = WorldDefs.monsterSize 
+	val lineLength = WorldDefs.monsterRadius * 2 
 	
 	var currentMonsterList : List[Monster] = List[Monster]()
 	
@@ -121,7 +121,7 @@ object CrystalBall extends Runnable {
 		}
 		else {
 			g.setColor(Color.RED)
-			g.fillOval(pos.x.toInt - (WorldDefs.monsterSize/2), pos.y.toInt - (WorldDefs.monsterSize/2), WorldDefs.monsterSize, WorldDefs.monsterSize)
+			g.fillOval(pos.x.toInt - (WorldDefs.shotRadius/2), pos.y.toInt - (WorldDefs.shotRadius/2), WorldDefs.shotRadius*2, WorldDefs.shotRadius*2)
 		}
 	}
 	
