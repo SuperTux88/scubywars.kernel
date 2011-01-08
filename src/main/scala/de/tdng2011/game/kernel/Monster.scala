@@ -37,7 +37,11 @@ case class Monster (
     		ret=Monster(name+"_shot",pos + Vec2(1,0).rotate(dir)*WorldDefs.monsterSize*1.1, dir, 0, IdGen.getNext, ip, false,false,true,false,true,publicId,0) :: ret
     }
 
-    ret=Monster(name,
+    var alive = true
+    
+    if (isShot && age>WorldDefs.shotTimeToLife) alive=false
+    
+    if (alive) ret=Monster(name,
       if (thrust) pos + ahead * time * (if (isShot) WorldDefs.shotSpeed else WorldDefs.speed) else pos,
       newDir,
       score,
