@@ -18,8 +18,10 @@ case class Monster (
 )
   		extends JsonSerializable {
 
-  def think(time: Double, world:World): List[Monster] = {
+  def think(time: Double, world:World, msgBox:Map[String,Msg]): List[Monster] = {
     val ahead = Vec2u(1, 0).rotate(dir)
+
+    // calc new dir
     var newDir = dir;
     if (action.turnLeft) newDir -= (time * WorldDefs.rotSpeed)
     if (action.turnRight) newDir += time * WorldDefs.rotSpeed
@@ -27,19 +29,40 @@ case class Monster (
     if (newDir < 0)
       newDir += 2 * Pi
 
+    // calc new pos
+    val len= time * (if (isShot) WorldDefs.shotSpeed else WorldDefs.speed)
+    val step = if  (action.thrust) ahead * len else Vec2u(0,0)
+    var newPos=pos + step
+
+    // create return list
     var ret=List[Monster]()
     
     var alive = true
+    val myMsg = msgBox.get(publicId).getOrElse(Nop())
+  
+    var newScore=score
+    
+    println("name:"+name+" myMsg="+myMsg)
+    
+    myMsg match {
+    	case Looser() => 
+    		if (isShot)
+    			alive=false
+   			else {
+   				newScore-=1
+   				newPos   =Vec2(WorldDefs.size*random,WorldDefs.size*random).norm
+			    newDir   =random*2*Pi	
+   			}
+    	case Winner() => newScore+=1
+    	case _ => ;
+    }
     
     if (isShot && age>WorldDefs.shotTimeToLife) alive=false
-    
-    val len= time * (if (isShot) WorldDefs.shotSpeed else WorldDefs.speed)
-    val step = if  (action.thrust) ahead * len else Vec2u(0,0)
-       
+          
     if (alive) ret=Monster(name,
-      pos + step, 
+      newPos,
       newDir,
-      score,
+      newScore,
       publicId,
       ip,
       action,
