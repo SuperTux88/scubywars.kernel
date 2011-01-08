@@ -3,6 +3,7 @@ package de.tdng2011.game.visual
 import swing._
 import de.tdng2011.game.kernel._
 import java.awt.{Color, Graphics2D, Graphics}
+import math._
 
 object CrystalBall {
 	
@@ -32,50 +33,29 @@ object CrystalBall {
 	}
 	
 	def drawMonster (g :Graphics2D, pos : Vec2, rot : Double) {
-		println ("== Position: "+pos)
-		println ("== Rotation: "+rot)
 		
 		val ahead=Vec2u(1,0).rotate(rot)
 		val posU = Vec2u(pos.x,pos.y)
-		val pos2 = posU + ahead * lineLength
+		val posPeak = posU + ahead * lineLength
 		
-		val x1 = pos.x.toInt
-		val y1 = pos.y.toInt
-		val x2 = pos2.x.toInt
-		val y2 = pos2.y.toInt
-				
-		println ("==== Positions: " +x1 +" " + y1+" "+ x2+" " +y2)
+		val aheadLeft = Vec2u(1,0).rotate(rot+sin(60)+Pi)
+		val aheadRight = Vec2u(1,0).rotate(rot-sin(60)+Pi)
+		
+		val posLeft = posPeak + aheadLeft * lineLength
+		val posRight = posPeak + aheadRight * lineLength
+		
+		val x1 = posPeak.x.toInt
+		val y1 = posPeak.y.toInt
+		
+		val x2 = posRight.x.toInt
+		val y2 = posRight.y.toInt
+		
+		val x3 = posLeft.x.toInt
+		val y3 = posLeft.y.toInt
+		
+		g.drawLine(x1, y1, x3, y3)
 		
 		g.drawLine(x1, y1, x2, y2)
-		//drawLine(g, pos, pos2, rot)
-	}
-	
-	def drawLine (g : Graphics2D, from : Vec2, to : Vec2, rot : Double) {
-		val ahead = Vec2(1,0).rotate(rot)
-		val x1 = from.x.toInt
-		val y1 = from.y.toInt
-		val x2 = to.x.toInt
-		val y2 = to.y.toInt
-		
-		println ("=========== " +from.x+ " "+ahead.x+ " " + lineLength)
-		println ("=========== " +(from.x + ahead.x * lineLength) + " " + WorldDefs.size)
-		
-		if(from.x + ahead.x * lineLength > WorldDefs.size) {
-			println ("1")
-		}
-		else if (from.y + ahead.y * lineLength > WorldDefs.size) {
-			println ("2")
-		}
-		else if (from.x + ahead.x + lineLength < 0) {
-			println ("3")
-		}
-		else if (from.y + ahead.y * lineLength < 0) {
-			println ("4")
-		}
-		else {
-			println ("5")
-			g.drawLine(x1, y1, x2, y2)
-		}
 	}
 	
 	def setAllMonsters(w : World) {
