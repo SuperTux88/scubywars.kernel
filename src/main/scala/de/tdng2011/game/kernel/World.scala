@@ -29,7 +29,7 @@ case class World(monsters : List[Monster]) extends JsonSerializable {
 	
 	def findShotFrom(id:String) = !monsters.find(_.isShotFrom(id)).isEmpty
 
-	def toJson() = "{\"players\":" + Json.build(monsters.filter(!_.isShot)) + ",\"shots\":" + Json.build(monsters.filter(_.isShot)) + "}"
+	def toJson = "{\"players\":" + Json.build(monsters.filter(!_.isShot)) + ",\"shots\":" + Json.build(monsters.filter(_.isShot)) + "}"
 	
 	override def toString = "Monsters:\n" + monsters
 }
