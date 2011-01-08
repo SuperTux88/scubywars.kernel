@@ -18,7 +18,6 @@ object CrystalBall extends Runnable {
 		
 		
 		val url = getClass().getClassLoader().getResource("/background.jpg")
-		println(url)
 		val bgImage = ImageIO.read(new File(url.getFile))
 		
 
