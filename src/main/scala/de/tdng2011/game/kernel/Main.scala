@@ -4,7 +4,7 @@ object Main {
   def main(args: Array[String]) = {  
 	  println("tdng 2011")
 	  
-	  val game=new Game
+	  val game=Game
 	  
 	  val m1=game.createMonster("test1", "8.8.8.8")
 	  val m2=game.createMonster("fun", "127.0.0.1")
