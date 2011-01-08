@@ -8,7 +8,7 @@ object CrystalBall {
 	
 	val lineLength = 10
 	
-	var curMonsterStates : List[MonsterState] = List[MonsterState]()
+	var curMonsterStates : List[Monster] = List[Monster]()
 	
 	var frame = new MainFrame {
 		
@@ -24,7 +24,7 @@ object CrystalBall {
 				g.setColor(Color.black)
 				for (monsterState <- curMonsterStates) {
 					val monsterPos = monsterState.pos 
-					drawMonster(g, monsterPos, monsterState.direction)
+					drawMonster(g, monsterPos, monsterState.dir)
 				}
 			}
 		}
@@ -78,8 +78,8 @@ object CrystalBall {
 		}
 	}
 	
-	def setAllMonsters(w : WorldDescription) {
-		curMonsterStates = w.monsterStates
+	def setAllMonsters(w : World) {
+		curMonsterStates = w.monsters
 		frame repaint
 	}
 	

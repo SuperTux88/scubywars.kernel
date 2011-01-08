@@ -4,9 +4,7 @@ import javax.swing.JFrame
 import javax.servlet.ServletContextEvent
 import javax.servlet.ServletContextListener
 class StartupListener extends ServletContextListener {
-	var jFrame : JFrame = _
-	
-	
+		
 	def contextDestroyed(event : ServletContextEvent){
 		
 	}
