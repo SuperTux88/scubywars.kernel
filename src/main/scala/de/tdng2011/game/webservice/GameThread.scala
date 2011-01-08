@@ -1,6 +1,5 @@
 package de.tdng2011.game.webservice
 
-import de.tdng2011.game.kernel.WorldDescription
 import de.tdng2011.game.kernel.Game
 import javax.swing.JFrame
 class GameThread extends Runnable {
