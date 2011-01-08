@@ -10,11 +10,6 @@ import com.twitter.json.Json
 class GameServlet extends HttpServlet {
 
 	override def service  (request : HttpServletRequest, response : HttpServletResponse) {
-		// todo: game !? 'getWorldDescr.
-//		val worldDescription = Game.getWorldDescription
-//		
-//		val monsterStates = JSONArray.fromObject(worldDescription.monsterStates)
-
 		response.getWriter().println(Json.build(Game.getWorld))
 		response.flushBuffer()
 	}
