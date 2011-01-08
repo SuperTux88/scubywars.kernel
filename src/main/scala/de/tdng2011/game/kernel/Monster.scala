@@ -13,7 +13,7 @@ case class Monster(
   val thrust: Boolean,
   val fire: Boolean) {
 
-  def think(time: Double, world:World): Monster = {
+  def think(time: Double, world:World): List[Monster] = {
     val ahead = Vec2(1, 0).rotate(dir)
     var newDir = dir;
     if (turnLeft) newDir -= (time * WorldDefs.rotSpeed)
@@ -21,12 +21,15 @@ case class Monster(
     newDir %= 2 * Pi
     if (newDir < 0)
       newDir += 2 * Pi
-    /* if (fire) {
-    	if (!world.findShot(publicId)) 
-    }
-    */
 
-    Monster(name,
+    var ret=List[Monster]()
+    
+    if (fire) {
+    	if (!world.findShot(publicId))
+    		ret=Monster(name+"_shot",pos + Vec2(1,0).rotate(dir)*WorldDefs.monsterSize*1.1, dir, 0, IdGen.getNext, ip, false,false,true,false) :: ret
+    }
+
+    ret=Monster(name,
       if (thrust) pos + ahead * time * WorldDefs.speed else pos,
       newDir,
       score,
@@ -35,7 +38,9 @@ case class Monster(
       turnLeft,
       turnRight,
       thrust,
-      fire)
+      fire)::ret
+      
+     ret
 
   }
 

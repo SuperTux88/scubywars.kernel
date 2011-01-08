@@ -7,7 +7,7 @@ case class World(monsters : List[Monster]) {
 	def findMonster(id:String) = monsters.find( _.publicId == id )		
 	
 	def think(time:Double) = {
-		val w1=World(for (m<-monsters) yield m.think(time,this))
+		val w1=World((for (m<-monsters) yield m.think(time,this)).reduceRight(_:::_))
 		
 		for (a <- monsters)
 			for (b <- monsters)
@@ -24,6 +24,8 @@ case class World(monsters : List[Monster]) {
 		)
 		
 	}
+	
+	def findShot(id:String) = !monsters.find(_.publicId==id).isEmpty
 	
 	override def toString = "Monsters:\n" + monsters
 }
