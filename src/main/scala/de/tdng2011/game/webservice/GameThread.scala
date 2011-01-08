@@ -18,11 +18,11 @@ class GameThread extends Runnable {
 
     while (true) {
       Thread.sleep(100)
-      Game.monsterAction(m1, false, false, false, false)
-      Game.monsterAction(m2, false, true, true, false)
-      Game.monsterAction(m3, true, true, true, true)
-      Game.monsterAction(m4, false, false, true, false)
-      Game.monsterAction(m5, false, false, true, true)
+      Game.monsterAction(m1, Action(false, false, false, false))
+      Game.monsterAction(m2, Action(false, true, true, false))
+      Game.monsterAction(m3, Action(true, true, true, true))
+      Game.monsterAction(m4, Action(false, false, true, false))
+      Game.monsterAction(m5, Action(false, false, true, true))
 
       Game think(100 / 1000.0)
       
