@@ -7,7 +7,13 @@ class World {
 	def findMonster(id:String) = monsters.find( _.publicId == id )		
 	def think(time:Double) = {
 		for (m<-monsters) m.think(time)
-		this
+		worldDescription
+	}
+	
+	def worldDescription : WorldDescription = {
+		WorldDescription(
+				for(monster <- monsters) yield monster getState
+		)
 	}
 	
 	override def toString = "Monsters:\n" + monsters

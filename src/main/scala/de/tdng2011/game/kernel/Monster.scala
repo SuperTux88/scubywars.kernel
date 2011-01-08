@@ -24,5 +24,6 @@ class Monster(
 	}
 	override def toString="Monster ("+name+" "+pos+" "+dir+" "+score+" "+publicId+" "+ip+" "+turnLeft+" "+turnRight+" "+thrust+" "+fire+")"
 	
+	def getState = MonsterState(pos, dir, name, publicId, score)
 }
 		

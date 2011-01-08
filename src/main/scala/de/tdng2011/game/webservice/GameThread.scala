@@ -1,5 +1,6 @@
 package de.tdng2011.game.webservice
 
+import de.tdng2011.game.kernel.WorldDescription
 import de.tdng2011.game.kernel.Game
 import javax.swing.JFrame
 class GameThread extends Runnable {
@@ -22,8 +23,8 @@ class GameThread extends Runnable {
       game.monsterAction(m1, true, false, false, true)
       game.monsterAction(m2, false, true, true, false)
       game.monsterAction(m3, true, true, true, false)
-
-      println(game.think(100 / 1000.0))
+      val worldDescription : WorldDescription = game think(100 / 1000.0)
+      println(worldDescription)
     }
   }
 }
