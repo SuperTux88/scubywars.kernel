@@ -20,7 +20,7 @@ class GameThread extends Runnable {
       Thread.sleep(100)
       Game.monsterAction(m1, false, false, false, false)
       Game.monsterAction(m2, false, true, true, false)
-      Game.monsterAction(m3, true, true, true, false)
+      Game.monsterAction(m3, true, true, true, true)
       Game.monsterAction(m4, false, false, true, false)
       Game.monsterAction(m5, false, false, true, true)
 
