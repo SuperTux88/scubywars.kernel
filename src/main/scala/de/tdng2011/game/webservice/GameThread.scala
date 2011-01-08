@@ -13,11 +13,12 @@ class GameThread extends Runnable {
 
     val m1 = Game.createMonster("test1", "8.8.8.8")
     val m2 = Game.createMonster("fun", "127.0.0.1")
+ 
+    
     val m3 = Game.createMonster("felix", "123.123.123.123")
     val m4 = Game.createMonster("thorsten", "10.10.10.10")
     val m5 = Game.createMonster("supert0x", "18.18.18.18")
     val m6 = Game.createMonster("makubi", "16.16.16.16")
-    
     var lastSleepTime : Double = 0
 
     while (true) {
@@ -28,12 +29,12 @@ class GameThread extends Runnable {
       Game.monsterAction(m4, Action(false, false, true, false))
       Game.monsterAction(m5, Action(false, false, true, true))
       Game.monsterAction(m6, Action(false, false, true, false))
-      Game think(lastSleepTime/1000.0)
       
+      Game think(lastSleepTime/1000.0)
+     
       
       val world : World = Game.getWorld
-      
-      CrystalBall setAllMonsters world
+
       val frameEnd = getTime   // 8024   / 8050
       val sleepTime =  frameDuration - (frameEnd - frameStart)
       if(sleepTime > 0)       // 1       /  -5

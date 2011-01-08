@@ -19,7 +19,7 @@ case class Monster (
   		extends JsonSerializable {
 
   def think(time: Double, world:World): List[Monster] = {
-    val ahead = Vec2(1, 0).rotate(dir)
+    val ahead = Vec2u(1, 0).rotate(dir)
     var newDir = dir;
     if (action.turnLeft) newDir -= (time * WorldDefs.rotSpeed)
     if (action.turnRight) newDir += time * WorldDefs.rotSpeed
@@ -38,8 +38,13 @@ case class Monster (
     
     if (isShot && age>WorldDefs.shotTimeToLife) alive=false
     
+    val len= time * (if (isShot) WorldDefs.shotSpeed else WorldDefs.speed)
+    val step = ahead * len
+    
+    println(name+" pos: "+pos+" step: "+step+" ahead: "+ahead+" len: "+len+" time:" +time)
+    
     if (alive) ret=Monster(name,
-      if (action.thrust) pos + ahead * time * (if (isShot) WorldDefs.shotSpeed else WorldDefs.speed) else pos,
+      if (action.thrust) pos + step else pos,
       newDir,
       score,
       publicId,

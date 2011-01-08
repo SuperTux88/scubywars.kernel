@@ -12,8 +12,6 @@ object CrystalBall extends Runnable {
 	
 	var curMonsterStates : List[Monster] = List[Monster]()
 	
-	val queue : LinkedBlockingQueue[List[Monster]] = new LinkedBlockingQueue[List[Monster]]()
-	
 	var frame = new MainFrame {
 		
 		title = "Crystal Ball"
@@ -26,9 +24,9 @@ object CrystalBall extends Runnable {
 				g.setColor(Color.white)
 				g.fillRect(0, 0, size.width, size.height)
 				g.setColor(Color.black)
-				for (monsterState <- curMonsterStates) {
+				for (monsterState <- curMonsterStates) 
 					drawMonster(g, monsterState.pos , monsterState.dir, monsterState.name)
-				}
+				
 			}
 		}
 		centerOnScreen
@@ -69,37 +67,10 @@ object CrystalBall extends Runnable {
 		g.drawLine(x1, y1, x2, y2)
 	}
 	
-	def setAllMonsters(w : World) {
-		queue clear()
-		var monList1 = List[Monster]()
-		var monList2 = List[Monster]()
-		
-		for(monster <- w.monsters) {
-			var mon1 = Monster(monster.name,
-			        Vec2(monster.pos.x/3,monster.pos.y/3),
-			        monster.dir ,	
-			        monster.score ,
-			        monster.publicId ,
-			        monster.ip ,
-			        monster.action,monster.isShot,monster.parentId,monster.age)
-			monList1::=mon1
-				var mon2 = Monster(monster.name,
-			        Vec2(monster.pos.x*2/3,monster.pos.y*2/3),
-			        monster.dir,
-			        monster.score ,
-			        monster.publicId ,
-			        monster.ip ,
-			        monster.action,monster.isShot,monster.parentId,monster.age)
-			monList2::=mon2
-		}
-		queue add (monList1)
-		queue add (monList2)
-		queue add (w.monsters)
-	}
-
 	override def run {
 		while(true) {
-			curMonsterStates = queue take()
+			Thread.sleep((1/120.0 * 1000).toLong)
+			curMonsterStates = Game.getWorld.monsters
 			frame.repaint()
 		}
 }
