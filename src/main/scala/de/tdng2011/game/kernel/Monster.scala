@@ -16,7 +16,8 @@ case class Monster (
 	val thrust: Boolean,
 	val fire: Boolean,
 	val isShot: Boolean,
-	val parentId:String
+	val parentId:String,
+	val age:Double
 )
   		extends JsonSerializable {
 
@@ -33,11 +34,11 @@ case class Monster (
     
     if (fire) {
     	if (!world.findShotFrom(publicId))
-    		ret=Monster(name+"_shot",pos + Vec2(1,0).rotate(dir)*WorldDefs.monsterSize*1.1, dir, 0, IdGen.getNext, ip, false,false,true,false,true,publicId) :: ret
+    		ret=Monster(name+"_shot",pos + Vec2(1,0).rotate(dir)*WorldDefs.monsterSize*1.1, dir, 0, IdGen.getNext, ip, false,false,true,false,true,publicId,0) :: ret
     }
 
     ret=Monster(name,
-      if (thrust) pos + ahead * time * WorldDefs.speed else pos,
+      if (thrust) pos + ahead * time * (if (isShot) WorldDefs.shotSpeed else WorldDefs.speed) else pos,
       newDir,
       score,
       publicId,
@@ -47,7 +48,8 @@ case class Monster (
       thrust,
       fire,
       isShot,
-      parentId)::ret
+      parentId,
+      age+time)::ret
       
      ret
 	}
