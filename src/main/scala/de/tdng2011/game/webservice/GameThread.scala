@@ -17,12 +17,12 @@ class GameThread extends Runnable {
     val m5 = Game.createMonster("supert0x", "18.18.18.18")
 
     while (true) {
-      Thread.sleep(100)
-      Game.monsterAction(m1, false, false, false, true)
+      Thread.sleep(10)
+      Game.monsterAction(m1, false, false, false, false)
       Game.monsterAction(m2, false, true, true, false)
       Game.monsterAction(m3, true, true, true, false)
       Game.monsterAction(m4, false, false, true, false)
-      Game.monsterAction(m5, false, false, false, true)
+      Game.monsterAction(m5, false, false, true, true)
 
       Game think(100 / 1000.0)
       
