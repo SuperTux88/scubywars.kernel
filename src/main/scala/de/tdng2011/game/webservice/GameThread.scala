@@ -22,9 +22,9 @@ class GameThread extends Runnable {
 	    Game.monsterAction(m1, Action(false, false, false, false))
 	    Game.monsterAction(m2, Action(false, true, true, false))
 	    Game.monsterAction(m3, Action(true, true, true, true))
-	    Game.monsterAction(m4, Action(false, false, true, false))
+	    Game.monsterAction(m4, Action(false, false, true, true))
 	    Game.monsterAction(m5, Action(false, false, true, true))
-	    Game.monsterAction(m6, Action(false, false, true, false))
+	    Game.monsterAction(m6, Action(false, false, true, true))
 	    
 	    var lastSleepTime : Double = 0
 	
