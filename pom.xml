@@ -5,7 +5,7 @@
 	<groupId>de.tondorf.gameserver</groupId>
 	<artifactId>tdGameserver</artifactId>
 	<version>1.0-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>tdGameserver</name>
 	<url>http://maven.apache.org</url>
@@ -77,6 +77,11 @@
 			<groupId>org.scala-lang</groupId>
 			<artifactId>scala-library</artifactId>
 			<version>2.8.1</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>2.3</version>
 		</dependency>
 	</dependencies>
 </project>
