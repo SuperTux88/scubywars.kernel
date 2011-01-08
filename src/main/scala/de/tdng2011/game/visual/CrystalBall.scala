@@ -17,7 +17,7 @@ object CrystalBall extends Runnable {
 		title = "Crystal Ball"
 		var mainPanel = new Panel() {
 			focusable = true
-			background = Color.white
+			background = Color.black
 			preferredSize = new Dimension(WorldDefs.size + 400, WorldDefs.size)
 		}
 		
@@ -28,10 +28,10 @@ object CrystalBall extends Runnable {
 			//bounds_=(new Rectangle(0,0,WorldDefs.size + 100, WorldDefs.size))
 			
 			override def paint(g: Graphics2D) {
-				g.setColor(Color.white)
+				g.setColor(Color.black)
 				g.fillRect(0, 0, size.width, size.height)
 				
-				g.setColor(Color.black)
+				g.setColor(Color.white)
 				g.drawRect(0, 0, WorldDefs.size, WorldDefs.size-1)
 				
 				currentMonsterList = currentMonsterList.sort(_.score > _.score )
@@ -55,7 +55,7 @@ object CrystalBall extends Runnable {
 		
 		var statsPanel = new Panel() {
 			focusable = true
-			background = Color.white
+			background = Color.black
 			//preferredSize = new Dimension(300, WorldDefs.size)
 			bounds_=(new Rectangle(WorldDefs.size + 100,0,300, WorldDefs.size))
 		}
@@ -94,11 +94,11 @@ object CrystalBall extends Runnable {
 		
 		val oldFont = g.getFont
 		
-		g.setColor(Color.BLUE)
+		g.setColor(Color.YELLOW)
 		g.setFont(new Font("Arial", Font.PLAIN, 20))
 		g.drawString(name, x1+20, y1+20)
 		
-		g.setColor(Color.BLACK)
+		g.setColor(Color.GREEN)
 		g.setFont(oldFont)
 		g.drawLine(x1, y1, x3, y3)
 		g.drawLine(x1, y1, x2, y2)
