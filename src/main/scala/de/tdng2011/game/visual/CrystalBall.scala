@@ -4,12 +4,15 @@ import swing._
 import de.tdng2011.game.kernel._
 import java.awt.{Color, Graphics2D, Graphics, Font}
 import math._
+import scala.actors.threadpool._
 
-object CrystalBall {
+object CrystalBall extends Runnable {
 	
 	val lineLength = 20
 	
 	var curMonsterStates : List[Monster] = List[Monster]()
+	
+	val queue : LinkedBlockingQueue[List[Monster]] = new LinkedBlockingQueue[List[Monster]]()
 	
 	var frame = new MainFrame {
 		
@@ -67,8 +70,38 @@ object CrystalBall {
 	}
 	
 	def setAllMonsters(w : World) {
-		curMonsterStates = w.monsters
-		frame repaint
+		queue clear()
+		var monList1 = List[Monster]()
+		var monList2 = List[Monster]()
+		
+		for(monster <- w.monsters) {
+			var mon1 = Monster(monster.name,
+			        Vec2(monster.pos.x/3,monster.pos.y/3),
+			        monster.dir ,	
+			        monster.score ,
+			        monster.publicId ,
+			        monster.ip ,
+			        monster.action,monster.isShot,monster.parentId,monster.age)
+			monList1::=mon1
+				var mon2 = Monster(monster.name,
+			        Vec2(monster.pos.x*2/3,monster.pos.y*2/3),
+			        monster.dir,
+			        monster.score ,
+			        monster.publicId ,
+			        monster.ip ,
+			        monster.action,monster.isShot,monster.parentId,monster.age)
+			monList2::=mon2
+		}
+		queue add (monList1)
+		queue add (monList2)
+		queue add (w.monsters)
 	}
+
+	override def run {
+		while(true) {
+			curMonsterStates = queue take()
+			frame.repaint()
+		}
+}
 	
 }

@@ -34,7 +34,11 @@ case class Monster (
     		ret=Monster(name+"_shot",pos + Vec2(1,0).rotate(dir)*WorldDefs.monsterSize*1.1, dir, 0, IdGen.getNext, ip, Action(false,false,true,false),true,publicId,0) :: ret
     }
 
-    ret=Monster(name,
+    var alive = true
+    
+    if (isShot && age>WorldDefs.shotTimeToLife) alive=false
+    
+    if (alive) ret=Monster(name,
       if (action.thrust) pos + ahead * time * (if (isShot) WorldDefs.shotSpeed else WorldDefs.speed) else pos,
       newDir,
       score,
@@ -50,7 +54,7 @@ case class Monster (
   
   	def isShotFrom(id:String) =parentId==id && isShot
  	
-	def toJson() = "{" + getJsonString("id", publicId) + "," + getJsonString("name", name) + ",\"position\":" + Json.build(pos) + ",\"direction\":" + dir  + ",\"score\":" + score + ",\"actions\":" + Json.build(action) + "}"
+	def toJson = "{" + getJsonString("id", publicId) + "," + getJsonString("name", name) + ",\"position\":" + Json.build(pos) + ",\"direction\":" + dir  + ",\"score\":" + score + ",\"actions\":" + Json.build(action) + "}"
 	
 	private def getJsonString(key : String, value : String) = "\""+key+"\":\""+value+"\""
 
