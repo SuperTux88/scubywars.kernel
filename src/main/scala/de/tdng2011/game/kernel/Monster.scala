@@ -33,7 +33,7 @@ case class Monster (
     
     if (fire) {
     	if (!world.findShot(publicId))
-    		ret=Monster(name+"_shot",pos + Vec2(1,0).rotate(dir)*WorldDefs.monsterSize*1.1, dir, 0, IdGen.getNext, ip, false,false,true,false,true,"") :: ret
+    		ret=Monster(name+"_shot",pos + Vec2(1,0).rotate(dir)*WorldDefs.monsterSize*1.1, dir, 0, IdGen.getNext, ip, false,false,true,false,true,publicId) :: ret
     }
 
     ret=Monster(name,
