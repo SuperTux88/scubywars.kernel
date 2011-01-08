@@ -29,22 +29,15 @@ case class Monster (
 
     var ret=List[Monster]()
     
-    if (action.fire) {
-    	if (!world.findShotFrom(publicId))
-    		ret=Monster(name+"_shot",pos + Vec2(200,0), dir, 0, IdGen.getNext, ip, Action(false,false,true,false),true,publicId,0) :: ret
-    }
-
     var alive = true
     
     if (isShot && age>WorldDefs.shotTimeToLife) alive=false
     
     val len= time * (if (isShot) WorldDefs.shotSpeed else WorldDefs.speed)
-    val step = ahead * len
-    
-    println(name+" pos: "+pos+" step: "+step+" ahead: "+ahead+" len: "+len+" time:" +time)
-    
+    val step = if  (action.thrust) ahead * len else Vec2u(0,0)
+       
     if (alive) ret=Monster(name,
-      if (action.thrust) pos + step else pos,
+      pos + step, 
       newDir,
       score,
       publicId,
@@ -54,6 +47,11 @@ case class Monster (
       parentId,
       age+time)::ret
       
+    if (action.fire) {
+    	if (!world.findShotFrom(publicId))
+    		ret=Monster(name+"_shot",pos + ahead * (2 * WorldDefs.monsterSize) + step, dir, 0, IdGen.getNext, ip, Action(false,false,true,false),true,publicId,0) :: ret
+    }
+
      ret
 	}
   
