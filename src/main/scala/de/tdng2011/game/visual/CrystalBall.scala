@@ -74,12 +74,11 @@ object CrystalBall extends Runnable {
 	
 	def drawMonster (g :Graphics2D, pos : Vec2, rot : Double, name : String, isShot : Boolean) {
 		if(!isShot) {
-		val ahead=Vec2u(1,0).rotate(rot)
-		val posU = Vec2u(pos.x,pos.y)
-		val posPeak = posU + ahead * (lineLength / 2)
+		val ahead=Vec2(1,0).rotate(rot)
+		val posPeak = pos + ahead * (lineLength / 2)
 		
-		val aheadLeft = Vec2u(1,0).rotate(rot+sin(60)+Pi)
-		val aheadRight = Vec2u(1,0).rotate(rot-sin(60)+Pi)
+		val aheadLeft = Vec2(1,0).rotate(rot+sin(60)+Pi)
+		val aheadRight = Vec2(1,0).rotate(rot-sin(60)+Pi)
 		
 		val posLeft = posPeak + aheadLeft * lineLength
 		val posRight = posPeak + aheadRight * lineLength
