@@ -21,9 +21,10 @@ case class Monster(
     newDir %= 2 * Pi
     if (newDir < 0)
       newDir += 2 * Pi
-    if (fire) {
+    /* if (fire) {
     	if (!world.findShot(publicId)) 
     }
+    */
 
     Monster(name,
       if (thrust) pos + ahead * time * WorldDefs.speed else pos,

@@ -7,7 +7,7 @@ case class World(monsters : List[Monster]) {
 	def findMonster(id:String) = monsters.find( _.publicId == id )		
 	
 	def think(time:Double) = {
-		val w1=World(for (m<-monsters) yield m.think(time))
+		val w1=World(for (m<-monsters) yield m.think(time,this))
 		
 		for (a <- monsters)
 			for (b <- monsters)
