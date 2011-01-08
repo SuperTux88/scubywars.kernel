@@ -10,6 +10,19 @@ import com.twitter.json.Json
 class GameServlet extends HttpServlet {
 
 	override def service  (request : HttpServletRequest, response : HttpServletResponse) {
+		
+		val path = request getPathInfo()
+		if (path != null) {
+			val name = path substring 1
+			var opt = Game.getWorld.findMonsterByName(name)
+			if (opt.isEmpty) {
+				Game.createMonster(name, request.getRemoteAddr())
+				opt = Game.getWorld.findMonsterByName(name)
+			}
+			
+			val monster = opt get
+		}
+		
 		response.getWriter().println(Json.build(Game.getWorld))
 		response.flushBuffer()
 	}
