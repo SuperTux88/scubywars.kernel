@@ -12,6 +12,7 @@ case class Vec2(x:Double,y:Double) extends JsonSerializable {
 	def *(v:Vec2) = x*v.x + y*v.y
 	def *(n:Double) = Vec2(x*n,y*n).norm
 	def rotate(rad:Double) = Vec2( x*cos(rad) - y*sin(rad) , x*sin(rad) + y*cos(rad)).norm
+	def length = sqrt(x*x+y*y)
 	
 	def toJson() = "{\"x\":" + x + ",\"y\":" + y+ "}"
 	

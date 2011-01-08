@@ -10,7 +10,14 @@ case class World(monsters : List[Monster]) extends JsonSerializable {
 	def findMonster(id:String) = monsters.find( _.publicId == id )		
 	
 	def think(time:Double) = {
-		World(for (m<-monsters) yield m.think(time))
+		val w1=World(for (m<-monsters) yield m.think(time,this))
+		
+		for (a <- monsters)
+			for (b <- monsters)
+				if ((a.pos - b.pos).length < WorldDefs.monsterSize*2)
+					if (a.publicId != b.publicId)
+						printf("bang"+a.name+" "+b.name)
+		w1
 	}
 	
 	def updateMonster (monster : Monster) : World = {
