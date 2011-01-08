@@ -8,27 +8,65 @@ import scala.actors.threadpool._
 
 object CrystalBall extends Runnable {
 	
-	val lineLength = 20
+	val lineLength = WorldDefs.monsterSize 
 	
 	var currentMonsterList : List[Monster] = List[Monster]()
 	
 	var frame = new MainFrame {
 		
 		title = "Crystal Ball"
-		contents = new Panel {
+		var mainPanel = new Panel() {
+			focusable = true
+			background = Color.black
+			preferredSize = new Dimension(WorldDefs.size + 400, WorldDefs.size)
+		}
+		
+		var graphicsPanel =	new Panel {
 			focusable = true
 			background = Color.white
-			preferredSize = new Dimension(WorldDefs.size , WorldDefs.size)
+			preferredSize = new Dimension(WorldDefs.size + 300, WorldDefs.size)
+			//bounds_=(new Rectangle(0,0,WorldDefs.size + 100, WorldDefs.size))
 			
 			override def paint(g: Graphics2D) {
-				g.setColor(Color.white)
-				g.fillRect(0, 0, size.width, size.height)
 				g.setColor(Color.black)
-				for (monster <- currentMonsterList) 
-					drawMonster(g, monster.pos , monster.dir, monster.name, monster.isShot)
+				g.fillRect(0, 0, size.width, size.height)
 				
+				g.setColor(Color.white)
+				g.drawRect(0, 0, WorldDefs.size, WorldDefs.size-1)
+				
+				currentMonsterList = currentMonsterList.sort(_.score > _.score )
+				
+				var i : Int = 1
+				for (monster <- currentMonsterList) { 
+					drawMonster(g, monster.pos , monster.dir, monster.name, monster.isShot)
+					
+					if(!monster.isShot) {
+						val oldFont = g.getFont
+		
+						g.setFont(new Font("Arial", Font.PLAIN, 20))
+						
+						g.drawString(monster.name + " "+ monster.score , WorldDefs.size + 60, i * 25)
+						g.setFont(font)
+						i+=1
+					}
+				}
 			}
 		}
+		
+		var statsPanel = new Panel() {
+			focusable = true
+			background = Color.black
+			//preferredSize = new Dimension(300, WorldDefs.size)
+			bounds_=(new Rectangle(WorldDefs.size + 100,0,300, WorldDefs.size))
+		}
+		
+		//mainPanel.peer.setLayout(null)
+		
+		mainPanel.peer.add(graphicsPanel.peer)
+		mainPanel.peer.add(statsPanel.peer)
+		
+		contents = graphicsPanel
+		
 		centerOnScreen
 		resizable_=(false)
 		visible_=(true)
@@ -36,12 +74,11 @@ object CrystalBall extends Runnable {
 	
 	def drawMonster (g :Graphics2D, pos : Vec2, rot : Double, name : String, isShot : Boolean) {
 		if(!isShot) {
-		val ahead=Vec2u(1,0).rotate(rot)
-		val posU = Vec2u(pos.x,pos.y)
-		val posPeak = posU + ahead * lineLength
+		val ahead=Vec2(1,0).rotate(rot)
+		val posPeak = pos + ahead * (lineLength / 2)
 		
-		val aheadLeft = Vec2u(1,0).rotate(rot+sin(60)+Pi)
-		val aheadRight = Vec2u(1,0).rotate(rot-sin(60)+Pi)
+		val aheadLeft = Vec2(1,0).rotate(rot+sin(60)+Pi)
+		val aheadRight = Vec2(1,0).rotate(rot-sin(60)+Pi)
 		
 		val posLeft = posPeak + aheadLeft * lineLength
 		val posRight = posPeak + aheadRight * lineLength
@@ -57,19 +94,18 @@ object CrystalBall extends Runnable {
 		
 		val oldFont = g.getFont
 		
-		g.setColor(Color.BLUE)
+		g.setColor(Color.YELLOW)
 		g.setFont(new Font("Arial", Font.PLAIN, 20))
 		g.drawString(name, x1+20, y1+20)
 		
-		g.setColor(Color.BLACK)
+		g.setColor(Color.GREEN)
 		g.setFont(oldFont)
 		g.drawLine(x1, y1, x3, y3)
 		g.drawLine(x1, y1, x2, y2)
 		}
 		else {
 			g.setColor(Color.RED)
-			g.fillOval(pos.x.toInt - 2, pos.y.toInt - 2, 4, 4)
-			
+			g.fillOval(pos.x.toInt - (WorldDefs.shotSize/2), pos.y.toInt - (WorldDefs.shotSize/2), WorldDefs.shotSize*2, WorldDefs.shotSize*2)
 		}
 	}
 	
@@ -79,6 +115,6 @@ object CrystalBall extends Runnable {
 			currentMonsterList = Game.getWorld.monsters
 			frame.repaint()
 		}
-}
+	}
 	
 }

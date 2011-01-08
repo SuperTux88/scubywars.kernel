@@ -17,9 +17,13 @@ case class Monster (
 	age:Double
 )
   		extends JsonSerializable {
+	
+	def getSize = if(isShot) WorldDefs.shotSize else WorldDefs.monsterSize 
 
-  def think(time: Double, world:World): List[Monster] = {
-    val ahead = Vec2u(1, 0).rotate(dir)
+  def think(time: Double, world:World, msgBox:Map[String,Msg]): List[Monster] = {
+    val ahead = Vec2(1, 0).rotate(dir)
+
+    // calc new dir
     var newDir = dir;
     if (action.turnLeft) newDir -= (time * WorldDefs.rotSpeed)
     if (action.turnRight) newDir += time * WorldDefs.rotSpeed
@@ -27,19 +31,38 @@ case class Monster (
     if (newDir < 0)
       newDir += 2 * Pi
 
+    // calc new pos
+    val len= time * (if (isShot) WorldDefs.shotSpeed else WorldDefs.speed)
+    val step = if  (action.thrust) ahead * len else Vec2(0,0)
+    var newPos=(pos + step).norm
+
+    // create return list
     var ret=List[Monster]()
     
     var alive = true
+    val myMsg = msgBox.get(publicId).getOrElse(Nop())
+  
+    var newScore=score
+        
+    myMsg match {
+    	case Looser() => 
+    		if (isShot)
+    			alive=false
+   			else {
+   				newScore-=1
+   				newPos   =Vec2(WorldDefs.size*random,WorldDefs.size*random).norm
+			    newDir   =random*2*Pi	
+   			}
+    	case Winner() => newScore+=1
+    	case _ => ;
+    }
     
     if (isShot && age>WorldDefs.shotTimeToLife) alive=false
-    
-    val len= time * (if (isShot) WorldDefs.shotSpeed else WorldDefs.speed)
-    val step = if  (action.thrust) ahead * len else Vec2u(0,0)
-       
+          
     if (alive) ret=Monster(name,
-      pos + step, 
+      newPos,
       newDir,
-      score,
+      newScore,
       publicId,
       ip,
       action,
@@ -49,7 +72,7 @@ case class Monster (
       
     if (action.fire) {
     	if (!world.findShotFrom(publicId))
-    		ret=Monster(name+"_shot",pos + ahead * (2 * WorldDefs.monsterSize) + step, dir, 0, IdGen.getNext, ip, Action(false,false,true,false),true,publicId,0) :: ret
+    		ret=Monster(name+"_shot",pos + ahead * (WorldDefs.monsterSize + WorldDefs.shotSize) + step, dir, 0, IdGen.getNext, ip, Action(false,false,true,false),true,publicId,0) :: ret
     }
 
      ret
