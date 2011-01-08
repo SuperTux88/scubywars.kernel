@@ -14,7 +14,11 @@ case class Monster (
 	val turnLeft: Boolean,
 	val turnRight: Boolean,
 	val thrust: Boolean,
-	val fire: Boolean)
+	val fire: Boolean,
+	val isShot: Boolean,
+	val parentId:String,
+	val age:Double
+)
   		extends JsonSerializable {
 
   def think(time: Double, world:World): List[Monster] = {
@@ -29,12 +33,12 @@ case class Monster (
     var ret=List[Monster]()
     
     if (fire) {
-    	if (!world.findShot(publicId))
-    		ret=Monster(name+"_shot",pos + Vec2(1,0).rotate(dir)*WorldDefs.monsterSize*1.1, dir, 0, IdGen.getNext, ip, false,false,true,false) :: ret
+    	if (!world.findShotFrom(publicId))
+    		ret=Monster(name+"_shot",pos + Vec2(1,0).rotate(dir)*WorldDefs.monsterSize*1.1, dir, 0, IdGen.getNext, ip, false,false,true,false,true,publicId,0) :: ret
     }
 
     ret=Monster(name,
-      if (thrust) pos + ahead * time * WorldDefs.speed else pos,
+      if (thrust) pos + ahead * time * (if (isShot) WorldDefs.shotSpeed else WorldDefs.speed) else pos,
       newDir,
       score,
       publicId,
@@ -42,11 +46,16 @@ case class Monster (
       turnLeft,
       turnRight,
       thrust,
-      fire)::ret
+      fire,
+      isShot,
+      parentId,
+      age+time)::ret
       
      ret
 	}
-	
+  
+  	def isShotFrom(id:String) =parentId==id && isShot
+ 	
 	def toJson() = "{" + getJsonString("name", name) + ",\"pos\":" + Json.build(pos) + ",\"dir\":" + dir  + ",\"score\":" + score + "," + getJsonString("publicId", publicId) + "," +
 		getJsonString("ip", ip) + ",\"turnLeft\":" + turnLeft + ",\"turnRight\":" + turnRight + ",\"thrust\":" + thrust + ",\"fire\":" + fire + "}"
 	

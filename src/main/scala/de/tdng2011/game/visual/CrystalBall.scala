@@ -81,7 +81,7 @@ object CrystalBall extends Runnable {
 			        monster.score ,
 			        monster.publicId ,
 			        monster.ip ,
-			        monster.turnLeft ,monster.turnRight,monster.thrust,monster.fire)
+			        monster.turnLeft ,monster.turnRight,monster.thrust,monster.fire,monster.isShot,monster.parentId,monster.age)
 			monList1::=mon1
 				var mon2 = new Monster(monster.name,
 			        Vec2(monster.pos.x*2/3,monster.pos.y*2/3),
@@ -89,7 +89,7 @@ object CrystalBall extends Runnable {
 			        monster.score ,
 			        monster.publicId ,
 			        monster.ip ,
-			        monster.turnLeft ,monster.turnRight,monster.thrust,monster.fire)
+			        monster.turnLeft ,monster.turnRight,monster.thrust,monster.fire,monster.isShot,monster.parentId,monster.age)
 			monList2::=mon2
 		}
 		queue add (monList1)
