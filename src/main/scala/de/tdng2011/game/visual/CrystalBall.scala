@@ -8,27 +8,52 @@ import scala.actors.threadpool._
 
 object CrystalBall extends Runnable {
 	
-	val lineLength = 20
+	val lineLength = WorldDefs.monsterSize 
 	
 	var currentMonsterList : List[Monster] = List[Monster]()
 	
 	var frame = new MainFrame {
 		
 		title = "Crystal Ball"
-		contents = new Panel {
+		var mainPanel = new Panel() {
 			focusable = true
 			background = Color.white
-			preferredSize = new Dimension(WorldDefs.size , WorldDefs.size)
+			preferredSize = new Dimension(WorldDefs.size + 400, WorldDefs.size)
+		}
+		
+		var graphicsPanel =	new Panel {
+			focusable = true
+			background = Color.white
+			preferredSize = new Dimension(WorldDefs.size + 100, WorldDefs.size)
+			//bounds_=(new Rectangle(0,0,WorldDefs.size + 100, WorldDefs.size))
 			
 			override def paint(g: Graphics2D) {
 				g.setColor(Color.white)
 				g.fillRect(0, 0, size.width, size.height)
-				g.setColor(Color.black)
-				for (monster <- currentMonsterList) 
-					drawMonster(g, monster.pos , monster.dir, monster.name, monster.isShot)
 				
+				g.setColor(Color.black)
+				g.drawRect(0, 0, WorldDefs.size, WorldDefs.size-1)
+				
+				for (monster <- currentMonsterList) { 
+					drawMonster(g, monster.pos , monster.dir, monster.name, monster.isShot)
+				}
 			}
 		}
+		
+		var statsPanel = new Panel() {
+			focusable = true
+			background = Color.white
+			//preferredSize = new Dimension(300, WorldDefs.size)
+			bounds_=(new Rectangle(WorldDefs.size + 100,0,300, WorldDefs.size))
+		}
+		
+		//mainPanel.peer.setLayout(null)
+		
+		mainPanel.peer.add(graphicsPanel.peer)
+		mainPanel.peer.add(statsPanel.peer)
+		
+		contents = graphicsPanel
+		
 		centerOnScreen
 		resizable_=(false)
 		visible_=(true)
@@ -38,7 +63,7 @@ object CrystalBall extends Runnable {
 		if(!isShot) {
 		val ahead=Vec2u(1,0).rotate(rot)
 		val posU = Vec2u(pos.x,pos.y)
-		val posPeak = posU + ahead * lineLength
+		val posPeak = posU + ahead * (lineLength / 2)
 		
 		val aheadLeft = Vec2u(1,0).rotate(rot+sin(60)+Pi)
 		val aheadRight = Vec2u(1,0).rotate(rot-sin(60)+Pi)
@@ -68,8 +93,7 @@ object CrystalBall extends Runnable {
 		}
 		else {
 			g.setColor(Color.RED)
-			g.fillOval(pos.x.toInt - 2, pos.y.toInt - 2, 4, 4)
-			
+			g.fillOval(pos.x.toInt - (WorldDefs.monsterSize/2), pos.y.toInt - (WorldDefs.monsterSize/2), WorldDefs.monsterSize, WorldDefs.monsterSize)
 		}
 	}
 	
@@ -79,6 +103,6 @@ object CrystalBall extends Runnable {
 			currentMonsterList = Game.getWorld.monsters
 			frame.repaint()
 		}
-}
+	}
 	
 }
