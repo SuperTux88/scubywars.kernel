@@ -20,6 +20,13 @@ case class Monster (
 	
 	def getSize = if(isShot) WorldDefs.shotRadius else WorldDefs.monsterRadius 
 
+	def getWeight = {
+		var sum = score * 10000.0
+		for(c <- name.toCharArray)
+			sum+=c
+		sum
+	}
+	
   def think(time: Double, world:World, msgBox:Map[String,Msg]): List[Monster] = {
     val ahead = Vec2(1, 0).rotate(dir)
 

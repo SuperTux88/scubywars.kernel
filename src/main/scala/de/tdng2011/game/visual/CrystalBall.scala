@@ -34,7 +34,7 @@ object CrystalBall extends Runnable {
 				g.setColor(Color.white)
 				g.drawRect(0, 0, WorldDefs.size, WorldDefs.size-1)
 				
-				currentMonsterList = currentMonsterList.sort(_.score > _.score )
+				currentMonsterList = currentMonsterList.sort(_.getWeight > _.getWeight)
 				
 				var i : Int = 1
 				for (monster <- currentMonsterList) { 
