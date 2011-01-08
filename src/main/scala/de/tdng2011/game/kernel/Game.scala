@@ -4,7 +4,7 @@ import scala.math._
 
 case class Game {
 	private var world = new World
-	
+	private var worldDescription : WorldDescription = _
 	def createMonster(name:String, ip:String) : String = {
 		val id=IdGen.getNext
 		world.add(
@@ -18,7 +18,11 @@ case class Game {
 		id
 	}
 			        
-	def think(time:Double) = world.think(time) // time is in seconds. NOT millisceconds
+	def think(time:Double){
+		worldDescription = world.think(time) // time is in seconds. NOT millisceconds
+	}
+	
+	def getWorldDescription = worldDescription
 	
 	def monsterAction(id:String, turnLeft:Boolean, turnRight:Boolean, thrust:Boolean, fire:Boolean) { //throws an exception if not found
 		val m=world.findMonster(id).get
@@ -27,6 +31,8 @@ case class Game {
 		m.thrust    = thrust
 		m.fire      = fire
 	}
+	
+	
 	
 	override def toString = world.toString
 	

@@ -23,8 +23,9 @@ class GameThread extends Runnable {
       game.monsterAction(m1, true, false, false, true)
       game.monsterAction(m2, false, true, true, false)
       game.monsterAction(m3, true, true, true, false)
-      val worldDescription : WorldDescription = game think(100 / 1000.0)
-      println(worldDescription)
+      game think(100 / 1000.0)
+      
+      println(game getWorldDescription)
     }
   }
 }
