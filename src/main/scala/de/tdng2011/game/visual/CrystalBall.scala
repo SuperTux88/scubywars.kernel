@@ -10,7 +10,7 @@ object CrystalBall extends Runnable {
 	
 	val lineLength = 20
 	
-	var curMonsterStates : List[Monster] = List[Monster]()
+	var currentMonsterList : List[Monster] = List[Monster]()
 	
 	var frame = new MainFrame {
 		
@@ -24,8 +24,8 @@ object CrystalBall extends Runnable {
 				g.setColor(Color.white)
 				g.fillRect(0, 0, size.width, size.height)
 				g.setColor(Color.black)
-				for (monsterState <- curMonsterStates) 
-					drawMonster(g, monsterState.pos , monsterState.dir, monsterState.name)
+				for (monster <- currentMonsterList) 
+					drawMonster(g, monster.pos , monster.dir, monster.name, monster.isShot)
 				
 			}
 		}
@@ -34,8 +34,8 @@ object CrystalBall extends Runnable {
 		visible_=(true)
 	}
 	
-	def drawMonster (g :Graphics2D, pos : Vec2, rot : Double, name : String) {
-		
+	def drawMonster (g :Graphics2D, pos : Vec2, rot : Double, name : String, isShot : Boolean) {
+		if(!isShot) {
 		val ahead=Vec2u(1,0).rotate(rot)
 		val posU = Vec2u(pos.x,pos.y)
 		val posPeak = posU + ahead * lineLength
@@ -57,7 +57,7 @@ object CrystalBall extends Runnable {
 		
 		val oldFont = g.getFont
 		
-		g.setColor(Color.RED)
+		g.setColor(Color.BLUE)
 		g.setFont(new Font("Arial", Font.PLAIN, 20))
 		g.drawString(name, x1+20, y1+20)
 		
@@ -65,12 +65,18 @@ object CrystalBall extends Runnable {
 		g.setFont(oldFont)
 		g.drawLine(x1, y1, x3, y3)
 		g.drawLine(x1, y1, x2, y2)
+		}
+		else {
+			g.setColor(Color.RED)
+			g.fillOval(pos.x.toInt - 2, pos.y.toInt - 2, 4, 4)
+			
+		}
 	}
 	
 	override def run {
 		while(true) {
 			Thread.sleep((1/120.0 * 1000).toLong)
-			curMonsterStates = Game.getWorld.monsters
+			currentMonsterList = Game.getWorld.monsters
 			frame.repaint()
 		}
 }
