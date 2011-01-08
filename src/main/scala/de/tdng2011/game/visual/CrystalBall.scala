@@ -75,21 +75,21 @@ object CrystalBall extends Runnable {
 		var monList2 = List[Monster]()
 		
 		for(monster <- w.monsters) {
-			var mon1 = new Monster(monster.name,
+			var mon1 = Monster(monster.name,
 			        Vec2(monster.pos.x/3,monster.pos.y/3),
 			        monster.dir ,	
 			        monster.score ,
 			        monster.publicId ,
 			        monster.ip ,
-			        monster.turnLeft ,monster.turnRight,monster.thrust,monster.fire,monster.isShot,monster.parentId,monster.age)
+			        monster.action,monster.isShot,monster.parentId,monster.age)
 			monList1::=mon1
-				var mon2 = new Monster(monster.name,
+				var mon2 = Monster(monster.name,
 			        Vec2(monster.pos.x*2/3,monster.pos.y*2/3),
 			        monster.dir,
 			        monster.score ,
 			        monster.publicId ,
 			        monster.ip ,
-			        monster.turnLeft ,monster.turnRight,monster.thrust,monster.fire,monster.isShot,monster.parentId,monster.age)
+			        monster.action,monster.isShot,monster.parentId,monster.age)
 			monList2::=mon2
 		}
 		queue add (monList1)
