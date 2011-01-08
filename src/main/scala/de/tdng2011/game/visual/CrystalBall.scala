@@ -24,7 +24,7 @@ object CrystalBall extends Runnable {
 		var graphicsPanel =	new Panel {
 			focusable = true
 			background = Color.white
-			preferredSize = new Dimension(WorldDefs.size + 100, WorldDefs.size)
+			preferredSize = new Dimension(WorldDefs.size + 300, WorldDefs.size)
 			//bounds_=(new Rectangle(0,0,WorldDefs.size + 100, WorldDefs.size))
 			
 			override def paint(g: Graphics2D) {
@@ -34,8 +34,13 @@ object CrystalBall extends Runnable {
 				g.setColor(Color.black)
 				g.drawRect(0, 0, WorldDefs.size, WorldDefs.size-1)
 				
+				var i : Int = 0
 				for (monster <- currentMonsterList) { 
 					drawMonster(g, monster.pos , monster.dir, monster.name, monster.isShot)
+					if(!monster.isShot) {
+						g.drawString(monster.name + " "+ monster.score , WorldDefs.size + 60, i * 15)
+						i+=1
+					}
 				}
 			}
 		}
