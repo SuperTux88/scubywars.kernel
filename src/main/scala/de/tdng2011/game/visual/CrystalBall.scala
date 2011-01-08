@@ -23,8 +23,7 @@ object CrystalBall {
 				g.fillRect(0, 0, size.width, size.height)
 				g.setColor(Color.black)
 				for (monsterState <- curMonsterStates) {
-					val monsterPos = monsterState.pos 
-					drawMonster(g, monsterPos, monsterState.dir)
+					drawMonster(g, monsterState.pos , monsterState.dir)
 				}
 			}
 		}
@@ -36,8 +35,9 @@ object CrystalBall {
 		println ("== Position: "+pos)
 		println ("== Rotation: "+rot)
 		
-		val ahead=Vec2(1,0).rotate(rot)
-		val pos2 = pos + ahead * lineLength
+		val ahead=Vec2u(1,0).rotate(rot)
+		val posU = Vec2u(pos.x,pos.y)
+		val pos2 = posU + ahead * lineLength
 		
 		val x1 = pos.x.toInt
 		val y1 = pos.y.toInt
