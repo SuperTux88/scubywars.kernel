@@ -1,6 +1,9 @@
 package de.tdng2011.game.kernel
 
-case class World(monsters : List[Monster]) {
+import com.twitter.json.Json
+import com.twitter.json.JsonSerializable
+
+case class World(monsters : List[Monster]) extends JsonSerializable {
 	
 	def add(m:Monster) = World(m::monsters)
 	
@@ -15,8 +18,9 @@ case class World(monsters : List[Monster]) {
 			for(m <- monsters)
 				yield if(m.publicId == monster.publicId) monster else m 
 		)
-		
 	}
+	
+	def toJson() = "{\"monsters\":" + Json.build(monsters) + "}"
 	
 	override def toString = "Monsters:\n" + monsters
 }
