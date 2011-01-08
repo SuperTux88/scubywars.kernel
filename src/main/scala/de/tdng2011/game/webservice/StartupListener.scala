@@ -12,12 +12,6 @@ class StartupListener extends ServletContextListener {
 	}
 	
 	def contextInitialized(event : ServletContextEvent) {
-		// server start
-		// visualizer start
-		jFrame = new JFrame
-		jFrame setBounds(640, 480, 640, 480)
-		jFrame setVisible true
-		jFrame setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
-		
+		new Thread(new GameThread).start
 	}
 }
