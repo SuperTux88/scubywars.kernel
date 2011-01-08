@@ -17,7 +17,8 @@ object CrystalBall extends Runnable {
 	var frame = new MainFrame {
 		
 		
-		val url = getClass().getClassLoader().getResource("de/tdng2011/game/resources/background.jpg")
+		val url = getClass().getClassLoader().getResource("/background.jpg")
+		println(url)
 		val bgImage = ImageIO.read(new File(url.getFile))
 		
 
