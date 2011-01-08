@@ -34,11 +34,19 @@ object CrystalBall extends Runnable {
 				g.setColor(Color.white)
 				g.drawRect(0, 0, WorldDefs.size, WorldDefs.size-1)
 				
-				var i : Int = 0
+				currentMonsterList = currentMonsterList.sort(_.score > _.score )
+				
+				var i : Int = 1
 				for (monster <- currentMonsterList) { 
 					drawMonster(g, monster.pos , monster.dir, monster.name, monster.isShot)
+					
 					if(!monster.isShot) {
-						g.drawString(monster.name + " "+ monster.score , WorldDefs.size + 60, i * 15)
+						val oldFont = g.getFont
+		
+						g.setFont(new Font("Arial", Font.PLAIN, 20))
+						
+						g.drawString(monster.name + " "+ monster.score , WorldDefs.size + 60, i * 25)
+						g.setFont(font)
 						i+=1
 					}
 				}
