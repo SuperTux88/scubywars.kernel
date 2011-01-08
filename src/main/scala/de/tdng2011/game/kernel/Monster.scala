@@ -18,7 +18,7 @@ case class Monster (
 )
   		extends JsonSerializable {
 	
-	def getSize = if(isShot) WorldDefs.shotSize else WorldDefs.monsterSize 
+	def getSize = if(isShot) WorldDefs.shotRadius else WorldDefs.monsterRadius 
 
   def think(time: Double, world:World, msgBox:Map[String,Msg]): List[Monster] = {
     val ahead = Vec2(1, 0).rotate(dir)
@@ -72,7 +72,7 @@ case class Monster (
       
     if (action.fire) {
     	if (!world.findShotFrom(publicId))
-    		ret=Monster(name+"_shot",pos + ahead * (WorldDefs.monsterSize + WorldDefs.shotSize) + step, dir, 0, IdGen.getNext, ip, Action(false,false,true,false),true,publicId,0) :: ret
+    		ret=Monster(name+"_shot",pos + ahead * (WorldDefs.monsterRadius + WorldDefs.shotRadius) + step, dir, 0, IdGen.getNext, ip, Action(false,false,true,false),true,publicId,0) :: ret
     }
 
      ret
