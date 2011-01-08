@@ -27,7 +27,7 @@ case class World(monsters : List[Monster]) extends JsonSerializable {
 		)
 	}
 	
-	def findShot(id:String) = !monsters.find(_.publicId==id).isEmpty
+	def findShot(id:String) = monsters.find(_.isShotFrom(id)).isDefined
 	def toJson() = "{\"monsters\":" + Json.build(monsters) + "}"
 	
 	override def toString = "Monsters:\n" + monsters

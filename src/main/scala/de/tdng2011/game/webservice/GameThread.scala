@@ -24,7 +24,6 @@ class GameThread extends Runnable {
       Game think(100 / 1000.0)
       
       val world : World = Game.getWorld
-      println(world)
       
       visualizer setAllMonsters world
       }

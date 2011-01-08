@@ -14,7 +14,7 @@ object Game {
 			        0,
 			        id,
 			        ip,
-			        false,false,false,false))
+			        false,false,false,false,false,""))
 		id
 	}
 			        
@@ -24,7 +24,7 @@ object Game {
 		
 	def monsterAction(id:String, turnLeft:Boolean, turnRight:Boolean, thrust:Boolean, fire:Boolean) { //throws an exception if not found
 		val m = world.findMonster(id).get
-		world = world.updateMonster(Monster(m.name, m.pos, m.dir, m.score, m.publicId, m.ip, turnLeft, turnRight, thrust, fire))
+		world = world.updateMonster(Monster(m.name, m.pos, m.dir, m.score, m.publicId, m.ip, turnLeft, turnRight, thrust, fire, m.isShot, m.parentId))
 	}
 	
 	override def toString = world.toString
