@@ -19,7 +19,7 @@ case class Monster (
   		extends JsonSerializable {
 
   def think(time: Double, world:World, msgBox:Map[String,Msg]): List[Monster] = {
-    val ahead = Vec2u(1, 0).rotate(dir)
+    val ahead = Vec2(1, 0).rotate(dir)
 
     // calc new dir
     var newDir = dir;
@@ -31,8 +31,8 @@ case class Monster (
 
     // calc new pos
     val len= time * (if (isShot) WorldDefs.shotSpeed else WorldDefs.speed)
-    val step = if  (action.thrust) ahead * len else Vec2u(0,0)
-    var newPos=pos + step
+    val step = if  (action.thrust) ahead * len else Vec2(0,0)
+    var newPos=(pos + step).norm
 
     // create return list
     var ret=List[Monster]()
@@ -41,9 +41,7 @@ case class Monster (
     val myMsg = msgBox.get(publicId).getOrElse(Nop())
   
     var newScore=score
-    
-    println("name:"+name+" myMsg="+myMsg)
-    
+        
     myMsg match {
     	case Looser() => 
     		if (isShot)

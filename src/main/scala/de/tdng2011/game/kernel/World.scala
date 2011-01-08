@@ -22,7 +22,9 @@ case class World(monsters : List[Monster]) extends JsonSerializable {
 		for (a <- monsters)
 			for (b <- monsters)
 				if ((a.pos - b.pos).length < WorldDefs.monsterSize*2)
-					if (a.publicId != b.publicId) {
+					if (a.publicId != b.publicId) 
+						if (! (a.publicId == b.parentId ))
+							if (!(b.publicId == a.parentId)) {
 						
 						println("Collision between "+a.name+" "+b.name)
 						if ( a.isShot && !b.isShot )  msgBox=msgBox ++ Map[String,Msg](a.parentId -> Winner()) 
@@ -31,7 +33,6 @@ case class World(monsters : List[Monster]) extends JsonSerializable {
 						msgBox=msgBox ++ Map[String,Msg](a.publicId -> Looser())
 						msgBox=msgBox ++ Map[String,Msg](b.publicId -> Looser())
 					}
-		println(msgBox)
 						
 		val w1=World((for (m<-monsters) yield m.think(time,this,msgBox)).flatten)
 		
