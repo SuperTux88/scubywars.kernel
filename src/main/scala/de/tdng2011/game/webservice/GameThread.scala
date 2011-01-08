@@ -21,31 +21,30 @@ class GameThread extends Runnable {
     var lastSleepTime : Double = 0
 
     while (true) {
-      val frameStart = getTime
+      val frameStart = getTime  // 8000
       Game.monsterAction(m1, Action(false, false, false, false))
       Game.monsterAction(m2, Action(false, true, true, false))
       Game.monsterAction(m3, Action(true, true, true, true))
       Game.monsterAction(m4, Action(false, false, true, false))
       Game.monsterAction(m5, Action(false, false, true, true))
       Game.monsterAction(m6, Action(false, false, true, false))
-      Game think(lastSleepTime/1000)
+      Game think(lastSleepTime/1000.0)
       
       
       val world : World = Game.getWorld
       
       CrystalBall setAllMonsters world
-      val frameEnd = getTime
+      val frameEnd = getTime   // 8024   / 8050
       val sleepTime =  frameDuration - (frameEnd - frameStart)
-      if(sleepTime > 0){
+      if(sleepTime > 0)       // 1       /  -5
     	  Thread sleep(sleepTime)
-    	  lastSleepTime = sleepTime
-      } else {
-    	  lastSleepTime = 0
-      }
+    	  
+      val afterSleep = getTime      // 8027   / 8050
+      lastSleepTime = afterSleep-frameStart  //27  / 50
       
       
     }
   }
 	
-	def getTime = new Date().getTime
+	def getTime = System.currentTimeMillis
 }
