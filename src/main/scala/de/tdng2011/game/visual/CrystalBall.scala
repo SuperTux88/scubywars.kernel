@@ -105,7 +105,7 @@ object CrystalBall extends Runnable {
 		}
 		else {
 			g.setColor(Color.RED)
-			g.fillOval(pos.x.toInt - (WorldDefs.monsterSize/2), pos.y.toInt - (WorldDefs.monsterSize/2), WorldDefs.monsterSize, WorldDefs.monsterSize)
+			g.fillOval(pos.x.toInt - (WorldDefs.shotSize/2), pos.y.toInt - (WorldDefs.shotSize/2), WorldDefs.shotSize*2, WorldDefs.shotSize*2)
 		}
 	}
 	

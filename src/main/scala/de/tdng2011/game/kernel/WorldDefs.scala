@@ -8,7 +8,7 @@ object WorldDefs {
 	val shotSpeed      =speed*4
 	val shotTimeToLife =size/shotSpeed*0.5 
 	val rotSpeed       =2*Pi //rad/s
-	val monsterSize    =10
-
+	val monsterSize    =30
+	val shotSize	   =8
 }
 
