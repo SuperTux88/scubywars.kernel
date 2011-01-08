@@ -9,6 +9,6 @@ case class Action(
 	fire: Boolean)
 		extends JsonSerializable {
 
-	def toJson() = "{\"turnLeft\":" + turnLeft + ",\"turnRight\":" + turnRight + ",\"thrust\":" + thrust + ",\"fire\":" + fire + "}"
+	def toJson = "{\"turnLeft\":" + turnLeft + ",\"turnRight\":" + turnRight + ",\"thrust\":" + thrust + ",\"fire\":" + fire + "}"
 	
 }

@@ -31,7 +31,7 @@ case class Monster (
     
     if (action.fire) {
     	if (!world.findShotFrom(publicId))
-    		ret=Monster(name+"_shot",pos + ahead*(WorldDefs.monsterSize*2.1), dir, 0, IdGen.getNext, ip, false,false,true,false,true,publicId,0) :: ret
+    		ret=Monster(name+"_shot",pos + ahead*(WorldDefs.monsterSize*2.1), dir, 0, IdGen.getNext, ip, Action(false,false,true,false),true,publicId,0) :: ret
     }
 
     var alive = true
