@@ -54,8 +54,8 @@ object CrystalBall extends Runnable {
 
         //g.drawImage(bgImage, 0, 0, null);
 
-        g.setColor(Color.white)
-        g.drawRect(0, 0, size.width, size.height)
+        //g.setColor(Color.white)
+        //g.drawRect(0, 0, size.width, size.height)
 
         for (monster <- currentMonsterList) {
           drawMonster(g, monster.pos, monster.dir, monster.name, monster.isShot)
