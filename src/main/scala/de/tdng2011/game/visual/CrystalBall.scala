@@ -22,23 +22,38 @@ object CrystalBall extends Runnable {
     title = "Crystal Ball"
     var mainPanel = new BoxPanel(scala.swing.Orientation.Horizontal) {
       focusable = true
-      background = Color.PINK
+      //background = Color.PINK
       preferredSize = new Dimension(WorldDefs.size + 400, WorldDefs.size)
       //bounds_=(new Rectangle(0,0,WorldDefs.size + 100, WorldDefs.size))
+      
+      override def paintComponent(g: Graphics2D) {
+        super.paintComponent(g)
+       
+        g.drawImage(bgImage, 0, 0, null);
+      }
     }
 
     var gameFieldPanel = new Panel {
       focusable = true
-      background = Color.black
+      //background = Color.black
       preferredSize = new Dimension(mainPanel.size.width + 600, WorldDefs.size)
       //bounds_=(new Rectangle(0,0,WorldDefs.size + 100, WorldDefs.size))
 
+      override def paintComponent(g: Graphics2D) {
+        super.paintComponent(g)
+        g.setColor(background)
+        g.fillRect(0, 0, size.width, size.height)
+      }
+      
+      opaque_=(false)
+        background = new Color(255, 255, 255, 0)
+      
       override def paint(g: Graphics2D) {
         super.paint(g)
         //g.setColor(Color.blue)
         //g.fillRect(0, 0, size.width + (WorldDefs.monsterRadius / 2), size.height)
 
-        g.drawImage(bgImage, 0, 0, null);
+        //g.drawImage(bgImage, 0, 0, null);
 
         g.setColor(Color.white)
         g.drawRect(0, 0, size.width, size.height)
@@ -63,7 +78,7 @@ object CrystalBall extends Runnable {
       }
 
        opaque_=(false)
-        background = new Color(0, 0, 0, 100)
+        background = new Color(0, 0, 0, 180)
       
       override def paint(g: Graphics2D) {
         super.paint(g)
