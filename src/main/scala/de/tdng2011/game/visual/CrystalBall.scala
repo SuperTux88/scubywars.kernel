@@ -92,13 +92,10 @@ object CrystalBall extends Runnable {
         super.paintComponent(g)
         g.setColor(background)
         g.fillRect(0, 0, size.width, size.height)
-      }
+      
 
-      opaque_=(false)
-      background = new Color(0, 0, 0, 180)
+      
 
-      override def paint(g: Graphics2D) {
-        super.paint(g)
 
         var i: Int = 1
 
@@ -121,6 +118,9 @@ object CrystalBall extends Runnable {
           }
         }
       }
+      
+      opaque_=(true)
+      background = new Color(0, 0, 0, 180)
     }
 
     //mainPanel.peer.setLayout(new BorderLayout)
