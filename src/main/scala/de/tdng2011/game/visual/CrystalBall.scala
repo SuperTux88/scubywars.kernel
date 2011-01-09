@@ -22,7 +22,7 @@ object CrystalBall extends Runnable {
     title = "Crystal Ball"
     var mainPanel = new BoxPanel(scala.swing.Orientation.Horizontal) {
       focusable = true
-      background = Color.black
+      background = Color.PINK
       preferredSize = new Dimension(WorldDefs.size + 400, WorldDefs.size)
       //bounds_=(new Rectangle(0,0,WorldDefs.size + 100, WorldDefs.size))
     }
@@ -58,12 +58,12 @@ object CrystalBall extends Runnable {
 
       override def paintComponent(g: Graphics2D) {
         super.paintComponent(g)
-        g.setColor(Color.YELLOW)
+        g.setColor(background)
         g.fillRect(0, 0, size.width, size.height)
       }
 
        opaque_=(false)
-        background = new Color(0, 0, 255, 50)
+        background = new Color(0, 0, 0, 100)
       
       override def paint(g: Graphics2D) {
         super.paint(g)
