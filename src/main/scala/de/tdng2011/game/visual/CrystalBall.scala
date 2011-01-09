@@ -14,6 +14,8 @@ object CrystalBall extends Runnable {
 	
 	var currentMonsterList : List[Monster] = List[Monster]()
 	
+	var exploded : List[(Int, Int, Int)] = List[(Int,Int, Int)]()
+	
 	var frame = new MainFrame {
 		
 		
@@ -54,6 +56,7 @@ object CrystalBall extends Runnable {
 				
 				var i : Int = 1
 				for (monster <- currentMonsterList) { 
+					println(monster)
 					drawMonster(g, monster.pos , monster.dir, monster.name, monster.isShot)
 					
 					if(!monster.isShot) {
@@ -90,39 +93,53 @@ object CrystalBall extends Runnable {
 	
 	def drawMonster (g :Graphics2D, pos : Vec2, rot : Double, name : String, isShot : Boolean) {
 		if(!isShot) {
-		val ahead=Vec2(1,0).rotate(rot)
-		val posPeak = pos + ahead * (lineLength / 2)
-		
-		val aheadLeft = Vec2(1,0).rotate(rot+sin(60)+Pi)
-		val aheadRight = Vec2(1,0).rotate(rot-sin(60)+Pi)
-		
-		val posLeft = posPeak + aheadLeft * lineLength
-		val posRight = posPeak + aheadRight * lineLength
-		
-		val x1 = posPeak.x.toInt
-		val y1 = posPeak.y.toInt
-		
-		val x2 = posRight.x.toInt
-		val y2 = posRight.y.toInt
-		
-		val x3 = posLeft.x.toInt
-		val y3 = posLeft.y.toInt
-		
-		val oldFont = g.getFont
-		
-		g.setColor(Color.YELLOW)
-		g.setFont(new Font("Arial", Font.PLAIN, 20))
-		g.drawString(name, x1+20, y1+20)
-		
-		g.setColor(Color.GREEN)
-		g.setFont(oldFont)
-		g.drawLine(x1, y1, x3, y3)
-		g.drawLine(x1, y1, x2, y2)
-		}
-		else {
+			val ahead=Vec2(1,0).rotate(rot)
+			val posPeak = pos + ahead * (lineLength / 2)
+			
+			val aheadLeft = Vec2(1,0).rotate(rot+sin(60)+Pi)
+			val aheadRight = Vec2(1,0).rotate(rot-sin(60)+Pi)
+			
+			val posLeft = posPeak + aheadLeft * lineLength
+			val posRight = posPeak + aheadRight * lineLength
+			
+			val x1 = posPeak.x.toInt
+			val y1 = posPeak.y.toInt
+			
+			val x2 = posRight.x.toInt
+			val y2 = posRight.y.toInt
+			
+			val x3 = posLeft.x.toInt
+			val y3 = posLeft.y.toInt
+			
+			val oldFont = g.getFont
+			
+			g.setColor(Color.YELLOW)
+			g.setFont(new Font("Arial", Font.PLAIN, 20))
+			g.drawString(name, x1+20, y1+20)
+			
+			g.setColor(Color.GREEN)
+			g.setFont(oldFont)
+			g.drawLine(x1, y1, x3, y3)
+			g.drawLine(x1, y1, x2, y2)
+		}	else {
 			g.setColor(Color.RED)
 			g.fillOval(pos.x.toInt - (WorldDefs.shotRadius/2), pos.y.toInt - (WorldDefs.shotRadius/2), WorldDefs.shotRadius*2, WorldDefs.shotRadius*2)
 		}
+	}
+	
+	def drawExplosion(g : Graphics2D, pos :  Vec2, step : Int){
+		
+		val ahead=Vec2(1,0)
+		var startPos = pos
+		var endPos = Vec2(0,0)
+		
+		for( i  <- 1 to 8){
+			ahead.rotate(sin(45))
+			startPos = pos + ahead * step
+			endPos = pos + ahead * (lineLength / 2)
+			g.drawLine(startPos.x.toInt, startPos.y.toInt, endPos.x.toInt, endPos.y.toInt)
+		}
+		
 	}
 	
 	override def run {

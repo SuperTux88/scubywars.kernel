@@ -58,7 +58,8 @@ case class Monster (
    			else {
    				newScore-=1
    				newPos   =Vec2(WorldDefs.size*random,WorldDefs.size*random).norm
-			    newDir   =random*2*Pi	
+			    newDir   =random*2*Pi
+			    wasdead  =true
    			}
     	case Winner() => newScore+=1
     	case _ => ;
@@ -92,4 +93,12 @@ case class Monster (
 	private def getJsonString(key : String, value : String) = "\""+key+"\":\""+value+"\""
 
 	override def toString = toJson
+	
+	var wasdead = false
+	
+	def died : Boolean {
+  		val tmp = wasdead
+  		if(tmp)wasdead = false
+  		tmp
+  	}
 }
