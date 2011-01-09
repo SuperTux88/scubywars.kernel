@@ -43,13 +43,7 @@ object CrystalBall extends Runnable {
         super.paintComponent(g)
         g.setColor(background)
         g.fillRect(0, 0, size.width, size.height)
-      }
-      
-      opaque_=(false)
-        background = new Color(255, 255, 255, 0)
-      
-      override def paint(g: Graphics2D) {
-        super.paint(g)
+
         //g.setColor(Color.blue)
         //g.fillRect(0, 0, size.width + (WorldDefs.monsterRadius / 2), size.height)
 
@@ -62,6 +56,8 @@ object CrystalBall extends Runnable {
           drawMonster(g, monster.pos, monster.dir, monster.name, monster.isShot)
         }
       }
+      opaque_=(false)
+        background = new Color(255, 255, 255, 0)
     }
 
     var statsPanel = new Panel() {
