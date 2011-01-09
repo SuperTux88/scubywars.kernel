@@ -27,8 +27,9 @@ case class Monster (
 		sum
 	}
 	
+  def ahead : Vec2 = Vec2(1, 0).rotate(dir)
+	
   def think(time: Double, world:World, msgBox:Map[String,Msg]): List[Monster] = {
-    val ahead = Vec2(1, 0).rotate(dir)
 
     // calc new dir
     var newDir = dir;
