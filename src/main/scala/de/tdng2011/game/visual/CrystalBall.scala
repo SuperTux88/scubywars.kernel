@@ -9,8 +9,6 @@ import math._
 import scala.actors.threadpool._
 
 object CrystalBall extends Runnable {
-
-	val isTransparent = true
 	
   val lineLength = WorldDefs.monsterRadius * 2
 
@@ -26,36 +24,22 @@ object CrystalBall extends Runnable {
     val urlTransparent = getClass().getClassLoader().getResource("/background_transparent.jpg")
     val bgImageTransparent = ImageIO.read(new File(urlTransparent.getFile))
 
-    
     title = "Crystal Ball"
     var mainPanel = new BoxPanel(scala.swing.Orientation.Horizontal) {
       focusable = true
       background = Color.BLACK
       preferredSize = new Dimension(WorldDefs.size + 400, WorldDefs.size)
-      //bounds_=(new Rectangle(0,0,WorldDefs.size + 100, WorldDefs.size))
     }
 
     var gameFieldPanel = new Panel {
       focusable = true
       background = Color.BLACK
       preferredSize = new Dimension(mainPanel.size.width + 600, WorldDefs.size)
-      //bounds_=(new Rectangle(0,0,WorldDefs.size + 100, WorldDefs.size))
 
       override def paintComponent(g: Graphics2D) {
         super.paintComponent(g)
-        
+
         g.drawImage(bgImage, 0, 0, null);
-        
-        //g.setColor(background)
-        //g.fillRect(0, 0, size.width, size.height)
-
-        //g.setColor(Color.blue)
-        //g.fillRect(0, 0, size.width + (WorldDefs.monsterRadius / 2), size.height)
-
-        //g.drawImage(bgImage, 0, 0, null);
-
-        //g.setColor(Color.white)
-        //g.drawRect(0, 0, size.width, size.height)
 
         for (monster <- currentMonsterList) {
           drawMonster(g, monster.pos, monster.dir, monster.name, monster.isShot)
@@ -79,11 +63,6 @@ object CrystalBall extends Runnable {
             exploded.enqueue(tupel)
         }
       }
-      /*opaque_=(!isTransparent)
-      if(isTransparent) 
-    	  background = new Color(255, 255, 255, 0)
-      else
-    	  background = Color.BLACK*/
     }
 
     var statsPanel = new Panel() {
@@ -91,20 +70,11 @@ object CrystalBall extends Runnable {
       background = Color.BLACK
 
       preferredSize = new Dimension(mainPanel.size.width - gameFieldPanel.size.width, mainPanel.size.height)
-      //bounds_=(new Rectangle(WorldDefs.size + 100, 0, 300, WorldDefs.size))
 
       override def paintComponent(g: Graphics2D) {
         super.paintComponent(g)
-        
-         g.drawImage(bgImageTransparent, 0, 0, null);
-        
-        //g.setColor(background)
-        //g.fillRect(0, 0, size.width, size.height)
-      
 
-      
-
-
+        g.drawImage(bgImageTransparent, 0, 0, null);
         var i: Int = 1
 
         currentMonsterList = currentMonsterList.sort(_.getWeight > _.getWeight)
@@ -113,8 +83,6 @@ object CrystalBall extends Runnable {
 
         for (monster <- currentMonsterList) {
           if (!monster.isShot) {
-
-            //g.fillRect(WorldDefs.size + 100, 0, 300, size.height)
 
             g.setFont(new Font("Arial", Font.PLAIN, 20))
 
@@ -126,15 +94,7 @@ object CrystalBall extends Runnable {
           }
         }
       }
-      
-      /*opaque_=(!isTransparent)
-      if(isTransparent)
-    	  background = new Color(0, 0, 0, 180)
-      else
-    	  background = new Color(0,0,0)*/
     }
-
-    //mainPanel.peer.setLayout(new BorderLayout)
 
     mainPanel.peer.add(gameFieldPanel.peer)
     mainPanel.peer.add(statsPanel.peer)
