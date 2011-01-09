@@ -14,7 +14,9 @@ object CrystalBall extends Runnable {
 	
 	var currentMonsterList : List[Monster] = List[Monster]()
 	
-	var exploded : List[(Int, Int, Int)] = List[(Int,Int, Int)]()
+	var exploded : scala.collection.mutable.Queue[(Int, Int, Int)] = scala.collection.mutable.Queue[(Int,Int, Int)]()
+	val explodDuration = 30
+	
 	
 	var frame = new MainFrame {
 		
@@ -67,7 +69,26 @@ object CrystalBall extends Runnable {
 						g.setFont(font)
 						i+=1
 					}
+					
+					val died : (Boolean,Vec2) = monster.died
+					println(died)
+					if(died._1){
+						exploded.enqueue((died._2.x.toInt,died._2.y.toInt,0))
+					}
+					
 				}
+				
+				var tmpList : List[(Int,Int,Int )] = List[(Int,Int,Int)]()
+					
+				Iterator.iterate(exploded) { qi =>
+				  val (x,y,s) = qi.dequeue
+				  drawExplosion(g, Vec2(x,y),s)
+				  if(s < explodDuration) tmpList::=((x,y,s+1))
+				  qi
+				}.takeWhile(! _.isEmpty).foreach(identity)
+				
+				for(tupel <- tmpList)
+					exploded.enqueue(tupel)
 			}
 		}
 		
@@ -133,9 +154,10 @@ object CrystalBall extends Runnable {
 		var endPos = Vec2(0,0)
 		
 		for( i  <- 1 to 8){
-			ahead.rotate(sin(45))
-			startPos = pos + ahead * step
+			val ahead=Vec2(1,0).rotate((Pi/4)*i)
+			startPos = pos + ahead * (step/explodDuration)
 			endPos = pos + ahead * (lineLength / 2)
+			g.setColor(Color.YELLOW)
 			g.drawLine(startPos.x.toInt, startPos.y.toInt, endPos.x.toInt, endPos.y.toInt)
 		}
 		
