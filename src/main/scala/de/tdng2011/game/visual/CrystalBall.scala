@@ -48,7 +48,6 @@ object CrystalBall extends Runnable {
 
 				g.setColor(Color.white)
 				g.drawRect(0, 0, WorldDefs.size, WorldDefs.size-1)
-				println(bgImage)
 				g.drawImage(bgImage, 0, 0, null);
 
 				
