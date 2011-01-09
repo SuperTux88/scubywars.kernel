@@ -63,7 +63,7 @@ case class Monster (
 			    wasdead  =true
 			    deadpos  =pos
    			}
-    	case Winner() => newScore+=1
+    	case Winner() => newScore+=2
     	case _ => ;
     }
     
