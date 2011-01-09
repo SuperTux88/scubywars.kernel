@@ -11,6 +11,9 @@ import scala.actors.threadpool._
 object CrystalBall extends Runnable {
 
   val lineLength = WorldDefs.monsterRadius * 2
+  
+  var exploded : scala.collection.mutable.Queue[(Int, Int, Int)] = scala.collection.mutable.Queue[(Int,Int, Int)]()
+	val explodDuration = 30
 
   var currentMonsterList: List[Monster] = List[Monster]()
 
@@ -54,6 +57,24 @@ object CrystalBall extends Runnable {
 
         for (monster <- currentMonsterList) {
           drawMonster(g, monster.pos, monster.dir, monster.name, monster.isShot)
+          
+          					val died : (Boolean,Vec2) = monster.died
+					println(died)
+					if(died._1){
+						exploded.enqueue((died._2.x.toInt,died._2.y.toInt,0))
+					}
+				
+				var tmpList : List[(Int,Int,Int )] = List[(Int,Int,Int)]()
+					
+				Iterator.iterate(exploded) { qi =>
+				  val (x,y,s) = qi.dequeue
+				  drawExplosion(g, Vec2(x,y),s)
+				  if(s < explodDuration) tmpList::=((x,y,s+1))
+				  qi
+				}.takeWhile(! _.isEmpty).foreach(identity)
+				
+				for(tupel <- tmpList)
+					exploded.enqueue(tupel)
         }
       }
       opaque_=(false)
@@ -149,6 +170,22 @@ object CrystalBall extends Runnable {
       g.fillOval(pos.x.toInt - (WorldDefs.shotRadius / 2), pos.y.toInt - (WorldDefs.shotRadius / 2), WorldDefs.shotRadius * 2, WorldDefs.shotRadius * 2)
     }
   }
+  
+  	def drawExplosion(g : Graphics2D, pos :  Vec2, step : Int){
+		
+		val ahead=Vec2(1,0)
+		var startPos = pos
+		var endPos = Vec2(0,0)
+		
+		for( i  <- 1 to 8){
+			val ahead=Vec2(1,0).rotate((Pi/4)*i)
+			startPos = pos + ahead * (step/explodDuration)
+			endPos = pos + ahead * (lineLength / 2)
+			g.setColor(Color.YELLOW)
+			g.drawLine(startPos.x.toInt, startPos.y.toInt, endPos.x.toInt, endPos.y.toInt)
+		}
+		
+	}
 
   override def run {
     while (true) {
@@ -157,5 +194,4 @@ object CrystalBall extends Runnable {
       frame.repaint()
     }
   }
-
 }

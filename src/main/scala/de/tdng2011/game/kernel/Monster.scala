@@ -27,8 +27,9 @@ case class Monster (
 		sum
 	}
 	
+  def ahead : Vec2 = Vec2(1, 0).rotate(dir)
+	
   def think(time: Double, world:World, msgBox:Map[String,Msg]): List[Monster] = {
-    val ahead = Vec2(1, 0).rotate(dir)
 
     // calc new dir
     var newDir = dir;
@@ -58,9 +59,11 @@ case class Monster (
    			else {
    				newScore-=1
    				newPos   =Vec2(WorldDefs.size*random,WorldDefs.size*random).norm
-			    newDir   =random*2*Pi	
+			    newDir   =random*2*Pi
+			    wasdead  =true
+			    deadpos  =pos
    			}
-    	case Winner() => newScore+=1
+    	case Winner() => newScore+=2
     	case _ => ;
     }
     
@@ -92,4 +95,13 @@ case class Monster (
 	private def getJsonString(key : String, value : String) = "\""+key+"\":\""+value+"\""
 
 	override def toString = toJson
+	
+	var wasdead = false
+	var deadpos : Vec2 = Vec2(0,0)
+	
+	def died() : (Boolean, Vec2 ) = {
+  		val tmp = wasdead
+  		if(tmp)wasdead = false
+  		(tmp, deadpos)
+  	}
 }
