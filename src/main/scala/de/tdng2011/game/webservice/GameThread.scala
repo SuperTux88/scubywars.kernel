@@ -27,6 +27,8 @@ class GameThread extends Runnable {
 	    Game.monsterAction(m5, Action(false, false, true, true))
 	    Game.monsterAction(m6, Action(false, false, true, true))
 	    
+	    val smartMonsters = List(m1,m3, m4, m5, m6)
+	    
 	    var lastSleepTime : Double = 0
 	
 	    while (true) {
@@ -37,11 +39,11 @@ class GameThread extends Runnable {
 		    val world : World = Game.getWorld
 		    
 		    val players = world.monsters.filter(!_.isShot )
-		    for (m <- players.filter(_.name != "fun")){
+		    for (m <- smartMonsters){
 		    	var turnLeft=false
 		    	var turnRight=false
 		    	
-		    	val self = m
+		    	val self = world.findMonster(m).get
 		    	
 		    	def compare(a : Monster, b: Monster) = (a.pos dist self.pos) < (b.pos dist self.pos)
 		    	
@@ -57,7 +59,7 @@ class GameThread extends Runnable {
 		    	if (crossProduct < 0) turnLeft =true
 		    	if (crossProduct > 0) turnRight=true
 		    	
-		    	Game.monsterAction(m.publicId, Action(turnLeft, turnRight, true, true))
+		    	Game.monsterAction(m, Action(turnLeft, turnRight, true, true))
 		    }
 		    
 		    val frameEnd = getTime   // 8024   / 8050

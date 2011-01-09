@@ -16,6 +16,7 @@ case class World(monsters : List[Monster]) extends JsonSerializable {
 	
 	def findMonster(id:String) = monsters.find( _.publicId == id )
 	
+	def findMonsterByName(name:String) = monsters.find(_.name == name)
 	
 	def think(time:Double) = {
 		var msgBox=Map[String,Msg]()
@@ -25,8 +26,6 @@ case class World(monsters : List[Monster]) extends JsonSerializable {
 					if (a.publicId != b.publicId) 
 						if (! (a.publicId == b.parentId ))
 							if (!(b.publicId == a.parentId)) {
-						
-						println("Collision between "+a.name+" "+b.name)
 						if ( a.isShot && !b.isShot )  msgBox=msgBox ++ Map[String,Msg](a.parentId -> Winner()) 
 						if (!a.isShot &&  b.isShot )  msgBox=msgBox ++ Map[String,Msg](b.parentId -> Winner()) 
 						
@@ -47,8 +46,6 @@ case class World(monsters : List[Monster]) extends JsonSerializable {
 	}
 	
 	def findShotFrom(id:String) = !monsters.find(_.isShotFrom(id)).isEmpty
-	
-	def findMonsterByName(name:String) = monsters.find(_.name == name)
 
 	def toJson = "{\"players\":" + Json.build(monsters.filter(!_.isShot)) + ",\"shots\":" + Json.build(monsters.filter(_.isShot)) + "}"
 	

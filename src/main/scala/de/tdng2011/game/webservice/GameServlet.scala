@@ -1,5 +1,7 @@
 package de.tdng2011.game.webservice
 
+import de.tdng2011.game.kernel.Action
+import de.tdng2011.game.kernel.Monster
 import java.io.InputStreamReader
 import java.io.BufferedReader
 import de.tdng2011.game.kernel.Game
@@ -24,14 +26,14 @@ class GameServlet extends HttpServlet {
 			
 			val monster = opt get
 			
-			println(getBody(request))
+			parseJson(getBody(request), monster)
 		}
 		
 		response.getWriter().println(Json.build(Game.getWorld))
 		response.flushBuffer()
 	}
 	
-	def getBody(request : HttpServletRequest) {
+	def getBody(request : HttpServletRequest) : String = {
 		val stringBuilder = new StringBuilder
 		var bufferedReader : BufferedReader = null
 		try {
@@ -51,5 +53,14 @@ class GameServlet extends HttpServlet {
 			}
 		}
 		stringBuilder.toString
+	}
+	
+	def parseJson(body:String, monster:Monster) {
+		try {
+			val actions : Map[String,Boolean] = Json.parse(body).asInstanceOf[Map[String,Map[String,Boolean]]].get("actions").getOrElse(Map());
+			Game.monsterAction(monster.publicId, Action(actions.get("turnLeft").getOrElse(false), actions.get("turnRight").getOrElse(false), actions.get("thrust").getOrElse(false), actions.get("fire").getOrElse(false)))
+		} catch {
+			case e: Exception => e.printStackTrace();
+		}
 	}
 }
