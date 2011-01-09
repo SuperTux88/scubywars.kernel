@@ -10,6 +10,8 @@ import scala.actors.threadpool._
 
 object CrystalBall extends Runnable {
 
+	val isTransparent = false
+	
   val lineLength = WorldDefs.monsterRadius * 2
 
   var exploded: scala.collection.mutable.Queue[(Int, Int, Int)] = scala.collection.mutable.Queue[(Int, Int, Int)]()
@@ -77,8 +79,11 @@ object CrystalBall extends Runnable {
             exploded.enqueue(tupel)
         }
       }
-      opaque_=(false)
-      background = new Color(255, 255, 255, 0)
+      opaque_=(!isTransparent)
+      if(isTransparent) 
+    	  background = new Color(255, 255, 255, 0)
+      else
+    	  background = Color.BLACK
     }
 
     var statsPanel = new Panel() {
@@ -119,8 +124,11 @@ object CrystalBall extends Runnable {
         }
       }
       
-      opaque_=(true)
-      background = new Color(0, 0, 0, 180)
+      opaque_=(!isTransparent)
+      if(isTransparent)
+    	  background = new Color(0, 0, 0, 180)
+      else
+    	  background = new Color(0,0,0)
     }
 
     //mainPanel.peer.setLayout(new BorderLayout)
