@@ -36,18 +36,19 @@ class GameThread extends Runnable {
 		    
 		    val world : World = Game.getWorld
 		    
-		    {
+		    val players = world.monsters.filter(!_.isShot )
+		    for (m <- players.filter(_.name != "fun")){
 		    	var turnLeft=false
 		    	var turnRight=false
 		    	
-		    	val self : Monster = world.monsters.find( _.publicId == m7).getOrElse(null)
+		    	val self = m
 		    	
 		    	def compare(a : Monster, b: Monster) = (a.pos dist self.pos) < (b.pos dist self.pos)
 		    	
-		    	val sortedList=world.monsters.filter(!_.isShot).sort( compare )
+		    	val sortedList=players.sort( compare )
 		    	val enemy = sortedList(2)
 		    	
-		    	println("hunting "+enemy.name+" enemy.pos="+enemy.pos)
+		    	//println("hunting "+enemy.name+" enemy.pos="+enemy.pos)
 		    	
 		    	val ahead : Vec2 = self.ahead
 		    	val lineOfSight : Vec2 = (enemy.pos - self.pos).normDelta
@@ -56,7 +57,7 @@ class GameThread extends Runnable {
 		    	if (crossProduct < 0) turnLeft =true
 		    	if (crossProduct > 0) turnRight=true
 		    	
-		    	Game.monsterAction(m7, Action(turnLeft, turnRight, true, true))
+		    	Game.monsterAction(m.publicId, Action(turnLeft, turnRight, true, true))
 		    }
 		    
 		    val frameEnd = getTime   // 8024   / 8050
