@@ -61,7 +61,7 @@ case class Monster (
    				newPos   =Vec2(WorldDefs.size*random,WorldDefs.size*random).norm
 			    newDir   =random*2*Pi	
    			}
-    	case Winner() => newScore+=1
+    	case Winner() => newScore+=2
     	case _ => ;
     }
     
