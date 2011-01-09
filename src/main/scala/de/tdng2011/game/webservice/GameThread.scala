@@ -27,7 +27,7 @@ class GameThread extends Runnable {
 	    Game.monsterAction(m5, Action(false, false, true, true))
 	    Game.monsterAction(m6, Action(false, false, true, true))
 	    
-	    val smartMonsters = List(m1,m3, m4, m5, m6)
+	    val smartMonsters = List(m1,m3, m4, m5, m6, m7)
 	    
 	    var lastSleepTime : Double = 0
 	
