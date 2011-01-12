@@ -14,14 +14,14 @@ object CrystalBall extends Runnable {
 
   var exploded: scala.collection.mutable.Queue[(Int, Int, Int)] = scala.collection.mutable.Queue[(Int, Int, Int)]()
   val explodDuration = 30
-
+  val fileSeparator = System getProperty("file.separator")
   var currentMonsterList: List[Monster] = List[Monster]()
 
   var frame = new MainFrame {
 
-    val url = getClass().getClassLoader().getResource("/background.jpg")
+    val url = getClass().getClassLoader().getResource(fileSeparator+"background.jpg")
     val bgImage = ImageIO.read(new File(url.getFile))
-    val urlTransparent = getClass().getClassLoader().getResource("/background_transparent.jpg")
+    val urlTransparent = getClass().getClassLoader().getResource(fileSeparator+"background_transparent.jpg")
     val bgImageTransparent = ImageIO.read(new File(urlTransparent.getFile))
 
     title = "Crystal Ball"
