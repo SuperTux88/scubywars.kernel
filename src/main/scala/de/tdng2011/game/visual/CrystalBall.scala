@@ -19,11 +19,6 @@ object CrystalBall extends Runnable {
 
   var frame = new MainFrame {
 
-    val url = getClass().getClassLoader().getResource(fileSeparator+"background.jpg")
-    val bgImage = ImageIO.read(new File(url.getFile))
-    val urlTransparent = getClass().getClassLoader().getResource(fileSeparator+"background_transparent.jpg")
-    val bgImageTransparent = ImageIO.read(new File(urlTransparent.getFile))
-
     title = "Crystal Ball"
     var mainPanel = new BoxPanel(scala.swing.Orientation.Horizontal) {
       focusable = true
@@ -38,8 +33,6 @@ object CrystalBall extends Runnable {
 
       override def paintComponent(g: Graphics2D) {
         super.paintComponent(g)
-
-        g.drawImage(bgImage, 0, 0, null);
 
         for (monster <- currentMonsterList) {
           drawMonster(g, monster.pos, monster.dir, monster.name, monster.isShot)
@@ -74,7 +67,6 @@ object CrystalBall extends Runnable {
       override def paintComponent(g: Graphics2D) {
         super.paintComponent(g)
 
-        g.drawImage(bgImageTransparent, 0, 0, null);
         var i: Int = 1
 
         currentMonsterList = currentMonsterList.sort(_.getWeight > _.getWeight)
@@ -93,6 +85,9 @@ object CrystalBall extends Runnable {
             i += 1
           }
         }
+        g.setColor(Color.GREEN)
+        g.drawLine(0,0,0,size.height)
+
       }
     }
 
