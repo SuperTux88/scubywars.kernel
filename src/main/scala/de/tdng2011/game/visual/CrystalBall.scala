@@ -1,6 +1,7 @@
 package de.tdng2011.game.visual
 
 import java.io.File
+import java.util.Random
 import javax.imageio.ImageIO
 import swing._
 import de.tdng2011.game.kernel._
@@ -17,6 +18,7 @@ object CrystalBall extends Runnable {
   val fileSeparator = System getProperty("file.separator")
   var currentMonsterList: List[Monster] = List[Monster]()
 
+  val stars = for(x <- 1 to 50) yield (new Random().nextInt(WorldDefs.size),new Random().nextInt(WorldDefs.size))
   var frame = new MainFrame {
 
     title = "Crystal Ball"
@@ -33,7 +35,10 @@ object CrystalBall extends Runnable {
 
       override def paintComponent(g: Graphics2D) {
         super.paintComponent(g)
-
+        for ((x,y) <- stars){
+          g.setColor(Color.WHITE)
+          g.drawString("*",x,y)
+        }
         for (monster <- currentMonsterList) {
           drawMonster(g, monster.pos, monster.dir, monster.name, monster.isShot)
 
