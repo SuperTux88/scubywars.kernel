@@ -28,7 +28,7 @@ class GameServlet extends HttpServlet {
 			
 			parseJson(getBody(request), monster)
 		}
-		
+
 		response.getWriter().println(Json.build(Game.getWorld))
 		response.flushBuffer()
 	}

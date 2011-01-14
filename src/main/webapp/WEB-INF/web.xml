@@ -13,6 +13,11 @@
 		<servlet-name>gameServlet</servlet-name>
 		<servlet-class>de.tdng2011.game.webservice.GameServlet</servlet-class>
 	</servlet>
+
+    <servlet>
+		<servlet-name>worldServlet</servlet-name>
+		<servlet-class>de.tdng2011.game.webservice.WorldServlet</servlet-class>
+	</servlet>
 	
 	<servlet-mapping>
 		<servlet-name>gameServlet</servlet-name>
@@ -20,7 +25,7 @@
 	</servlet-mapping>
 	
 	<servlet-mapping>
-		<servlet-name>gameServlet</servlet-name>
+		<servlet-name>worldServlet</servlet-name>
 		<url-pattern>/world</url-pattern>
 	</servlet-mapping>
 	

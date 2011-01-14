@@ -12,7 +12,7 @@ import scala.actors.threadpool._
 object CrystalBall extends Runnable {
 	
   val lineLength = WorldDefs.monsterRadius * 2
-
+  val framesPerSecond = 30.0
   var exploded: scala.collection.mutable.Queue[(Int, Int, Int)] = scala.collection.mutable.Queue[(Int, Int, Int)]()
   val explodDuration = 30
   val fileSeparator = System getProperty("file.separator")
@@ -160,7 +160,8 @@ object CrystalBall extends Runnable {
 
   override def run {
     while (true) {
-      Thread.sleep((1 / 120.0 * 1000).toLong)
+      // TODO implement last repaint time measurement for static frame rate
+      Thread.sleep((1 / framesPerSecond * 1000).toLong)
       currentMonsterList = Game.getWorld.monsters
       frame.repaint()
     }

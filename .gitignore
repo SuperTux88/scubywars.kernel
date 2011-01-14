@@ -3,3 +3,4 @@
 .settings
 target
 .scala_dependencies
+.idea
