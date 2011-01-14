@@ -1,6 +1,7 @@
 package de.tdng2011.game.visual
 
 import java.io.File
+import de.tdng2011.game.kernel._
 import java.util.Random
 import javax.imageio.ImageIO
 import swing._
@@ -12,7 +13,6 @@ import scala.actors.threadpool._
 object CrystalBall extends Runnable {
 	
   val lineLength = WorldDefs.monsterRadius * 2
-  val framesPerSecond = 30.0
   var exploded: scala.collection.mutable.Queue[(Int, Int, Int)] = scala.collection.mutable.Queue[(Int, Int, Int)]()
   val explodDuration = 30
   val fileSeparator = System getProperty("file.separator")
@@ -161,7 +161,7 @@ object CrystalBall extends Runnable {
   override def run {
     while (true) {
       // TODO implement last repaint time measurement for static frame rate
-      Thread.sleep((1 / framesPerSecond * 1000).toLong)
+      Thread.sleep((1 / Game.framesPerSecond * 1000.0).toLong)
       currentMonsterList = Game.getWorld.monsters
       frame.repaint()
     }

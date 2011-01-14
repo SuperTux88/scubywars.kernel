@@ -1,11 +1,11 @@
-package de.tdng2011.game.webservice
+package de.tdng2011.game.kernel
 
 import java.util.Date
 import de.tdng2011.game.kernel._
 import de.tdng2011.game.visual._
 import javax.swing.JFrame
 class GameThread extends Runnable {
-	val frameDuration = 25 
+
 	override def run() {
 	    // server start
 	    // visualizer start
@@ -63,9 +63,9 @@ class GameThread extends Runnable {
 		    }
 		    
 		    val frameEnd = getTime   // 8024   / 8050
-		    val sleepTime =  frameDuration - (frameEnd - frameStart)
+		    val sleepTime =  (1000.0/Game.framesPerSecond) - (frameEnd - frameStart)
 		    if(sleepTime > 0)       // 1       /  -5
-		    	Thread sleep(sleepTime)
+		    	Thread sleep(sleepTime.toLong)
 		    
 		    val afterSleep = getTime      // 8027   / 8050
 		    lastSleepTime = afterSleep-frameStart  //27  / 50

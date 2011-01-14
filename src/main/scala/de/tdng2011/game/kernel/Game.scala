@@ -4,7 +4,7 @@ import scala.math._
 
 object Game {
 	private var world = new World(List())
-
+  val framesPerSecond = 40.0
 	def createMonster(name:String, ip:String) : String = {
 		val id=IdGen.getNext
 		world = world.add(

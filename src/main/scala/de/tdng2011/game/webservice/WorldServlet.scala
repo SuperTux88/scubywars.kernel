@@ -15,7 +15,7 @@ class WorldServlet extends HttpServlet {
 
 	override def service(request : HttpServletRequest, response : HttpServletResponse) {
     while(true){
-      Thread.sleep((1 / CrystalBall.framesPerSecond * 1000).toLong)
+      Thread.sleep((1.0 / Game.framesPerSecond * 1000.0).toLong)
       response.getWriter.println(Json.build(Game.getWorld))
       response.flushBuffer
     }
