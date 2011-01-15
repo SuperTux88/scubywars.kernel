@@ -27,8 +27,6 @@ class GameThread extends Runnable {
 	    Game.monsterAction(m5, Action(false, false, true, true))
 	    Game.monsterAction(m6, Action(false, false, true, true))
 	    
-	    val smartMonsters = List(m1,m3, m4, m5, m6, m7)
-	    
 	    var lastSleepTime : Double = 0
 	
 	    while (true) {
@@ -37,36 +35,10 @@ class GameThread extends Runnable {
 		    Game think(lastSleepTime/1000.0)
 		    
 		    val world : World = Game.getWorld
-		    
-		    val players = world.monsters.filter(!_.isShot )
-		    for (m <- smartMonsters){
-		    	var turnLeft=false
-		    	var turnRight=false
-		    	
-		    	val self = world.findMonster(m).get
-		    	
-		    	def compare(a : Monster, b: Monster) = (a.pos dist self.pos) < (b.pos dist self.pos)
-		    	
-		    	val sortedList=players.sort( compare )
-		    	val enemy = sortedList(2)
-		    	
-		    	//println("hunting "+enemy.name+" enemy.pos="+enemy.pos)
-		    	
-		    	val ahead : Vec2 = self.ahead
-		    	val lineOfSight : Vec2 = (enemy.pos - self.pos).normDelta
-		    	val crossProduct = ahead.cross(lineOfSight)
-		    	
-		    	if (crossProduct < 0) turnLeft =true
-		    	if (crossProduct > 0) turnRight=true
-		    	
-		    	Game.monsterAction(m, Action(turnLeft, turnRight, true, true))
-		    }
-		    
 		    val frameEnd = getTime   // 8024   / 8050
 		    val sleepTime =  (1000.0/Game.framesPerSecond) - (frameEnd - frameStart)
 		    if(sleepTime > 0)       // 1       /  -5
 		    	Thread sleep(sleepTime.toLong)
-		    
 		    val afterSleep = getTime      // 8027   / 8050
 		    lastSleepTime = afterSleep-frameStart  //27  / 50
 	    }

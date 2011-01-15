@@ -22,8 +22,9 @@ case class Vec2(x:Double,y:Double) extends JsonSerializable {
 	def length = sqrt(x*x+y*y)
 	
 	def toJson() = "{\"x\":" + x + ",\"y\":" + y+ "}"
-	
+	def toProtocol = x+";"+y;
 	override def toString = "("+x+","+y+")"
+
 }
 
 /*

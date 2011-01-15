@@ -1,9 +1,10 @@
 package de.tdng2011.game.kernel
 
 import scala.math._
+import actors.Actor
 
 object Game {
-	private var world = new World(List())
+	private var world = new World(List[Actor]())
   val framesPerSecond = 40.0
 	def createMonster(name:String, ip:String) : String = {
 		val id=IdGen.getNext
@@ -14,17 +15,17 @@ object Game {
 			        0,
 			        id,
 			        ip,
-			        Action(false,false,false,false),false,"",0))
+			        Action(false,false,false,false),false,"",0).start)
 		id
 	}
 			        
 	def think(time:Double){
-		world = world.think(time) // time is in seconds. NOT millisceconds
+		world = world.think(seconds=time)
 	}
 		
 	def monsterAction(id:String, action: Action) { //throws an exception if not found
 		val m = world.findMonster(id).get
-		world = world.updateMonster(Monster(m.name, m.pos, m.dir, m.score, m.publicId, m.ip, action, m.isShot, m.parentId,m.age))
+    m ! action
 	}
 	
 	override def toString = world.toString

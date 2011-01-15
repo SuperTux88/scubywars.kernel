@@ -2,23 +2,39 @@ package de.tdng2011.game.kernel
 
 import com.twitter.json.Json
 import com.twitter.json.JsonSerializable
+import actors.Actor
 
 abstract class Msg
-case class Die extends Msg
-case class Looser extends Msg
-case class Winner extends Msg
-case class Nop extends Msg
+case object Die extends Msg
+case object Looser extends Msg
+case object Winner extends Msg
+case object Nop extends Msg
 	
 
-case class World(monsters : List[Monster]) extends JsonSerializable {
-	
+class World(var monsters : List[Actor]) extends Actor {
+
+
+  def act() {
+    loop {
+      react {
+        case 'think => {
+          think()
+        }
+
+        case ('add, monster : Actor) => {
+          monsters = monster::monsters
+        }
+      }
+    }
+  }
+
 	def add(m:Monster) = World(m::monsters)
 	
 	def findMonster(id:String) = monsters.find( _.publicId == id )
 	
 	def findMonsterByName(name:String) = monsters.find(_.name == name)
 	
-	def think(time:Double) = {
+	private def think(seconds:Double) = {
 		var msgBox=Map[String,Msg]()
 		for (a <- monsters)
 			for (b <- monsters)
@@ -33,21 +49,11 @@ case class World(monsters : List[Monster]) extends JsonSerializable {
 						msgBox=msgBox ++ Map[String,Msg](b.publicId -> Looser())
 					}
 						
-		val w1=World((for (m<-monsters) yield m.think(time,this,msgBox)).flatten)
-		
-		w1
-	}
-	
-	def updateMonster (monster : Monster) : World = {
-		World(
-			for(m <- monsters)
-				yield if(m.publicId == monster.publicId) monster else m 
-		)
+		for (m<-monsters) m ! ('think,seconds,this,msgBox)
+
 	}
 	
 	def findShotFrom(id:String) = !monsters.find(_.isShotFrom(id)).isEmpty
 
-	def toJson = "{\"players\":" + Json.build(monsters.filter(!_.isShot)) + ",\"shots\":" + Json.build(monsters.filter(_.isShot)) + "}"
-	
 	override def toString = "Monsters:\n" + monsters
 }
