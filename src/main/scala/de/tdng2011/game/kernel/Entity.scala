@@ -5,7 +5,7 @@ import actors.Actor
 
 abstract class Entity extends Actor {
   var thinkHandler : PartialFunction[Any,Unit] = {
-    case x => {
+    case _ => {
       println("warning, thinkHandler not implemented in child of Entity")
     }
   }
