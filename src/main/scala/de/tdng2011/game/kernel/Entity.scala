@@ -5,7 +5,9 @@ import actors.Actor
 
 abstract class Entity extends Actor {
   var thinkHandler : PartialFunction[Any,Unit] = {
-    println("warning, thinkHandler not implemented in child of Entity")
+    case x => {
+      println("warning, thinkHandler not implemented in child of Entity")
+    }
   }
   def act = {
     loop {
