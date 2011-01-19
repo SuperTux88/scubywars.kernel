@@ -10,7 +10,7 @@ package de.tdng2011.game.kernel
 
 object Main {
   def main(args : Array[String]){
-    val player = new Player().start
+    val player = new Player(Vec2(0,0),133l).start
     player !! 'think
     player !! "hi"
   }
