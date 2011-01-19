@@ -1,18 +1,12 @@
 package de.tdng2011.game.kernel
 
-/**
- * Created by IntelliJ IDEA.
- * User: fbe
- * Date: 1/19/11
- * Time: 12:53 AM
- * To change this template use File | Settings | File Templates.
- */
-
+import scala.math.Pi
 class Player(pos : Vec2, publicId : Long) extends Entity(pos, publicId) {
 
   var direction = 2.0d
   var radius = 15
   var speed = 100 // m/s
+	val rotSpeed =2*Pi //rad/s
 
   think {
     case x : String => {
