@@ -7,6 +7,8 @@ class Player(pos : Vec2, publicId : Long) extends Entity(pos, publicId) {
   var radius = 15
   var speed = 100 // m/s
 	val rotSpeed =2*Pi //rad/s
+  val entityType = EntityTypes.Player
+
 
   think {
     case x : String => {

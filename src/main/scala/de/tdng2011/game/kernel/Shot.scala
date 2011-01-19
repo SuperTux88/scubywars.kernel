@@ -12,6 +12,7 @@ class Shot(var direction : Double, pos : Vec2, publicId : Long) extends Entity(p
   var radius = 5
   var speed = 400 // m/s
   val lifeTime = WorldDefs.size/speed*0.5
+  val entityType = EntityTypes.Shot
 
   think {
     case x => {

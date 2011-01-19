@@ -8,6 +8,7 @@ abstract class Entity(var pos : Vec2, val publicId : Long) extends Actor {
   var direction : Double;
   var speed : Int  // m/s
   var radius : Int  // m
+  val entityType : EntityTypes.Value
 
   var thinkHandler : PartialFunction[Any, Unit] = {
     case _ => {}
