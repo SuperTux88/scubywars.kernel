@@ -8,7 +8,7 @@ package de.tdng2011.game.kernel
  * To change this template use File | Settings | File Templates.
  */
 
-class Player(var pos : Vec2, publicId : Long) extends Entity(publicId) {
+class Player(pos : Vec2, publicId : Long) extends Entity(pos, publicId) {
 
   var direction = 2.0d
   var radius = 15

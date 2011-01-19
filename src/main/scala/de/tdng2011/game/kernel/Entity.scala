@@ -3,9 +3,8 @@ package de.tdng2011.game.kernel
 import actors.Actor
 
 
-abstract class Entity(val publicId : Long) extends Actor {
+abstract class Entity(var pos : Vec2, val publicId : Long) extends Actor {
 
-  var pos : Vec2;
   var direction : Double;
   var speed : Int  // m/s
   var radius : Int  // m
