@@ -1,4 +1,4 @@
-package de.tdng2011.game.kernel.collision
+package de.tdng2011.game.kernel
 
 /**
  * Created by IntelliJ IDEA.
