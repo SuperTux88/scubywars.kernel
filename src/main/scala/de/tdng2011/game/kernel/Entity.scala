@@ -10,9 +10,7 @@ abstract class Entity(var pos : Vec2, val publicId : Long) extends Actor {
   var radius : Int  // m
   val entityType : EntityTypes.Value
 
-  var thinkHandler : PartialFunction[Any, EntityDescription] = {
-    case _ => {null}
-  }
+  var thinkHandler : PartialFunction[Any, Option[EntityDescription]] = { case _ => None }
 
   def act = {
     loop {
@@ -28,7 +26,7 @@ abstract class Entity(var pos : Vec2, val publicId : Long) extends Actor {
     }
   }
 
-   def think(handler : PartialFunction[Any,EntityDescription]){
+   def think(handler : PartialFunction[Any,Option[EntityDescription]]){
      thinkHandler = handler;
    }
 }

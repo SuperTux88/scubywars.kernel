@@ -26,12 +26,12 @@ class Player(pos : Vec2, publicId : Long) extends Entity(pos, publicId) {
       val len= time * speed
       val step = if (thrust) ahead * len else Vec2(0,0)
       // FIXME: pos=(pos + step).norm
-      EntityDescription (pos, publicId, direction, speed, radius, entityType)
+      Some(EntityDescription (pos, publicId, direction, speed, radius, entityType))
     }
 
     case barbraStreisand  => {
       println("this is the player unknown call received: " + barbraStreisand);
-      EntityDescription (pos, publicId, direction, speed, radius, entityType)
+      None
     }
 
   }
