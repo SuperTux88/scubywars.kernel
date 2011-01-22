@@ -17,7 +17,7 @@ abstract class Entity(var pos : Vec2, val publicId : Long) extends Actor {
   def act = {
     loop {
       react {
-        case 'think =>
+        case x : ThinkMessage =>
           println("think method in generic handling received");
           thinkHandler('think)
 
@@ -28,7 +28,7 @@ abstract class Entity(var pos : Vec2, val publicId : Long) extends Actor {
     }
   }
 
-   def think(handler : PartialFunction[Any,Unit]){
+   def think(handler : PartialFunction[Any,EntityDescription]){
      thinkHandler = handler;
    }
 }
