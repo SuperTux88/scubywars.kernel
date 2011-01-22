@@ -8,7 +8,7 @@ package de.tdng2011.game.kernel
  * To change this template use File | Settings | File Templates.
  */
 
-class Shot(var direction : Double, pos : Vec2, publicId : Long) extends Entity(pos, publicId) {
+class Shot(var direction : Double, startPos : Vec2, publicId : Long) extends Entity(startPos, publicId) {
   var radius = 5
   var speed = 400 // m/s
   val lifeTime = WorldDefs.size/speed*0.5

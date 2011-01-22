@@ -15,12 +15,17 @@ abstract class Entity(var pos : Vec2, val publicId : Long) extends Actor {
   def act = {
     loop {
       react {
-        case x : ThinkMessage =>
-          println("think method in generic handling received");
-          thinkHandler('think)
+
+        case x : ActorKillMessage => {
+          println("received kill message. i'll exit now!")
+          reply { None }
+          exit
+        }
 
         case x => {
-          thinkHandler(x);
+          reply {
+            thinkHandler(x);
+          }
         }
       }
     }

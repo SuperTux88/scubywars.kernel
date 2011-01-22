@@ -1,7 +1,7 @@
 package de.tdng2011.game.kernel
 
 import scala.math.Pi
-class Player(pos : Vec2, publicId : Long) extends Entity(pos, publicId) {
+class Player(startPos : Vec2, publicId : Long) extends Entity(startPos, publicId) {
 
   var direction = 2.0d
   var radius = 15
@@ -9,24 +9,34 @@ class Player(pos : Vec2, publicId : Long) extends Entity(pos, publicId) {
 	val rotSpeed =2*Pi //rad/s
   val entityType = EntityTypes.Player
 
-  val turnLeft = false
-  val turnRight = true
-  val thrust = true
-  val fire = false
+  var turnLeft = false
+  var turnRight = true
+  var thrust = true
+  var fire = false
 
   think {
-    case ('think, time : Double) => {
-      if (turnLeft) direction -= (time * rotSpeed)
-      if (turnRight) direction += (time * rotSpeed)
+    case x : ThinkMessage => {
+      if (turnLeft) direction -= (x.time * rotSpeed)
+      if (turnRight) direction += (x.time * rotSpeed)
       direction %= 2 * Pi
       if (direction < 0)
         direction += 2 * Pi
 
       // calc new pos
-      val len= time * speed
+      val len= x.time * speed
       val step = if (thrust) ahead * len else Vec2(0,0)
-      // FIXME: pos=(pos + step).norm
+      pos=(pos + step).norm
+      println("returning my entity description")
       Some(EntityDescription (pos, publicId, direction, speed, radius, entityType))
+    }
+
+    case x : PlayerActionMessage => {
+      println("player action received")
+      turnLeft = x.turnLeft
+      turnRight = x.turnRight
+      fire = x.fire
+      thrust = x.thrust
+      None
     }
 
     case barbraStreisand  => {
@@ -37,5 +47,6 @@ class Player(pos : Vec2, publicId : Long) extends Entity(pos, publicId) {
   }
 
   def ahead : Vec2 = Vec2(1, 0).rotate(direction)
+
 
 }
