@@ -10,8 +10,8 @@ class Player(startPos : Vec2, publicId : Long) extends Entity(startPos, publicId
   val entityType = EntityTypes.Player
 
   var turnLeft = false
-  var turnRight = true
-  var thrust = true
+  var turnRight = false
+  var thrust = false
   var fire = false
 
   think {
@@ -26,7 +26,6 @@ class Player(startPos : Vec2, publicId : Long) extends Entity(startPos, publicId
       val len= x.time * speed
       val step = if (thrust) ahead * len else Vec2(0,0)
       pos=(pos + step).norm
-      println("returning my entity description")
       Some(EntityDescription (pos, publicId, direction, speed, radius, entityType))
     }
 

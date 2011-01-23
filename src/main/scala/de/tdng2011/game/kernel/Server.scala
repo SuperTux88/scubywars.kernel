@@ -1,6 +1,8 @@
 package de.tdng2011.game.kernel
 import java.util.Random
 import scala.actors.Future
+import de.tdng2011.game.visual.Visualizer
+
 /**
  * Created by IntelliJ IDEA.
  * User: benjamin
@@ -10,19 +12,17 @@ import scala.actors.Future
  */
 
 object Server {
-
+  var entityDescriptions : IndexedSeq[EntityDescription] = IndexedSeq()
   def main(args : Array[String]){
-    val playerList = for(x <- 1 to 50000) yield new Player(Vec2(new Random().nextInt(500), new Random().nextInt(499)), x).start
-
-
-
-    val thinkResults : IndexedSeq[Future[Any]] = for(p <- playerList) yield p !! ThinkMessage(1)
-    thinkResults.map(x => println(x.apply))
-    // re
-  //  for(x <- 1 to 10){
-  //       Thread.sleep(1000);
-  //       println(player !? new ThinkMessage(1))
-  //  }
+    new Thread(Visualizer).start
+    val playerList = for(x <- 1 to 5) yield new Player(Vec2(new Random().nextInt(500), new Random().nextInt(499)), x).start
+    playerList(2) !! PlayerActionMessage(true,true,true,false)
+    playerList(1) !! PlayerActionMessage(true,true,false,false)
+    while(true){
+      Thread.sleep(100)
+      val thinkResults : IndexedSeq[Future[Any]] = for(p <- playerList) yield p !! ThinkMessage(0.1)
+      entityDescriptions = for(x <- thinkResults) yield x.apply.asInstanceOf[Option[EntityDescription]].get
+    }
 
     playerList.map(_ !? ActorKillMessage())
 

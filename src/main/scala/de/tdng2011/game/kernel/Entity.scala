@@ -17,7 +17,6 @@ abstract class Entity(var pos : Vec2, val publicId : Long) extends Actor {
       react {
 
         case x : ActorKillMessage => {
-          println("received kill message. i'll exit now!")
           reply { None }
           exit
         }
