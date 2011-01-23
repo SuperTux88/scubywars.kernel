@@ -17,7 +17,8 @@ class Shot(var direction : Double, startPos : Vec2, publicId : Long) extends Ent
   think {
     case x => {
       println("stupid nothing doing shot impl")
-      Some(EntityDescription (pos, publicId, direction, speed, radius, entityType,this))
+      val bytes = new Array[Byte](0)
+      Some(EntityDescription (pos, publicId, direction, speed, radius, entityType,this,bytes))
     }
   }
 }

@@ -2,6 +2,8 @@ package de.tdng2011.game.kernel.collision
 
 import actors.Actor
 import de.tdng2011.game.kernel._
+import de.tdng2011.game.util.ByteUtil
+import java.nio.ByteBuffer
 
 /**
  * Created by IntelliJ IDEA.
@@ -13,13 +15,12 @@ import de.tdng2011.game.kernel._
 
 object TestSet {
    def main(args : Array[String]){
-     var trackedCollisions = Set[(Actor,Actor)]()
-     val playerA = new Player(Vec2(10,10), 1);
-     val playerB = new Player(Vec2(20,20), 2);
-     trackedCollisions = trackedCollisions + ((playerA,playerB))
+    val byteArray = ByteUtil.toByteArray(1d,2f,3l)
 
-     println(trackedCollisions.contains(playerA, playerB))
-     println(trackedCollisions.contains(playerB, playerA))
 
+     val byteBuffer = ByteBuffer.wrap(byteArray)
+     println(byteBuffer.getDouble)
+     println(byteBuffer.getFloat)
+     println(byteBuffer.getLong)
    }
 }

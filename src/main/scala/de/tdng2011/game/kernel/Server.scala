@@ -19,8 +19,8 @@ object Server {
     ScoreBoard.start
     new Thread(Visualizer).start
     val playerList = for(x <- 1 to 5) yield new Player(Vec2(new Random().nextInt(500), new Random().nextInt(499)), x).start
-    playerList(2) !! PlayerActionMessage(true,true,true,false)
-    playerList(1) !! PlayerActionMessage(true,true,false,false)
+    playerList(2) !! PlayerActionMessage(true,false,true,false)
+    playerList(1) !! PlayerActionMessage(false,false,true,false)
     while(true){
       Thread.sleep(100)
       val thinkResults : IndexedSeq[Future[Any]] = for(p <- playerList) yield p !! ThinkMessage(0.1)

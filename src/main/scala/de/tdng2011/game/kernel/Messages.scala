@@ -10,6 +10,6 @@ package de.tdng2011.game.kernel
 
 case class ThinkMessage(time : Double)
 case class ActorKillMessage()
-case class PlayerActionMessage(fire : Boolean, thrust : Boolean, turnLeft : Boolean, turnRight : Boolean)
+case class PlayerActionMessage(turnLeft : Boolean, turnRight : Boolean, thrust : Boolean, fire : Boolean)
 case class RespawnMessage()
 case class AddPointsMessage(points : Int, publicId : Long)
