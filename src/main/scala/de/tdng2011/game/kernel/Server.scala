@@ -16,6 +16,7 @@ import de.tdng2011.game.visual.Visualizer
 object Server {
   var entityDescriptions : IndexedSeq[EntityDescription] = IndexedSeq()
   def main(args : Array[String]){
+    ScoreBoard.start
     new Thread(Visualizer).start
     val playerList = for(x <- 1 to 5) yield new Player(Vec2(new Random().nextInt(500), new Random().nextInt(499)), x).start
     playerList(2) !! PlayerActionMessage(true,true,true,false)
@@ -23,12 +24,11 @@ object Server {
     while(true){
       Thread.sleep(100)
       val thinkResults : IndexedSeq[Future[Any]] = for(p <- playerList) yield p !! ThinkMessage(0.1)
-
-      for(a <- entityDescriptions)
-        for(b <- entityDescriptions)
-          if((a.pos-b.pos).length < a.radius + b.radius && a.publicId != b.publicId) CollisionHandler.handleCollision(a.actor,b.actor)
-
       entityDescriptions = for(x <- thinkResults) yield x.apply.asInstanceOf[Option[EntityDescription]].get
+      CollisionHandler.handleCollisions(entityDescriptions)
+
+      // send GetEntityDescription message and inform players
+
     }
 
     playerList.map(_ !? ActorKillMessage())
