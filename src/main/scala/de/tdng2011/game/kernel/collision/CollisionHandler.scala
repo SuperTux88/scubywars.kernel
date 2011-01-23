@@ -12,7 +12,7 @@ import actors.Actor
 
 object CollisionHandler {
 
-  val contracts = List(PlayerShotContract);
+  val contracts = List(PlayerShotContract, EchoContract);
 
   def handleCollision(a : Actor, b : Actor){
     contracts.map(_.handleCollision(a,b));

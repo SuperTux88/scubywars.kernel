@@ -16,10 +16,6 @@ object PlayerShotContract extends Contract {
        println("i am applying!");
      }
 
-     case (a : Shot, b : Player) => {
-       println("i am applying!");
-     }
-
      case barbraStreisand => {
        println("debug (implement log here): ill ignore " + barbraStreisand);
      }

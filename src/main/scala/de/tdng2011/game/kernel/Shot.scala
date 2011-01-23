@@ -17,7 +17,7 @@ class Shot(var direction : Double, startPos : Vec2, publicId : Long) extends Ent
   think {
     case x => {
       println("stupid nothing doing shot impl")
-      Some(EntityDescription (pos, publicId, direction, speed, radius, entityType))
+      Some(EntityDescription (pos, publicId, direction, speed, radius, entityType,this))
     }
   }
 }

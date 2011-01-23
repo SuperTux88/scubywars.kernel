@@ -26,7 +26,7 @@ class Player(startPos : Vec2, publicId : Long) extends Entity(startPos, publicId
       val len= x.time * speed
       val step = if (thrust) ahead * len else Vec2(0,0)
       pos=(pos + step).norm
-      Some(EntityDescription (pos, publicId, direction, speed, radius, entityType))
+      Some(EntityDescription (pos, publicId, direction, speed, radius, entityType, this))
     }
 
     case x : PlayerActionMessage => {

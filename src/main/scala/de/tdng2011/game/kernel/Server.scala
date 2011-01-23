@@ -1,4 +1,6 @@
 package de.tdng2011.game.kernel
+
+import collision.CollisionHandler
 import java.util.Random
 import scala.actors.Future
 import de.tdng2011.game.visual.Visualizer
@@ -21,6 +23,11 @@ object Server {
     while(true){
       Thread.sleep(100)
       val thinkResults : IndexedSeq[Future[Any]] = for(p <- playerList) yield p !! ThinkMessage(0.1)
+
+      for(a <- entityDescriptions)
+        for(b <- entityDescriptions)
+          if((a.pos-b.pos).length < a.radius + b.radius && a.publicId != b.publicId) CollisionHandler.handleCollision(a.actor,b.actor)
+
       entityDescriptions = for(x <- thinkResults) yield x.apply.asInstanceOf[Option[EntityDescription]].get
     }
 
