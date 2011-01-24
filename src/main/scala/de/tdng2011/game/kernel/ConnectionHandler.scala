@@ -9,11 +9,11 @@ very very quick and dirty hack, no production code!
 */
 object ConnectionHandler extends Runnable {
 
-  var clientThreads = List[ClientActor]()
+  var clientActors = List[Actor]()
   val socket = new ServerSocket(1337);
 
   def event(entityDescriptions : IndexedSeq[EntityDescription]){
-    clientThreads.map(a => if(a.getState != Terminated) a !! entityDescriptions)
+    clientActors.map(a => if(a.getState != Terminated) a !! entityDescriptions)
   }
 
   new Thread(this).start
@@ -22,10 +22,10 @@ object ConnectionHandler extends Runnable {
   override def run(){
     while(true) {
       val clientSocket = socket.accept
-      val clientThread = new ClientActor(clientSocket)
-      clientThreads = clientThread :: clientThreads
-      clientThreads = clientThreads.filter(_.getState != Terminated)
-      println("ClientActors: " + clientThreads.size)
+      val clientThread = new ClientActor(clientSocket).start
+      clientActors = clientThread :: clientActors
+      clientActors = clientActors.filter(_.getState != Terminated)
+      println("ClientActors: " + clientActors.size)
     }
   }
 }
