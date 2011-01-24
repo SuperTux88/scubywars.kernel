@@ -26,7 +26,7 @@ object Server {
       val thinkResults : IndexedSeq[Future[Any]] = for(p <- playerList) yield p !! ThinkMessage(0.1)
       entityDescriptions = for(x <- thinkResults) yield x.apply.asInstanceOf[Option[EntityDescription]].get
       CollisionHandler.handleCollisions(entityDescriptions)
-
+      ConnectionHandler.event(entityDescriptions)
       // send GetEntityDescription message and inform players
 
     }
