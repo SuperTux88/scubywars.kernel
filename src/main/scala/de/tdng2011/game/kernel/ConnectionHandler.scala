@@ -26,7 +26,6 @@ object ConnectionHandler extends Runnable {
       clientThreads = clientThread :: clientThreads
       clientThreads = clientThreads.filter(x => x.getState != Terminated)
       println("ClientActors: " + clientThreads.size)
-      clientThread.start
     }
   }
 }
@@ -38,7 +37,7 @@ class ClientActor(val clientSocket : Socket) extends Actor {
       react {
         case x : IndexedSeq[EntityDescription] => {
           try {
-            if(clientSocket.isConnected) x.map(b => clientSocket.getOutputStream.write(b.bytes))
+            if(clientSocket.isConnected) x.map(b => clientSocket.getOutputStream.write(b.bytes)) else exit
           } catch {
             case e => exit
           }
