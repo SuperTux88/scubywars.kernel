@@ -1,6 +1,6 @@
 package de.tdng2011.game.kernel.collision
 
-import de.tdng2011.game.kernel.{Shot, Player}
+import de.tdng2011.game.kernel._
 
 /**
  * Created by IntelliJ IDEA.
@@ -13,7 +13,9 @@ import de.tdng2011.game.kernel.{Shot, Player}
 object PlayerShotContract extends Contract {
    onCollide {
      case (a : Player, b: Shot) => {
-       println("i am applying!");
+         println("player " + a.publicId + " & shot " + b.publicId + " collided! sending respawn message!")
+        a !! RespawnMessage()
+       // TODO scoreboard
      }
 
      case barbraStreisand => {
