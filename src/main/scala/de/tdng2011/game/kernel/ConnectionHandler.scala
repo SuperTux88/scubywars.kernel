@@ -1,22 +1,20 @@
 package de.tdng2011.game.kernel
 
 import java.net.{Socket, ServerSocket}
-import java.util.concurrent.{LinkedBlockingQueue, ArrayBlockingQueue, BlockingQueue}
+import actors.Actor
+
 
 /*
 very very quick and dirty hack, no production code!
 */
 object ConnectionHandler extends Runnable {
 
-  var clientThreads = List[ClientThread]()
+  var clientThreads = List[ClientActor]()
   val socket = new ServerSocket(1337);
 
   def event(entityDescriptions : IndexedSeq[EntityDescription]){
-    for(thread <- clientThreads){
-      for(description <- entityDescriptions){
-        thread.messageQueue.add(description.bytes)
-      }
-    }
+    clientThreads.map(a => a !! entityDescriptions)
+    clientThreads = (for(t  <- clientThreads) yield if(t.getState != Actor.State.Terminated) t).asInstanceOf[List[ClientActor]]
   }
 
   new Thread(this).start
@@ -25,24 +23,30 @@ object ConnectionHandler extends Runnable {
   override def run(){
     while(true) {
       val clientSocket = socket.accept
-      val clientThread = new ClientThread(clientSocket)
+      val clientThread = new ClientActor(clientSocket)
       clientThreads = clientThread :: clientThreads
-      new Thread(clientThread).start
+      clientThread.start
     }
   }
 }
 
-class ClientThread(val clientSocket : Socket) extends Runnable{
-    val messageQueue = new LinkedBlockingQueue[Array[Byte]]()
+class ClientActor(val clientSocket : Socket) extends Actor {
 
-    override def run(){
-      while(true) {
-        val byteArray = messageQueue.take
-        if(clientSocket.isConnected) {
-          clientSocket.getOutputStream.write(byteArray);
-        } else {
-          return;
+  def act = {
+    loop {
+      react {
+        case x : IndexedSeq[EntityDescription] => {
+          try {
+            if(clientSocket.isConnected) x.map(b => clientSocket.getOutputStream.write(b.bytes))
+          } catch {
+            case e => exit
+          }
         }
+
+        case x : ActorKillMessage => exit
+
+        case _ => {}
       }
     }
+  }
 }
