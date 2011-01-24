@@ -3,7 +3,6 @@ package de.tdng2011.game.kernel
 import collision.CollisionHandler
 import java.util.Random
 import scala.actors.Future
-import de.tdng2011.game.visual.Visualizer
 
 /**
  * Created by IntelliJ IDEA.
@@ -23,8 +22,8 @@ object Server {
     playerList(2) !! PlayerActionMessage(true,false,true,false)
     playerList(1) !! PlayerActionMessage(false,false,true,false)
     while(true){
-      Thread.sleep(100)
-      val thinkResults : IndexedSeq[Future[Any]] = for(p <- playerList) yield p !! ThinkMessage(0.1)
+      Thread.sleep(25)
+      val thinkResults : IndexedSeq[Future[Any]] = for(p <- playerList) yield p !! ThinkMessage(0.025)
       entityDescriptions = for(x <- thinkResults) yield x.apply.asInstanceOf[Option[EntityDescription]].get
       CollisionHandler.handleCollisions(entityDescriptions)
       ConnectionHandler.event(entityDescriptions)
