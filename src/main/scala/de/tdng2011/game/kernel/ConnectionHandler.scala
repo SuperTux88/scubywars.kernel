@@ -24,7 +24,7 @@ object ConnectionHandler extends Runnable {
       val clientSocket = socket.accept
       val clientThread = new ClientActor(clientSocket)
       clientThreads = clientThread :: clientThreads
-      clientThreads = clientThreads.filter(x => x.getState != Terminated)
+      clientThreads = clientThreads.filter(_.getState != Terminated)
       println("ClientActors: " + clientThreads.size)
     }
   }
