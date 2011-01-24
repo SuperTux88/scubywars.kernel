@@ -15,12 +15,16 @@ import java.nio.ByteBuffer
 
 object TestSet {
    def main(args : Array[String]){
-    val byteArray = ByteUtil.toByteArray(1d,2f,3l)
+    //val byteArray = ByteUtil.toByteArray(1d,2f,3l)
 
 
-     val byteBuffer = ByteBuffer.wrap(byteArray)
-     println(byteBuffer.getDouble)
-     println(byteBuffer.getFloat)
-     println(byteBuffer.getLong)
+     //val byteBuffer = ByteBuffer.wrap(byteArray)
+     //println(byteBuffer.getDouble)
+     //println(byteBuffer.getFloat)
+     //println(byteBuffer.getLong)
+
+     println(EntityTypes.Player.id)
+     println(EntityTypes.Shot.id)
+     println(EntityTypes.PowerUp.id)
    }
 }

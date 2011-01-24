@@ -9,5 +9,5 @@ package de.tdng2011.game.kernel
  */
 
 object EntityTypes extends Enumeration {
-  val Player, Shot, PowerUp = Value
+  val Player, Shot, PowerUp, World = Value
 }

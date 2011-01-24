@@ -3,6 +3,7 @@ package de.tdng2011.game.kernel
 import java.net.{Socket, ServerSocket}
 import actors.Actor
 import Actor.State._
+import de.tdng2011.game.util.ByteUtil
 
 /*
 very very quick and dirty hack, no production code!
@@ -37,7 +38,12 @@ class ClientActor(val clientSocket : Socket) extends Actor {
       react {
         case x : IndexedSeq[EntityDescription] => {
           try {
-            if(clientSocket.isConnected) x.map(b => clientSocket.getOutputStream.write(b.bytes)) else exit
+            if(clientSocket.isConnected){
+              clientSocket.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.World.id))
+              x.map(b => clientSocket.getOutputStream.write(b.bytes))
+            } else {
+              exit
+            }
           } catch {
             case e => exit
           }
