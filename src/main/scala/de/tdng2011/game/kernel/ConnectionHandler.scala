@@ -2,7 +2,7 @@ package de.tdng2011.game.kernel
 
 import java.net.{Socket, ServerSocket}
 import actors.Actor
-
+import Actor.State._
 
 /*
 very very quick and dirty hack, no production code!
@@ -13,8 +13,7 @@ object ConnectionHandler extends Runnable {
   val socket = new ServerSocket(1337);
 
   def event(entityDescriptions : IndexedSeq[EntityDescription]){
-    clientThreads.map(a => a !! entityDescriptions)
-    clientThreads = (for(t  <- clientThreads) yield if(t.getState != Actor.State.Terminated) t).asInstanceOf[List[ClientActor]]
+    clientThreads.map(a => if(a.getState != Terminated) a !! entityDescriptions)
   }
 
   new Thread(this).start
@@ -25,6 +24,8 @@ object ConnectionHandler extends Runnable {
       val clientSocket = socket.accept
       val clientThread = new ClientActor(clientSocket)
       clientThreads = clientThread :: clientThreads
+      clientThreads = clientThreads.filter(x => x.getState != Terminated)
+      println("ClientActors: " + clientThreads.size)
       clientThread.start
     }
   }
