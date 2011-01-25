@@ -10,11 +10,11 @@ import de.tdng2011.game.util.ByteUtil
  * To change this template use File | Settings | File Templates.
  */
 
-class Shot(startDirection : Double, startPos : Vec2, publicId : Long, val parentId : Long) extends Entity(startPos, publicId) {
+class Shot(startDirection : Float, startPos : Vec2, publicId : Long, val parentId : Long) extends Entity(startPos, publicId) {
 
   protected var direction = startDirection
-  protected var radius = 5
-  protected var speed = 400 // m/s
+  protected var radius = 5.shortValue
+  protected var speed = 400.shortValue // m/s
   protected val lifeTime : Float = WorldDefs.size/speed.asInstanceOf[Float]*0.5f
   protected val entityType = EntityTypes.Shot
 
@@ -32,13 +32,13 @@ class Shot(startDirection : Double, startPos : Vec2, publicId : Long, val parent
   }
 
    private def updatePosition(x : ThinkMessage) {
-      val len= x.time * speed
-      val step = ahead * len
+      val len = x.time * speed
+      val step = ahead * len.floatValue
       pos=(pos + step).norm
   }
 
   private def getEntityDescription = {
-    val bytes = ByteUtil.toByteArray(entityType.id, publicId, pos.x, pos.y, direction, radius, speed, parentId, lifeTime)
+    val bytes = ByteUtil.toByteArray(entityType.id.shortValue, publicId, pos.x, pos.y, direction, radius, speed, parentId, lifeTime)
     Some(EntityDescription (pos, publicId, direction, speed, radius, entityType,this,bytes))
   }
 

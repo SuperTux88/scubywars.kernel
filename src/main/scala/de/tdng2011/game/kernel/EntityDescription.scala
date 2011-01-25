@@ -4,9 +4,9 @@ import actors.Actor
 
 case class EntityDescription(pos : Vec2,
                              publicId : Long,
-                             direction : Double,
-                             speed : Int,
-                             radius : Int,
+                             direction : Float,
+                             speed : Short,
+                             radius : Short,
                              entityType : EntityTypes.Value,
                              actor : Actor,
                              bytes : Array[Byte])

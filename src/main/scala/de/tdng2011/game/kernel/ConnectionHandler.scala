@@ -39,7 +39,7 @@ class ClientActor(val clientSocket : Socket) extends Actor {
         case x : IndexedSeq[EntityDescription] => {
           try {
             if(clientSocket.isConnected){
-              clientSocket.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.World.id))
+              clientSocket.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.World.id.shortValue))
               x.map(b => clientSocket.getOutputStream.write(b.bytes))
             } else {
               exit
