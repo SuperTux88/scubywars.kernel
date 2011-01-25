@@ -11,15 +11,24 @@ import de.tdng2011.game.kernel._
  */
 
 object PlayerShotContract extends Contract {
-   onCollide {
-     case (a : Player, b: Shot) => {
-         println("player " + a.publicId + " & shot " + b.publicId + " collided! sending respawn message!")
-        a !! RespawnMessage()
-       // TODO scoreboard
-     }
+  onCollide {
+    case (a : Player, b: Shot) => {
+      boom(a,b)
+    }
 
-     case barbraStreisand => {
-       println("debug (implement log here): ill ignore " + barbraStreisand);
-     }
-   }
+    case (b : Shot, a : Player) => {
+      boom(a,b)
+    }
+
+    case barbraStreisand => {
+      println("debug (implement log here): ill ignore " + barbraStreisand);
+    }
+  }
+
+  private def boom(a : Player, b : Shot){
+    println("player " + a.publicId + " & shot " + b.publicId + " collided! sending respawn message!")
+    a !! RespawnMessage()
+    // TODO
+  }
+
 }

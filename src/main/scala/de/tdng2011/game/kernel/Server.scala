@@ -17,7 +17,7 @@ object Server {
   def main(args : Array[String]){
     ScoreBoard.start
     var playerList = for(x <- 1 to 5) yield new Player(Vec2(new Random().nextInt(500), new Random().nextInt(499)), x).start
-   // startDirection : Double, startPos : Vec2, publicId : Long, val parentId : Long
+
     playerList = playerList :+ new Shot(2,Vec2(10,10), 1337, 1338).start
     playerList(2) !! PlayerActionMessage(true,false,true,false)
     playerList(1) !! PlayerActionMessage(false,false,true,false)
