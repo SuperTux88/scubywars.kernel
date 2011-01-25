@@ -12,11 +12,13 @@ import de.tdng2011.game.util.ByteUtil
 
 class Shot(startDirection : Float, startPos : Vec2, publicId : Long, val parentId : Long) extends Entity(startPos, publicId) {
 
-  protected var direction = startDirection
-  protected var radius = 5.shortValue
-  protected var speed = 400.shortValue // m/s
-  protected val lifeTime : Float = WorldDefs.size/speed.asInstanceOf[Float]*0.5f
   protected val entityType = EntityTypes.Shot
+
+  direction = startDirection
+  radius = 5.shortValue
+  speed = 400.shortValue // m/s
+
+  protected val lifeTime : Float = WorldDefs.size/speed.asInstanceOf[Float]*0.5f
 
   think {
 

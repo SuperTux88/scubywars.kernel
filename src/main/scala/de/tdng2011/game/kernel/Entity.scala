@@ -5,10 +5,11 @@ import actors.Actor
 
 abstract class Entity(var pos : Vec2, val publicId : Long) extends Actor {
 
-  protected var direction : Float;
-  protected var speed : Short  // m/s
-  protected var radius : Short  // m
   protected val entityType : EntityTypes.Value
+
+  protected var direction : Float = 0
+  protected var speed : Short = 0 // m/s
+  protected var radius : Short = 0  // m
 
   var thinkHandler : PartialFunction[Any, Option[EntityDescription]] = { case _ => None }
 

@@ -6,11 +6,13 @@ import de.tdng2011.game.util.ByteUtil
 
 class Player(startPos : Vec2, publicId : Long) extends Entity(startPos, publicId) {
 
-  protected var direction = 2.0f
-  protected var radius = 15.shortValue
-  protected var speed = 100.shortValue // m/s
-	protected val rotSpeed : Float =2*Pi.floatValue //rad/s
   protected val entityType = EntityTypes.Player
+
+  direction = 2.0f
+  radius = 15.shortValue
+  speed = 100.shortValue // m/s
+
+	protected val rotSpeed : Float =2*Pi.floatValue //rad/s
 
   protected var turnLeft = false
   protected var turnRight = false
