@@ -8,16 +8,16 @@ class Player(startPos : Vec2, publicId : Long) extends Entity(startPos, publicId
 
   protected val entityType = EntityTypes.Player
 
-  direction = 2.0f
-  radius = 15.shortValue
-  speed = 100.shortValue // m/s
+  direction = Player.defaultDirection
+  radius    = Player.defaultRadius
+  speed     = Player.defaultSpeed // m/s
 
-	protected val rotSpeed : Float =2*Pi.floatValue //rad/s
+	protected val rotSpeed : Float = Player.defaultRotSpeed //rad/s
 
-  protected var turnLeft = false
+  protected var turnLeft  = false
   protected var turnRight = false
-  protected var thrust = false
-  protected var fire = false
+  protected var thrust    = false
+  protected var fire      = false
 
   think {
     case x : ThinkMessage => {
@@ -38,7 +38,6 @@ class Player(startPos : Vec2, publicId : Long) extends Entity(startPos, publicId
     case barbraStreisand  => {
       None
     }
-
   }
 
   def ahead : Vec2 = Vec2(1, 0).rotate(direction)
@@ -55,20 +54,27 @@ class Player(startPos : Vec2, publicId : Long) extends Entity(startPos, publicId
   }
 
   private def updatePosition(x : ThinkMessage) {
-      if (turnLeft) direction -= (x.time * rotSpeed).floatValue
-      if (turnRight) direction += (x.time * rotSpeed).floatValue
-      direction %= 2 * Pi.shortValue
-      if (direction < 0)
-        direction += 2 * Pi.shortValue
+    if (turnLeft) direction -= (x.time * rotSpeed).floatValue
+    if (turnRight) direction += (x.time * rotSpeed).floatValue
+    direction %= 2 * Pi.shortValue
+    if (direction < 0)
+      direction += 2 * Pi.shortValue
 
-      // calc new pos
-      val len = x.time * speed
-      val step = if (thrust) ahead * len.floatValue else Vec2(0,0)
-      pos=(pos + step).norm
+    // calc new pos
+    val len = x.time * speed
+    val step = if (thrust) ahead * len.floatValue else Vec2(0,0)
+    pos=(pos + step).norm
   }
 
   private def getEntityDescription = {
     val bytes = ByteUtil.toByteArray(entityType.id.shortValue, publicId, pos.x, pos.y, direction, radius, speed, rotSpeed, turnLeft, turnRight, thrust, fire)
     Some(EntityDescription (pos, publicId, direction, speed, radius, entityType, this, bytes))
   }
+}
+
+object Player {
+  val defaultDirection        = 2.0f
+  val defaultRadius           = 15.shortValue
+  val defaultSpeed            = 100.shortValue // m/s
+  val defaultRotSpeed : Float = 2*Pi.floatValue //rad/s
 }

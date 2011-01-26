@@ -15,13 +15,12 @@ class Shot(startDirection : Float, startPos : Vec2, publicId : Long, val parentI
   protected val entityType = EntityTypes.Shot
 
   direction = startDirection
-  radius = 5.shortValue
-  speed = 400.shortValue // m/s
+  radius    = Shot.defaultRadius
+  speed     = Shot.defaultSpeed // m/s
 
-  protected val lifeTime : Float = WorldDefs.size/speed.asInstanceOf[Float]*0.5f
+  protected val lifeTime : Float = Shot.defaultLifeTime
 
   think {
-
     case x : ThinkMessage => {
       updatePosition(x)
       getEntityDescription
@@ -33,10 +32,10 @@ class Shot(startDirection : Float, startPos : Vec2, publicId : Long, val parentI
     }
   }
 
-   private def updatePosition(x : ThinkMessage) {
-      val len = x.time * speed
-      val step = ahead * len.floatValue
-      pos=(pos + step).norm
+  private def updatePosition(x : ThinkMessage) {
+    val len = x.time * speed
+    val step = ahead * len.floatValue
+    pos=(pos + step).norm
   }
 
   private def getEntityDescription = {
@@ -45,5 +44,10 @@ class Shot(startDirection : Float, startPos : Vec2, publicId : Long, val parentI
   }
 
   private def ahead : Vec2 = Vec2(1, 0).rotate(direction)
+}
 
+object Shot {
+  val defaultRadius   = 5.shortValue
+  val defaultSpeed    = (Player.defaultSpeed * 4).shortValue // m/s
+  val defaultLifeTime = WorldDefs.size/defaultSpeed.asInstanceOf[Float]*0.5f
 }
