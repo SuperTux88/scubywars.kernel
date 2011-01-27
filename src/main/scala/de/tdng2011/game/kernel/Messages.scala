@@ -1,5 +1,7 @@
 package de.tdng2011.game.kernel
 
+import actors.Actor
+
 /**
  * Created by IntelliJ IDEA.
  * User: fbe
@@ -13,3 +15,6 @@ case class ActorKillMessage()
 case class PlayerActionMessage(turnLeft : Boolean, turnRight : Boolean, thrust : Boolean, fire : Boolean)
 case class RespawnMessage()
 case class AddPointsMessage(points : Int, publicId : Long)
+case class PlayerAddMessage()
+case class CreateShotMessage(parentId : Long, pos : Vec2, direction : Float)
+case class PlayerRemoveMessage(player : Actor)

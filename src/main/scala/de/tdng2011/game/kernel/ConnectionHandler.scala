@@ -32,20 +32,25 @@ object ConnectionHandler extends Runnable {
 }
 
 class ClientActor(val clientSocket : Socket) extends Actor {
-
+  private var handshakeFinished = true;
   def act = {
     loop {
       react {
         case x : IndexedSeq[EntityDescription] => {
-          try {
-            if(clientSocket.isConnected){
-              clientSocket.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.World.id.shortValue))
-              x.map(b => clientSocket.getOutputStream.write(b.bytes))
-            } else {
-              exit
+          if(handshakeFinished){
+            try {
+
+                if(clientSocket.isConnected){
+                  clientSocket.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.World.id.shortValue))
+                  x.map(b => clientSocket.getOutputStream.write(b.bytes))
+                } else {
+                  exit
+                }
+            } catch {
+              case e => exit
             }
-          } catch {
-            case e => exit
+          } else {
+            handshake();
           }
         }
 
@@ -53,6 +58,26 @@ class ClientActor(val clientSocket : Socket) extends Actor {
 
         case _ => {}
       }
+    }
+  }
+
+
+  def handshake(){
+  //  clientSocket.getInputStream.read...
+    val player = World !! PlayerAddMessage match {
+      case x : Option[Actor] => {
+        new Thread(new ReaderThread(clientSocket,x.get)).start
+      }
+    }
+    handshakeFinished=true
+
+  }
+}
+
+class ReaderThread(val clientSocket : Socket, player : Actor) extends Runnable {
+  override def run(){
+    while(true){
+      // read from connection
     }
   }
 }
