@@ -32,7 +32,7 @@ object ConnectionHandler extends Runnable {
 }
 
 class ClientActor(val clientSocket : Socket) extends Actor {
-  private var handshakeFinished = true;
+  private var handshakeFinished = true; // TODO: false
   def act = {
     loop {
       react {

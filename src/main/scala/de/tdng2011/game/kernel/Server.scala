@@ -1,9 +1,5 @@
 package de.tdng2011.game.kernel
 
-import collision.CollisionHandler
-import java.util.Random
-import actors.{Actor, Future}
-
 /**
  * Created by IntelliJ IDEA.
  * User: benjamin

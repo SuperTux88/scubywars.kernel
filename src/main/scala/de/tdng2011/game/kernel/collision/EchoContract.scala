@@ -1,7 +1,5 @@
 package de.tdng2011.game.kernel.collision
 
-import actors.Actor
-
 /**
  * Created by IntelliJ IDEA.
  * User: benjamin
