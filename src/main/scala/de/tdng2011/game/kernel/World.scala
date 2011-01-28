@@ -28,10 +28,12 @@ object World extends Actor {
           entityDescriptions = for(x <- thinkResults) yield x.apply.asInstanceOf[Option[EntityDescription]].get
           CollisionHandler.handleCollisions(entityDescriptions)
           ConnectionHandler.event(entityDescriptions)
+          reply {None}
         }
 
         case barbraStreisand => {
           println("[world] wuhuhuhu barbra streisand: " + barbraStreisand)
+          reply {None}
         }
       }
     }

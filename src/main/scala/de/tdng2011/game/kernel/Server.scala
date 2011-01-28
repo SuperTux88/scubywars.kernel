@@ -20,7 +20,7 @@ object Server {
     ScoreBoard.start
 
     while(true){
-      World !! ThinkMessage(0.025)
+      World !? ThinkMessage(0.025)
       Thread.sleep(25)
     }
 
