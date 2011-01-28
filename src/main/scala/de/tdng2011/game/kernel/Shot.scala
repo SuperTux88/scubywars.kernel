@@ -49,5 +49,5 @@ class Shot(startDirection : Float, startPos : Vec2, publicId : Long, val parentI
 object Shot {
   val defaultRadius   = 5.shortValue
   val defaultSpeed    = (Player.defaultSpeed * 4).shortValue // m/s
-  val defaultLifeTime = WorldDefs.size/defaultSpeed.asInstanceOf[Float]*0.5f
+  val defaultLifeTime = World.size/defaultSpeed.asInstanceOf[Float]*0.5f
 }

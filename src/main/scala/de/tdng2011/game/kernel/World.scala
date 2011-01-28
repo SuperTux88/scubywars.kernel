@@ -14,6 +14,8 @@ import util.Random
 
 object World extends Actor {
 
+	val size = 1000 //m
+
   var entityDescriptions : IndexedSeq[EntityDescription] = IndexedSeq()
   var playerList = for(x <- 1 to 5) yield new Player(Vec2(new Random().nextInt(500), new Random().nextInt(499)), x).start
   playerList = playerList :+ new Shot(2,Vec2(10,10), 1337, 1338).start

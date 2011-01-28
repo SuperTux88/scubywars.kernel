@@ -3,8 +3,8 @@ package de.tdng2011.game.kernel
 import scala.math._
 
 case class Vec2(x:Float,y:Float) {
-	private def fix(a:Float) = ((a%WorldDefs.size)+WorldDefs.size)%WorldDefs.size
-	private def fix2(a:Float) = if (a < - WorldDefs.size /2 ) a+WorldDefs.size else if (a > WorldDefs.size /2 ) a-WorldDefs.size else a
+	private def fix(a:Float) = ((a%World.size)+World.size)%World.size
+	private def fix2(a:Float) = if (a < - World.size /2 ) a+World.size else if (a > World.size /2 ) a-World.size else a
 	
 	def norm = Vec2( fix(x), fix(y))
 
