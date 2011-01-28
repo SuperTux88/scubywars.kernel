@@ -13,17 +13,32 @@ import actors.{Actor, Future}
  */
 
 object Server {
+  val framesPerSecond = 40.0
+
+  val frameDuration = 1000.0/framesPerSecond
 
   def main(args : Array[String]){
 
     World.start
     ScoreBoard.start
 
+    var lastSleepTime : Double = 0
+
     while(true){
-      World !? ThinkMessage(0.025)
-      Thread.sleep(25)
+      val frameStart = getTime               // 8000
+
+      World !? ThinkMessage(lastSleepTime/1000.0)
+
+      val frameEnd = getTime                 // 8024  / 8050
+      val sleepTime =  (frameDuration) - (frameEnd - frameStart)
+      if(sleepTime > 0)                      //    1  /  -25
+        Thread sleep(sleepTime.toLong)
+      val afterSleep = getTime               // 8025  / 8050
+      lastSleepTime = afterSleep-frameStart  //   25  /   50
     }
 
     System exit 0
   }
+
+	def getTime = System.currentTimeMillis
 }
