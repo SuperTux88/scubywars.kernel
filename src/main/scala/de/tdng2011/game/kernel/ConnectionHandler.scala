@@ -4,6 +4,7 @@ import java.net.{Socket, ServerSocket}
 import actors.Actor
 import Actor.State._
 import de.tdng2011.game.util.ByteUtil
+import java.io.DataInputStream
 
 /*
 very very quick and dirty hack, no production code!
@@ -32,7 +33,7 @@ object ConnectionHandler extends Runnable {
 }
 
 class ClientActor(val clientSocket : Socket) extends Actor {
-  private var handshakeFinished = true;
+  private var handshakeFinished = false;
   def act = {
     loop {
       react {
@@ -50,7 +51,7 @@ class ClientActor(val clientSocket : Socket) extends Actor {
               case e => exit
             }
           } else {
-            handshake();
+            handshake(clientSocket);
           }
         }
 
@@ -62,22 +63,40 @@ class ClientActor(val clientSocket : Socket) extends Actor {
   }
 
 
-  def handshake(){
-  //  clientSocket.getInputStream.read...
-    val player = World !! PlayerAddMessage match {
-      case x : Option[Actor] => {
-        new Thread(new ReaderThread(clientSocket,x.get)).start
+  def handshake(clientSocket : Socket){
+    println("handshake now!")
+    val relation = StreamUtil.read(new DataInputStream(clientSocket.getInputStream), 2).getShort
+    println("relation received! " + relation)
+    if(relation == 0){ // player case, 1 is listener
+      val player = World !! PlayerAddMessage match {
+        case x : Option[Actor] => {
+          new Thread(new ReaderThread(clientSocket,x.get)).start
+        }
       }
     }
     handshakeFinished=true
-
   }
 }
 
 class ReaderThread(val clientSocket : Socket, player : Actor) extends Runnable {
-  override def run(){
+   override def run(){
     while(true){
       // read from connection
     }
+  }
+}
+
+
+
+
+import java.nio.ByteBuffer
+import java.io.DataInputStream
+
+object StreamUtil {
+
+  def read(stream : DataInputStream, count : Int) : ByteBuffer = {
+    val byteArray = new Array[Byte](count)
+    stream.readFully(byteArray)
+    ByteBuffer.wrap(byteArray)
   }
 }

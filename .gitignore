@@ -5,3 +5,5 @@ target
 .scala_dependencies
 .idea
 *.iml
+*.ipr
+*.iws
