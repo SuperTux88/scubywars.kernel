@@ -3,8 +3,8 @@ package de.tdng2011.game.kernel
 import java.net.{Socket, ServerSocket}
 import actors.Actor
 import Actor.State._
-import de.tdng2011.game.util.ByteUtil
 import java.io.DataInputStream
+import de.tdng2011.game.util.{StreamUtil, ByteUtil}
 
 /*
 very very quick and dirty hack, no production code!
@@ -68,11 +68,19 @@ class ClientActor(val clientSocket : Socket) extends Actor {
     val relation = StreamUtil.read(new DataInputStream(clientSocket.getInputStream), 2).getShort
     println("relation received! " + relation)
     if(relation == 0){ // player case, 1 is listener
-      val player = World !! PlayerAddMessage match {
-        case x : Option[Actor] => {
+      val player = World !? PlayerAddMessage() match {
+        case x : Some[Actor] => {
           new Thread(new ReaderThread(clientSocket,x.get)).start
+          println("startet client thread")
+        }
+        case x => {
+          println("fatal response from player add: " + x)
         }
       }
+    } else if(relation != 1){ // not visualizer
+      println("illegal connection from " + clientSocket.getInetAddress + " - closing connection!");
+      clientSocket.close
+
     }
     handshakeFinished=true
   }
@@ -81,7 +89,13 @@ class ClientActor(val clientSocket : Socket) extends Actor {
 class ReaderThread(val clientSocket : Socket, player : Actor) extends Runnable {
    override def run(){
     while(true){
-      // read from connection
+      val msgBuffer = StreamUtil.read(new DataInputStream(clientSocket.getInputStream), 16)
+      val token = msgBuffer.getLong()
+      val turnLeft = msgBuffer.getShort
+      val turnRight = msgBuffer.getShort
+      val thurst = msgBuffer.getShort
+      val fire = msgBuffer.getShort
+      println("server received playerAction: " + token + " : " + turnLeft + " : " + turnRight + " : " + thurst + " : " + fire)
     }
   }
 }
@@ -89,14 +103,3 @@ class ReaderThread(val clientSocket : Socket, player : Actor) extends Runnable {
 
 
 
-import java.nio.ByteBuffer
-import java.io.DataInputStream
-
-object StreamUtil {
-
-  def read(stream : DataInputStream, count : Int) : ByteBuffer = {
-    val byteArray = new Array[Byte](count)
-    stream.readFully(byteArray)
-    ByteBuffer.wrap(byteArray)
-  }
-}
