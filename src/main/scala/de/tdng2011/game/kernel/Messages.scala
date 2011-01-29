@@ -16,5 +16,6 @@ case class PlayerActionMessage(turnLeft : Boolean, turnRight : Boolean, thrust :
 case class RespawnMessage()
 case class AddPointsMessage(points : Int, publicId : Long)
 case class PlayerAddMessage()
-case class CreateShotMessage(parentId : Long, pos : Vec2, direction : Float)
+case class PlayerAddToScoreboardMessage(publicId : Long, name : String)
 case class PlayerRemoveMessage(player : Actor)
+case class CreateShotMessage(parentId : Long, pos : Vec2, direction : Float)

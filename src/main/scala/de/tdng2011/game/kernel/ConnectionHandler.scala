@@ -72,10 +72,11 @@ class ClientActor(val clientSocket : Socket) extends Actor {
       val name = StreamUtil.read(stream, 24).asCharBuffer.toString
       val player = World !? PlayerAddMessage() match {
         case x : Some[Player] => {
-          new Thread(new ReaderThread(clientSocket,x.get)).start
-          println("startet client thread")
-          clientSocket.getOutputStream.write(ByteUtil.toByteArray(0.byteValue,x.get.publicId))
-          // TODO: send name to scoreboard with public id
+          val player = x.get
+          new Thread(new ReaderThread(clientSocket,player)).start
+          println("started client thread")
+          clientSocket.getOutputStream.write(ByteUtil.toByteArray(0.byteValue,player.publicId))
+          ScoreBoard !! PlayerAddToScoreboardMessage(player.publicId, name)
         }
         case x => {
           println("fatal response from player add: " + x)

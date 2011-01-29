@@ -12,9 +12,15 @@ import actors.Actor
 case class Score()
 
 object ScoreBoard extends Actor {
+
+  var players = Map[Long, (String, Int)]()
+
   def act {
     loop {
       react {
+        case x : PlayerAddToScoreboardMessage => {
+          players = players + (x.publicId -> (x.name, 0))
+        }
         case x : ActorKillMessage => {
           exit
         }
