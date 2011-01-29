@@ -65,14 +65,17 @@ class ClientActor(val clientSocket : Socket) extends Actor {
 
   def handshake(clientSocket : Socket){
     println("handshake now!")
-    val relation = StreamUtil.read(new DataInputStream(clientSocket.getInputStream), 2).getShort
+    val stream = new DataInputStream(clientSocket.getInputStream)
+    val relation = StreamUtil.read(stream, 2).getShort
     println("relation received! " + relation)
     if(relation == 0){ // player case, 1 is listener
+      val name = StreamUtil.read(stream, 24).asCharBuffer.toString
       val player = World !? PlayerAddMessage() match {
         case x : Some[Player] => {
           new Thread(new ReaderThread(clientSocket,x.get)).start
           println("startet client thread")
           clientSocket.getOutputStream.write(ByteUtil.toByteArray(0.byteValue,x.get.publicId))
+          // TODO: send name to scoreboard with public id
         }
         case x => {
           println("fatal response from player add: " + x)
