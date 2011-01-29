@@ -83,11 +83,10 @@
 		</plugins>
 	</build>
 
-    <scm>
-		<connection>scm:git:git://git.coding4coffee.org/c4c/org.coding4coffee.project
-		</connection>
+	<scm>
+		<connection>scm:git:git://github.com/fbe/Scubywars-Server.git</connection>
 		<developerConnection>scm:git:git@github.com:fbe/Scubywars-Server.git</developerConnection>
-		<url>http://gitweb.coding4coffee.org/?p=c4c/org.coding4coffee.project.git</url>
+		<url>https://github.com/fbe/Scubywars-Server</url>
 	</scm>
 
 	<distributionManagement>
