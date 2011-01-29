@@ -90,14 +90,13 @@ class ClientActor(val clientSocket : Socket) extends Actor {
 class ReaderThread(val clientSocket : Socket, player : Actor) extends Runnable {
    override def run(){
     while(true){
-      val msgBuffer = StreamUtil.read(new DataInputStream(clientSocket.getInputStream), 16)
-      val token = msgBuffer.getLong()
+      val msgBuffer = StreamUtil.read(new DataInputStream(clientSocket.getInputStream), 4)
       val turnLeft = msgBuffer.get == 1
       val turnRight = msgBuffer.get == 1
-      val thurst = msgBuffer.get == 1
+      val thrust = msgBuffer.get == 1
       val fire = msgBuffer.get == 1
-      player !! PlayerActionMessage(turnLeft, turnRight, thurst, fire)
-      println("server received playerAction: " + token + " : " + turnLeft + " : " + turnRight + " : " + thurst + " : " + fire)
+      player !! PlayerActionMessage(turnLeft, turnRight, thrust, fire)
+      println("server received playerAction: " + turnLeft + " : " + turnRight + " : " + thrust + " : " + fire)
     }
   }
 }
