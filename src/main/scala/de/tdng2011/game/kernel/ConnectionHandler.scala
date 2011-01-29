@@ -91,10 +91,10 @@ class ReaderThread(val clientSocket : Socket, player : Actor) extends Runnable {
     while(true){
       val msgBuffer = StreamUtil.read(new DataInputStream(clientSocket.getInputStream), 16)
       val token = msgBuffer.getLong()
-      val turnLeft = msgBuffer.getShort
-      val turnRight = msgBuffer.getShort
-      val thurst = msgBuffer.getShort
-      val fire = msgBuffer.getShort
+      val turnLeft = msgBuffer.getByte
+      val turnRight = msgBuffer.getByte
+      val thurst = msgBuffer.getByte
+      val fire = msgBuffer.getByte
       println("server received playerAction: " + token + " : " + turnLeft + " : " + turnRight + " : " + thurst + " : " + fire)
     }
   }
