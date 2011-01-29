@@ -69,9 +69,10 @@ class ClientActor(val clientSocket : Socket) extends Actor {
     println("relation received! " + relation)
     if(relation == 0){ // player case, 1 is listener
       val player = World !? PlayerAddMessage() match {
-        case x : Some[Actor] => {
+        case x : Some[Player] => {
           new Thread(new ReaderThread(clientSocket,x.get)).start
           println("startet client thread")
+          clientSocket.getOutputStream.write(ByteUtil.toByteArray(0.byteValue,x.get.publicId))
         }
         case x => {
           println("fatal response from player add: " + x)
@@ -91,10 +92,11 @@ class ReaderThread(val clientSocket : Socket, player : Actor) extends Runnable {
     while(true){
       val msgBuffer = StreamUtil.read(new DataInputStream(clientSocket.getInputStream), 16)
       val token = msgBuffer.getLong()
-      val turnLeft = msgBuffer.get
-      val turnRight = msgBuffer.get
-      val thurst = msgBuffer.get
-      val fire = msgBuffer.get
+      val turnLeft = msgBuffer.get == 1
+      val turnRight = msgBuffer.get == 1
+      val thurst = msgBuffer.get == 1
+      val fire = msgBuffer.get == 1
+      player !! PlayerActionMessage(turnLeft, turnRight, thurst, fire)
       println("server received playerAction: " + token + " : " + turnLeft + " : " + turnRight + " : " + thurst + " : " + fire)
     }
   }
