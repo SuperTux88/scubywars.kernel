@@ -16,7 +16,7 @@ object ConnectionHandler extends Runnable {
   val socket = new ServerSocket(1337);
 
   def event(entityDescriptions : IndexedSeq[EntityDescription]){
-    clientActors.map(a => if(a.getState != Terminated) a !! entityDescriptions)
+    clientActors.foreach(a => if(a.getState != Terminated) a !! entityDescriptions)
   }
 
   new Thread(this).start
@@ -41,13 +41,12 @@ class ClientActor(val clientSocket : Socket) extends Actor {
         case x : IndexedSeq[EntityDescription] => {
           if(handshakeFinished){
             try {
-
-                if(clientSocket.isConnected){
-                  clientSocket.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.World.id.shortValue))
-                  x.map(b => clientSocket.getOutputStream.write(b.bytes))
-                } else {
-                  exit
-                }
+              if(clientSocket.isConnected){
+                clientSocket.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.World.id.shortValue))
+                x.foreach(b => clientSocket.getOutputStream.write(b.bytes))
+              } else {
+                exit
+              }
             } catch {
               case e => exit
             }

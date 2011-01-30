@@ -16,7 +16,7 @@ object CollisionHandler {
   val contracts = List(PlayerShotContract, EchoContract, PlayerCollisionContract);
 
   private def handleCollision(a : Actor, b : Actor){
-    contracts.map(_.handleCollision(a,b));
+    contracts.foreach(_.handleCollision(a,b));
   }
 
   def handleCollisions(entityDescriptions : IndexedSeq[EntityDescription]){
