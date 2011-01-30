@@ -4,7 +4,8 @@ import java.net.{Socket, ServerSocket}
 import actors.Actor
 import Actor.State._
 import java.io.DataInputStream
-import de.tdng2011.game.util.{StreamUtil, ByteUtil}
+import de.tdng2011.game.library.util.{StreamUtil, ByteUtil}
+import de.tdng2011.game.library.EntityTypes
 
 /*
 very very quick and dirty hack, no production code!

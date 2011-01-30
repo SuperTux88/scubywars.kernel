@@ -2,7 +2,8 @@ package de.tdng2011.game.kernel
 
 import scala.math.Pi
 import java.util.Random
-import de.tdng2011.game.util.ByteUtil
+import de.tdng2011.game.library.util.ByteUtil
+import de.tdng2011.game.library.EntityTypes
 
 class Player(startPos : Vec2, publicId : Long) extends Entity(startPos, publicId) {
 

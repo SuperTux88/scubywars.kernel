@@ -1,6 +1,7 @@
 package de.tdng2011.game.kernel
 
-import de.tdng2011.game.util.ByteUtil
+import de.tdng2011.game.library.util.ByteUtil
+import de.tdng2011.game.library.EntityTypes
 
 /**
  * Created by IntelliJ IDEA.
