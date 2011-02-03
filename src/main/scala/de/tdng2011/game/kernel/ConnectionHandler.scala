@@ -70,7 +70,7 @@ class ClientActor(val clientSocket : Socket) extends Actor {
     println("relation received! " + relation)
     if(relation == 0){ // player case, 1 is listener
       val name = StreamUtil.read(iStream, 24).asCharBuffer.toString
-      val player = World !? PlayerAddMessage() match {
+      val player = World !? PlayerAddMessage(name) match {
         case x : Some[Player] => {
           val player = x.get
           new Thread(new ReaderThread(clientSocket,player)).start
@@ -80,6 +80,7 @@ class ClientActor(val clientSocket : Socket) extends Actor {
         }
         case x => {
           println("fatal response from player add: " + x)
+          clientSocket.getOutputStream.write(ByteUtil.toByteArray(1.byteValue))
         }
       }
     } else if(relation != 1){ // not visualizer

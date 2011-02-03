@@ -17,16 +17,19 @@ object World extends Actor {
 	val size = 1000 //m
   var publicIds = 0
   var entityDescriptions : IndexedSeq[EntityDescription] = IndexedSeq()
-  var playerList = for(x <- 1 to 5) yield newPlayer
-  playerList = playerList :+ new Shot(2,Vec2(10,10), 1337, 1338).start
-  playerList(2) !! PlayerActionMessage(true,false,true,false)
-  playerList(1) !! PlayerActionMessage(false,false,true,false)
+
+  var entityList : IndexedSeq[Entity] = for(x <- 1 to 5) yield newPlayer
+  entityList = entityList :+ newShot
+  entityList(2) !! PlayerActionMessage(true,false,true,false)
+  entityList(1) !! PlayerActionMessage(false,false,true,false)
+
+  var nameMap = Map[Long, String]()
 
   def act = {
     loop{
       react{
         case x : ThinkMessage => {
-          val thinkResults : IndexedSeq[Future[Any]] = for(p <- playerList) yield p !! x
+          val thinkResults : IndexedSeq[Future[Any]] = for(p <- entityList) yield p !! x
           entityDescriptions = for(x <- thinkResults) yield x.apply.asInstanceOf[Option[EntityDescription]].get
           CollisionHandler.handleCollisions(entityDescriptions)
           ConnectionHandler.event(entityDescriptions)
@@ -35,7 +38,8 @@ object World extends Actor {
 
         case x : PlayerAddMessage => {
           val player = newPlayer
-          playerList = playerList :+ player
+          entityList = entityList :+ player
+          nameMap = nameMap + (player.publicId -> x.name)
           reply { Some(player) }
         }
 
@@ -46,6 +50,8 @@ object World extends Actor {
       }
     }
   }
-                                                         def nextPublicId = { publicIds+=1; publicIds }
-  def newPlayer =  new Player(Vec2(new Random().nextInt(500), new Random().nextInt(499)), nextPublicId).start
+
+  def nextPublicId = { publicIds+=1; publicIds }
+  def newPlayer = new Player(Vec2(new Random().nextInt(500), new Random().nextInt(499)), nextPublicId).start.asInstanceOf[Player]
+  def newShot = new Shot(2,Vec2(10,10), 1337, 1338).start.asInstanceOf[Shot]
 }
