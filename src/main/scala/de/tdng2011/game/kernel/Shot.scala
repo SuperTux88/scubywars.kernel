@@ -40,7 +40,7 @@ class Shot(startDirection : Float, startPos : Vec2, publicId : Long, val parentI
   }
 
   private def getEntityDescription = {
-    val bytes = ByteUtil.toByteArray(entityType.id.shortValue, publicId, pos.x, pos.y, direction, radius, speed, parentId, lifeTime)
+    val bytes = ByteUtil.toByteArray(entityType, publicId, pos.x, pos.y, direction, radius, speed, parentId, lifeTime)
     Some(EntityDescription (pos, publicId, direction, speed, radius, entityType,this,bytes))
   }
 

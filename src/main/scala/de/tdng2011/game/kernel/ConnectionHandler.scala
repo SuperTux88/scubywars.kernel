@@ -42,7 +42,7 @@ class ClientActor(val clientSocket : Socket) extends Actor {
           if(handshakeFinished){
             try {
               if(clientSocket.isConnected){
-                clientSocket.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.World.id.shortValue))
+                clientSocket.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.World))
                 x.foreach(b => clientSocket.getOutputStream.write(b.bytes))
               } else {
                 exit
@@ -63,32 +63,36 @@ class ClientActor(val clientSocket : Socket) extends Actor {
   }
 
 
-  def handshake(clientSocket : Socket){
-    println("handshake now!")
-    val iStream = new DataInputStream(clientSocket.getInputStream)
-    val relation = StreamUtil.read(iStream, 2).getShort
-    println("relation received! " + relation)
-    if(relation == 0){ // player case, 1 is listener
-      val name = StreamUtil.read(iStream, 24).asCharBuffer.toString
-      val player = World !? PlayerAddMessage(name) match {
-        case x : Some[Player] => {
-          val player = x.get
-          new Thread(new ReaderThread(clientSocket,player)).start
-          println("started client thread")
-          clientSocket.getOutputStream.write(ByteUtil.toByteArray(0.byteValue,player.publicId))
-          ScoreBoard !! PlayerAddToScoreboardMessage(player.publicId, name)
-        }
-        case x => {
-          println("fatal response from player add: " + x)
-          clientSocket.getOutputStream.write(ByteUtil.toByteArray(1.byteValue))
-        }
-      }
-    } else if(relation != 1){ // not visualizer
+  def handshake(clientSocket : Socket) {
+    val iStream  = new DataInputStream(clientSocket.getInputStream)
+    val buf      = StreamUtil.read(iStream, 8)
+    val typeId   = buf.getShort
+    val size     = buf.getInt
+    val relation = buf.getShort
+    if(relation == 0) { // player case, 1 is listener
+      handShakePlayer(iStream, size - 2)
+    } else if(relation != 1) { // not visualizer
       println("illegal connection from " + clientSocket.getInetAddress + " - closing connection!");
       clientSocket.close
-
     }
     handshakeFinished=true
+  }
+
+  def handShakePlayer(iStream : DataInputStream, size : Int) {
+    val name = StreamUtil.read(iStream, size).asCharBuffer.toString
+    val player = World !? PlayerAddMessage(name) match {
+      case x : Some[Player] => {
+        val player = x.get
+        new Thread(new ReaderThread(clientSocket,player)).start
+        println("started client thread")
+        clientSocket.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.Handshake, 0.byteValue, player.publicId))
+        ScoreBoard !! PlayerAddToScoreboardMessage(player.publicId, name)
+      }
+      case x => {
+        println("fatal response from player add: " + x)
+        clientSocket.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.Handshake, 1.byteValue))
+      }
+    }
   }
 }
 
