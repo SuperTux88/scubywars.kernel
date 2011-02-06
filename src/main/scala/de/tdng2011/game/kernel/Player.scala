@@ -4,6 +4,8 @@ import scala.math.Pi
 import java.util.Random
 import de.tdng2011.game.library.util.ByteUtil
 import de.tdng2011.game.library.EntityTypes
+import actors.Actor
+import Actor.State._
 
 class Player(startPos : Vec2, publicId : Long) extends Entity(startPos, publicId) {
 
@@ -20,9 +22,12 @@ class Player(startPos : Vec2, publicId : Long) extends Entity(startPos, publicId
   protected var thrust    = false
   protected var fire      = false
 
+  protected var shot : Entity = null;
+
   think {
     case x : ThinkMessage => {
       updatePosition(x)
+      createShot
       getEntityDescription
     }
 
@@ -65,6 +70,17 @@ class Player(startPos : Vec2, publicId : Long) extends Entity(startPos, publicId
     val len = x.time * speed
     val step = if (thrust) ahead * len.floatValue else Vec2(0,0)
     pos=(pos + step).norm
+  }
+
+  private def createShot {
+    if(fire){
+      if(shot == null || shot.getState == Terminated){
+        val shotPos = pos + ahead * (radius + Shot.defaultRadius)
+        shot = new Shot(direction, shotPos, World.nextPublicId, publicId)
+        shot.start
+        World !! ShotCreatedMessage(shot)
+      }
+    }
   }
 
   private def getEntityDescription = {

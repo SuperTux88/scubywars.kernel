@@ -1,6 +1,7 @@
 package de.tdng2011.game.kernel
 
 import actors.Actor
+import Actor.State._
 import collision.CollisionHandler
 import util.Random
 
@@ -29,6 +30,7 @@ object World extends Actor {
     loop{
       react{
         case x : ThinkMessage => {
+          entityList = entityList.filter(_.getState != Terminated)
           val thinkResults : IndexedSeq[Future[Any]] = for(p <- entityList) yield p !! x
           entityDescriptions = for(x <- thinkResults) yield x.apply.asInstanceOf[Option[EntityDescription]].get
           CollisionHandler.handleCollisions(entityDescriptions)
@@ -41,6 +43,11 @@ object World extends Actor {
           entityList = entityList :+ player
           nameMap = nameMap + (player.publicId -> x.name)
           reply { Some(player) }
+        }
+
+        case x : ShotCreatedMessage => {
+          entityList = entityList :+ x.shot
+          reply { Some(x.shot) }
         }
 
         case barbraStreisand => {

@@ -28,7 +28,7 @@ object PlayerShotContract extends Contract {
   private def boom(a : Player, b : Shot){
     println("player " + a.publicId + " & shot " + b.publicId + " collided! sending respawn message!")
     a !! RespawnMessage()
-    // TODO
+    b !! ActorKillMessage()
   }
 
 }
