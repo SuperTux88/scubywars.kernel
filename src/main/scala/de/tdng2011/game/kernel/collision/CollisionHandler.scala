@@ -13,7 +13,7 @@ import de.tdng2011.game.kernel.EntityDescription
 
 object CollisionHandler {
 
-  val contracts = List(PlayerShotContract, EchoContract, PlayerCollisionContract);
+  val contracts = List(PlayerShotContract, EchoContract, PlayerCollisionContract, ShotShotContract);
 
   private def handleCollision(a : Actor, b : Actor){
     contracts.foreach(_.handleCollision(a,b));

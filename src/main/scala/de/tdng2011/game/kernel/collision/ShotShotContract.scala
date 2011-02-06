@@ -10,13 +10,9 @@ import de.tdng2011.game.kernel._
  * To change this template use File | Settings | File Templates.
  */
 
-object PlayerShotContract extends Contract {
+object ShotShotContract extends Contract {
   onCollide {
-    case (a : Player, b: Shot) => {
-      boom(a,b)
-    }
-
-    case (b : Shot, a : Player) => {
+    case (a : Shot, b: Shot) => {
       boom(a,b)
     }
 
@@ -25,14 +21,10 @@ object PlayerShotContract extends Contract {
     }
   }
 
-  private def boom(a : Player, b : Shot){
-    println("player " + a.publicId + " & shot " + b.publicId + " collided! sending respawn message!")
-
-    ScoreBoard !! AddPointsMessage(-1, a.publicId)
-    ScoreBoard !! AddPointsMessage(2, b.parentId)
-    a !! RespawnMessage()
+  private def boom(a : Shot, b : Shot){
+    println("shot " + a.publicId + " & shot " + b.publicId + " collided! sending remove message to world")
+    World !! RemoveEntityFromWorldMessage(a)
     World !! RemoveEntityFromWorldMessage(b)
-
   }
 
 }

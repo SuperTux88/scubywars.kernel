@@ -13,13 +13,18 @@ case class Score()
 
 object ScoreBoard extends Actor {
 
-  var players = Map[Long, (String, Int)]()
+  var players = Map[Long, Int]()
 
   def act {
     loop {
       react {
         case x : PlayerAddToScoreboardMessage => {
-          players = players + (x.publicId -> (x.name, 0))
+          players = players + (x.publicId -> 0)
+        }
+
+        case x : AddPointsMessage => {
+          players = players + (x.publicId -> (players.get(x.publicId).getOrElse(0) + x.points))
+          println(players)
         }
 
         case x => {

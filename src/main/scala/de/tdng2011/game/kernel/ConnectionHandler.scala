@@ -39,7 +39,13 @@ class ClientActor(val clientSocket : Socket) extends Actor {
     loop {
       react {
         case x : IndexedSeq[EntityDescription] => {
-          if(handshakeFinished){
+
+          if(mailboxSize > 15){
+            println("alert, " + this + " client actor has a mailbox size of " + mailboxSize)
+          }
+
+
+          if(handshakeFinished) {
             try {
               if(clientSocket.isConnected){
                 clientSocket.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.World))
