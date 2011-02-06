@@ -55,8 +55,6 @@ class ClientActor(val clientSocket : Socket) extends Actor {
           }
         }
 
-        case x : ActorKillMessage => exit
-
         case _ => {}
       }
     }
