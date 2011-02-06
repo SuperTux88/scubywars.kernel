@@ -19,10 +19,12 @@ class Shot(startDirection : Float, startPos : Vec2, publicId : Long, val parentI
   radius    = Shot.defaultRadius
   speed     = Shot.defaultSpeed // m/s
 
-  protected val lifeTime : Float = Shot.defaultLifeTime
+  private var lifeTime : Float = Shot.defaultLifeTime
 
   think {
     case x : ThinkMessage => {
+      if(lifeTime <= 0) World !! RemoveEntityFromWorldMessage(this)
+      lifeTime -= x.time.floatValue
       updatePosition(x)
       getEntityDescription
     }

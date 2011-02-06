@@ -21,8 +21,8 @@ object World extends Actor {
 
   var entityList : IndexedSeq[Entity] = for(x <- 1 to 5) yield newPlayer
   entityList = entityList :+ newShot
-  entityList(2) !! PlayerActionMessage(true,false,true,false)
-  entityList(1) !! PlayerActionMessage(false,false,true,false)
+  entityList(2) !! PlayerActionMessage(true,false,true,true)
+  entityList(1) !! PlayerActionMessage(false,false,true,true)
 
   var nameMap = Map[Long, String]()
 
@@ -30,13 +30,18 @@ object World extends Actor {
     loop{
       react{
         case x : ThinkMessage => {
+          //
           entityList = entityList.filter(_.getState != Terminated)
-          val thinkResults : IndexedSeq[Future[Any]] = for(p <- entityList) yield p !! x
+          val thinkResults : IndexedSeq[Future[Any]] = for(p <- entityList) yield p !! ThinkMessage(x.time, entityList)
           entityDescriptions = for(x <- thinkResults) yield x.apply.asInstanceOf[Option[EntityDescription]].get
           CollisionHandler.handleCollisions(entityDescriptions)
           ConnectionHandler.event(entityDescriptions)
           reply {None}
         }
+
+        case x : RemoveEntityFromWorldMessage =>
+          entityList = entityList.filter(_ != x.entity)
+
 
         case x : PlayerAddMessage => {
           val player = newPlayer

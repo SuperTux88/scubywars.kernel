@@ -27,7 +27,12 @@ class Player(startPos : Vec2, publicId : Long) extends Entity(startPos, publicId
   think {
     case x : ThinkMessage => {
       updatePosition(x)
-      createShot
+
+      if(fire){
+        if(shot == null || !x.entities.contains(shot)) {
+          createShot
+        }
+      }
       getEntityDescription
     }
 
@@ -73,14 +78,10 @@ class Player(startPos : Vec2, publicId : Long) extends Entity(startPos, publicId
   }
 
   private def createShot {
-    if(fire){
-      if(shot == null || shot.getState == Terminated){
-        val shotPos = pos + ahead * (radius + Shot.defaultRadius)
-        shot = new Shot(direction, shotPos, World.nextPublicId, publicId)
-        shot.start
-        World !! ShotCreatedMessage(shot)
-      }
-    }
+    val shotPos = pos + ahead * (radius + Shot.defaultRadius)
+    shot = new Shot(direction, shotPos, World.nextPublicId, publicId)
+    shot.start
+    World !! ShotCreatedMessage(shot)
   }
 
   private def getEntityDescription = {

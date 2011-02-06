@@ -10,8 +10,8 @@ import actors.Actor
  * To change this template use File | Settings | File Templates.
  */
 
-case class ThinkMessage(time : Double)
-case class ActorKillMessage()
+case class ThinkMessage(time : Double, entities : IndexedSeq[Entity])
+case class RemoveEntityFromWorldMessage(entity : Entity)
 case class PlayerActionMessage(turnLeft : Boolean, turnRight : Boolean, thrust : Boolean, fire : Boolean)
 case class RespawnMessage()
 case class AddPointsMessage(points : Int, publicId : Long)

@@ -17,11 +17,6 @@ abstract class Entity(var pos : Vec2, val publicId : Long) extends Actor {
     loop {
       react {
 
-        case x : ActorKillMessage => {
-          reply { None }
-          exit
-        }
-
         case x => {
           reply {
             thinkHandler(x);

@@ -21,9 +21,7 @@ object ScoreBoard extends Actor {
         case x : PlayerAddToScoreboardMessage => {
           players = players + (x.publicId -> (x.name, 0))
         }
-        case x : ActorKillMessage => {
-          exit
-        }
+
         case x => {
           println("I am the score board! I received message: " + x)
         }

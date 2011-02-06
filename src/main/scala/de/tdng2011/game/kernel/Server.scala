@@ -23,7 +23,7 @@ object Server {
     while(true){
       val frameStart = getTime               // 8000
 
-      World !? ThinkMessage(lastSleepTime/1000.0)
+      World !? ThinkMessage(lastSleepTime/1000.0, null)
 
       val frameEnd = getTime                 // 8024  / 8050
       val sleepTime =  (frameDuration) - (frameEnd - frameStart)
