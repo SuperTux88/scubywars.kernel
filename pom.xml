@@ -60,6 +60,34 @@
 		</plugins>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>startServerAfterBuild</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>deploy</phase>
+								<configuration>
+									<tasks>
+										<exec dir="${user.home}" executable="/etc/init.d/scubywars" failonerror="false">
+											<arg value="restart"/>
+										</exec>
+									</tasks>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 	<scm>
 		<connection>scm:git:git://github.com/fbe/Scubywars-Server.git</connection>
 		<developerConnection>scm:git:git@github.com:fbe/Scubywars-Server.git</developerConnection>
