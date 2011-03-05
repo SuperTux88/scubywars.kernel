@@ -34,6 +34,9 @@ object ConnectionHandler extends Runnable {
 }
 
 class ClientActor(val clientSocket : Socket) extends Actor {
+
+  private var player : Player = null
+
   private var handshakeFinished = false;
   def act = {
     loop {
@@ -51,10 +54,10 @@ class ClientActor(val clientSocket : Socket) extends Actor {
                 clientSocket.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.World))
                 x.foreach(b => clientSocket.getOutputStream.write(b.bytes))
               } else {
-                exit
+                removeClient
               }
             } catch {
-              case e => exit
+              case e => removeClient
             }
           } else {
             handshake(clientSocket);
@@ -64,6 +67,12 @@ class ClientActor(val clientSocket : Socket) extends Actor {
         case _ => {}
       }
     }
+  }
+
+  def removeClient {
+    World !! RemoveEntityFromWorldMessage(player)
+    println("disconnect!")
+    exit
   }
 
 
@@ -84,9 +93,9 @@ class ClientActor(val clientSocket : Socket) extends Actor {
 
   def handShakePlayer(iStream : DataInputStream, size : Int) {
     val name = StreamUtil.read(iStream, size).asCharBuffer.toString
-    val player = World !? PlayerAddMessage(name) match {
+    World !? PlayerAddMessage(name) match {
       case x : Some[Player] => {
-        val player = x.get
+        player = x.get
         new Thread(new ReaderThread(clientSocket,player)).start
         println("started client thread")
         clientSocket.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.Handshake, 0.byteValue, player.publicId))

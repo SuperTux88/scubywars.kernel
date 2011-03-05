@@ -30,7 +30,6 @@ object World extends Actor {
     loop{
       react{
         case x : ThinkMessage => {
-          //
           entityList = entityList.filter(_.getState != Terminated)
           val thinkResults : IndexedSeq[Future[Any]] = for(p <- entityList) yield p !! ThinkMessage(x.time, entityList)
           entityDescriptions = for(x <- thinkResults) yield x.apply.asInstanceOf[Option[EntityDescription]].get

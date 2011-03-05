@@ -2,12 +2,10 @@ package de.tdng2011.game.kernel
 
 /**
  * Created by IntelliJ IDEA.
- * User: benjamin
+ * Author: fbe und SuperTux88
  * Date: 22.01.11
  * Time: 23:16
- * To change this template use File | Settings | File Templates.
  */
-
 object Server {
   val framesPerSecond = 40.0
 
