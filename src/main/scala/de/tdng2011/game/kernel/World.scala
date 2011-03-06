@@ -45,6 +45,10 @@ object World extends Actor {
           nameMap = nameMap - x.player.publicId
           ConnectionHandler.event(PlayerRemovedMessage(x.player))
           ScoreBoard !! PlayerRemovedMessage(x.player)
+          findShotFromPlayer(x.player) match {
+            case x : Some[Shot] => World !! RemoveShotFromWorldMessage(x.get)
+            case x => {}
+          }
         }
 
         case x : AddPlayerMessage => {
@@ -71,4 +75,8 @@ object World extends Actor {
 
   def nextPublicId = { publicIds+=1; publicIds }
   def newPlayer = new Player(Vec2(new Random().nextInt(500), new Random().nextInt(499)), nextPublicId).start.asInstanceOf[Player]
+
+  def findShotFromPlayer(player : Player) : Option[Shot] = {
+    entityList.filter(_.isInstanceOf[Shot]).asInstanceOf[IndexedSeq[Shot]].find(_.parentId == player.publicId)
+  }
 }
