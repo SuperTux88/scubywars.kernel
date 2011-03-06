@@ -40,15 +40,19 @@ object World extends Actor {
         case x : RemoveShotFromWorldMessage =>
           entityList = entityList.filter(_ != x.shot)
 
-        case x : RemovePlayerFromWorldMessage =>
+        case x : RemovePlayerFromWorldMessage => {
           entityList = entityList.filter(_ != x.player)
+          nameMap = nameMap - x.player.publicId
           ConnectionHandler.event(PlayerRemovedMessage(x.player))
+          ScoreBoard !! PlayerRemovedMessage(x.player)
+        }
 
         case x : AddPlayerMessage => {
           val player = newPlayer
           entityList = entityList :+ player
           nameMap = nameMap + (player.publicId -> x.name)
           ConnectionHandler.event(PlayerAddedMessage(player.publicId, x.name))
+          ScoreBoard !! PlayerAddedMessage(player.publicId, x.name)
           reply { Some(player) }
         }
 

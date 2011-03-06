@@ -132,7 +132,6 @@ class ClientActor(val clientSocket : Socket) extends Actor {
         new Thread(new ReaderThread(clientSocket,player)).start
         println("started client thread")
         clientSocket.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.Handshake, 0.byteValue, player.publicId))
-        ScoreBoard !! PlayerAddedMessage(player.publicId, name)
       }
       case x => {
         println("fatal response from player add: " + x)
