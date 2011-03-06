@@ -48,6 +48,7 @@ object World extends Actor {
           val player = newPlayer
           entityList = entityList :+ player
           nameMap = nameMap + (player.publicId -> x.name)
+          ConnectionHandler.event(PlayerAddedMessage(player.publicId, x.name))
           reply { Some(player) }
         }
 

@@ -65,29 +65,31 @@ class ClientActor(val clientSocket : Socket) extends Actor {
           }
         }
 
+        // TODO: was ist mit messages waehrend dem handshake
+
+        case x : PlayerAddedMessage => {
+          sendBytesToClient(ByteUtil.toByteArray(EntityTypes.PlayerJoined, x.publicId, x.name))
+        }
+
         case x : PlayerRemovedMessage => {
-          if(handshakeFinished) { // TODO: was ist wenn ein player waehrend dem handshake von einem anderen player disconnected
-            try {
-              if(clientSocket.isConnected) {
-                val playerId = x.player.publicId
-                val bytes = ByteUtil.toByteArray(EntityTypes.PlayerLeft, playerId)
-                clientSocket.getOutputStream.write(bytes)
-              }
-            }
-          }
+          sendBytesToClient(ByteUtil.toByteArray(EntityTypes.PlayerLeft, x.player.publicId))
         }
 
         case x : ScoreBoardChangedMessage => {
-          if(handshakeFinished) {
-            try {
-              if(clientSocket.isConnected){
-                clientSocket.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.Scoreboard, x.scoreBoard))
-              }
-            }
-          }
+          sendBytesToClient(ByteUtil.toByteArray(EntityTypes.Scoreboard, x.scoreBoard))
         }
 
         case _ => {}
+      }
+    }
+  }
+
+  def sendBytesToClient(bytes : Array[Byte]) {
+    if(handshakeFinished) {
+      try {
+        if(clientSocket.isConnected){
+          clientSocket.getOutputStream.write(bytes)
+        }
       }
     }
   }
@@ -111,7 +113,15 @@ class ClientActor(val clientSocket : Socket) extends Actor {
       println("illegal connection from " + clientSocket.getInetAddress + " - closing connection!");
       clientSocket.close
     }
+    finishHandshake(clientSocket)
+  }
+
+  def finishHandshake(clientSocket : Socket) {
     handshakeFinished=true
+    sendBytesToClient(ByteUtil.toByteArray(EntityTypes.Scoreboard, ScoreBoard.scores))
+    for (name <- World.nameMap) {
+      sendBytesToClient(ByteUtil.toByteArray(EntityTypes.PlayerName, name._1, name._2))
+    }
   }
 
   def handShakePlayer(iStream : DataInputStream, size : Int) {
