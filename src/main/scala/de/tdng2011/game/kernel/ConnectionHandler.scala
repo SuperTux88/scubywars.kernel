@@ -15,8 +15,8 @@ object ConnectionHandler extends Runnable {
   var clientActors = List[Actor]()
   val socket = new ServerSocket(1337);
 
-  def event(entityDescriptions : IndexedSeq[EntityDescription]){
-    clientActors.foreach(a => if(a.getState != Terminated) a !! entityDescriptions)
+  def event(event : Any){
+    clientActors.foreach(a => if(a.getState != Terminated) a !! event)
   }
 
   new Thread(this).start
@@ -47,11 +47,10 @@ class ClientActor(val clientSocket : Socket) extends Actor {
             println("alert, " + this + " client actor has a mailbox size of " + mailboxSize)
           }
 
-
           if(handshakeFinished) {
             try {
               if(clientSocket.isConnected){
-                clientSocket.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.World))
+                clientSocket.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.World, x.size))
                 x.foreach(b => clientSocket.getOutputStream.write(b.bytes))
               } else {
                 removeClient
@@ -64,17 +63,25 @@ class ClientActor(val clientSocket : Socket) extends Actor {
           }
         }
 
+        case x : PlayerRemovedMessage => {
+          if(handshakeFinished) { // TODO: was ist wenn ein player waehrend dem handshake von einem anderen player disconnected
+            try {
+              if(clientSocket.isConnected){
+                clientSocket.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.PlayerLeft, x.player.publicId))
+              }
+            }
+          }
+        }
+
         case _ => {}
       }
     }
   }
 
   def removeClient {
-    World !! RemoveEntityFromWorldMessage(player)
-    println("disconnect!")
+    World !! RemovePlayerFromWorldMessage(player)
     exit
   }
-
 
   def handshake(clientSocket : Socket) {
     val iStream  = new DataInputStream(clientSocket.getInputStream)
@@ -93,13 +100,13 @@ class ClientActor(val clientSocket : Socket) extends Actor {
 
   def handShakePlayer(iStream : DataInputStream, size : Int) {
     val name = StreamUtil.read(iStream, size).asCharBuffer.toString
-    World !? PlayerAddMessage(name) match {
+    World !? AddPlayerMessage(name) match {
       case x : Some[Player] => {
         player = x.get
         new Thread(new ReaderThread(clientSocket,player)).start
         println("started client thread")
         clientSocket.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.Handshake, 0.byteValue, player.publicId))
-        ScoreBoard !! PlayerAddToScoreboardMessage(player.publicId, name)
+        ScoreBoard !! PlayerAddedMessage(player.publicId, name)
       }
       case x => {
         println("fatal response from player add: " + x)

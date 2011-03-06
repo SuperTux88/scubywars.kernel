@@ -31,7 +31,7 @@ object PlayerShotContract extends Contract {
     ScoreBoard !! AddPointsMessage(-1, a.publicId)
     ScoreBoard !! AddPointsMessage(2, b.parentId)
     a !! RespawnMessage()
-    World !! RemoveEntityFromWorldMessage(b)
+    World !! RemoveShotFromWorldMessage(b)
 
   }
 

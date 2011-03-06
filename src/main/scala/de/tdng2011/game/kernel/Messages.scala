@@ -7,16 +7,15 @@ import actors.Actor
  * User: fbe
  * Date: 1/22/11
  * Time: 10:15 PM
- * To change this template use File | Settings | File Templates.
  */
 
 case class ThinkMessage(time : Double, entities : IndexedSeq[Entity])
-case class RemoveEntityFromWorldMessage(entity : Entity)
 case class PlayerActionMessage(turnLeft : Boolean, turnRight : Boolean, thrust : Boolean, fire : Boolean)
 case class RespawnMessage()
 case class AddPointsMessage(points : Int, publicId : Long)
-case class PlayerAddMessage(name : String)
-case class PlayerAddToScoreboardMessage(publicId : Long, name : String)
-case class PlayerRemoveMessage(player : Actor)
-case class CreateShotMessage(parentId : Long, pos : Vec2, direction : Float)
+case class AddPlayerMessage(name : String)
+case class PlayerAddedMessage(publicId : Long, name : String)
+case class RemovePlayerFromWorldMessage(player : Player)
+case class PlayerRemovedMessage(player : Player)
 case class ShotCreatedMessage(shot : Entity)
+case class RemoveShotFromWorldMessage(shot : Shot)

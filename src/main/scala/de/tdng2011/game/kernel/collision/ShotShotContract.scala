@@ -23,8 +23,8 @@ object ShotShotContract extends Contract {
 
   private def boom(a : Shot, b : Shot){
     println("shot " + a.publicId + " & shot " + b.publicId + " collided! sending remove message to world")
-    World !! RemoveEntityFromWorldMessage(a)
-    World !! RemoveEntityFromWorldMessage(b)
+    World !! RemoveShotFromWorldMessage(a)
+    World !! RemoveShotFromWorldMessage(b)
   }
 
 }

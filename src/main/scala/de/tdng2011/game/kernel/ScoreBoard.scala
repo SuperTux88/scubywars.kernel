@@ -7,9 +7,7 @@ import actors.Actor
  * User: benjamin
  * Date: 23.01.11
  * Time: 16:59
- * To change this template use File | Settings | File Templates.
  */
-case class Score()
 
 object ScoreBoard extends Actor {
 
@@ -18,7 +16,7 @@ object ScoreBoard extends Actor {
   def act {
     loop {
       react {
-        case x : PlayerAddToScoreboardMessage => {
+        case x : PlayerAddedMessage => {
           players = players + (x.publicId -> 0)
         }
 

@@ -20,7 +20,6 @@ object World extends Actor {
   var entityDescriptions : IndexedSeq[EntityDescription] = IndexedSeq()
 
   var entityList : IndexedSeq[Entity] = for(x <- 1 to 5) yield newPlayer
-  entityList = entityList :+ newShot
   entityList(2) !! PlayerActionMessage(true,false,true,true)
   entityList(1) !! PlayerActionMessage(false,false,true,true)
 
@@ -38,11 +37,14 @@ object World extends Actor {
           reply {None}
         }
 
-        case x : RemoveEntityFromWorldMessage =>
-          entityList = entityList.filter(_ != x.entity)
+        case x : RemoveShotFromWorldMessage =>
+          entityList = entityList.filter(_ != x.shot)
 
+        case x : RemovePlayerFromWorldMessage =>
+          entityList = entityList.filter(_ != x.player)
+          ConnectionHandler.event(PlayerRemovedMessage(x.player))
 
-        case x : PlayerAddMessage => {
+        case x : AddPlayerMessage => {
           val player = newPlayer
           entityList = entityList :+ player
           nameMap = nameMap + (player.publicId -> x.name)
@@ -64,5 +66,4 @@ object World extends Actor {
 
   def nextPublicId = { publicIds+=1; publicIds }
   def newPlayer = new Player(Vec2(new Random().nextInt(500), new Random().nextInt(499)), nextPublicId).start.asInstanceOf[Player]
-  def newShot = new Shot(2,Vec2(10,10), 1337, 1338).start.asInstanceOf[Shot]
 }

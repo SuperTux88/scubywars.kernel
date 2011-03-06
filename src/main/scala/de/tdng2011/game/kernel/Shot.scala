@@ -23,7 +23,7 @@ class Shot(startDirection : Float, startPos : Vec2, publicId : Long, val parentI
 
   think {
     case x : ThinkMessage => {
-      if(lifeTime <= 0) World !! RemoveEntityFromWorldMessage(this)
+      if(lifeTime <= 0) World !! RemoveShotFromWorldMessage(this)
       lifeTime -= x.time.floatValue
       updatePosition(x)
       getEntityDescription
