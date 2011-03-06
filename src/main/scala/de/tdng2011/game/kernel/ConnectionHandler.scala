@@ -141,7 +141,6 @@ class ReaderThread(val clientSocket : Socket, player : Actor) extends Runnable {
         val thrust = msgBuffer.get == 1
         val fire = msgBuffer.get == 1
         player !! PlayerActionMessage(turnLeft, turnRight, thrust, fire)
-        println("server received playerAction: " + turnLeft + " : " + turnRight + " : " + thrust + " : " + fire)
       }
     }
   }
