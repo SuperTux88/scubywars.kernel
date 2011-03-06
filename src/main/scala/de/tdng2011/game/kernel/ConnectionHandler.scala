@@ -37,6 +37,8 @@ class ClientActor(val clientSocket : Socket) extends Actor {
 
   private var player : Player = null
 
+  var relation = 0
+
   private var handshakeFinished = false;
   def act = {
     loop {
@@ -69,8 +71,7 @@ class ClientActor(val clientSocket : Socket) extends Actor {
               if(clientSocket.isConnected) {
                 val playerId = x.player.publicId
                 val bytes = ByteUtil.toByteArray(EntityTypes.PlayerLeft, playerId)
-                val os = clientSocket.getOutputStream
-                os.write(bytes)
+                clientSocket.getOutputStream.write(bytes)
               }
             }
           }
@@ -92,7 +93,9 @@ class ClientActor(val clientSocket : Socket) extends Actor {
   }
 
   def removeClient {
-    World !! RemovePlayerFromWorldMessage(player)
+    if (relation == 0) {
+      World !! RemovePlayerFromWorldMessage(player)
+    }
     exit
   }
 
@@ -101,7 +104,7 @@ class ClientActor(val clientSocket : Socket) extends Actor {
     val buf      = StreamUtil.read(iStream, 8)
     val typeId   = buf.getShort
     val size     = buf.getInt
-    val relation = buf.getShort
+    relation = buf.getShort
     if(relation == 0) { // player case, 1 is listener
       handShakePlayer(iStream, size - 2)
     } else if(relation != 1) { // not visualizer
