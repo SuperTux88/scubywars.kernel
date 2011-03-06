@@ -73,6 +73,16 @@ class ClientActor(val clientSocket : Socket) extends Actor {
           }
         }
 
+        case x : ScoreBoardChangedMessage => {
+          if(handshakeFinished) {
+            try {
+              if(clientSocket.isConnected){
+                clientSocket.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.Scoreboard, x.scoreBoard))
+              }
+            }
+          }
+        }
+
         case _ => {}
       }
     }

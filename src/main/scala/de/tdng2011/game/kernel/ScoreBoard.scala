@@ -22,6 +22,7 @@ object ScoreBoard extends Actor {
 
         case x : AddPointsMessage => {
           players = players + (x.publicId -> (players.get(x.publicId).getOrElse(0) + x.points))
+          ConnectionHandler.event(ScoreBoardChangedMessage(players))
           println(players)
         }
 
