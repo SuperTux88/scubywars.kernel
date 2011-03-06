@@ -76,7 +76,7 @@ class ClientActor(val clientSocket : Socket) extends Actor {
         }
 
         case x : ScoreBoardChangedMessage => {
-          sendBytesToClient(ByteUtil.toByteArray(EntityTypes.Scoreboard, x.scoreBoard))
+          sendBytesToClient(ByteUtil.toByteArray(EntityTypes.ScoreBoard, x.scoreBoard))
         }
 
         case _ => {}
@@ -118,7 +118,7 @@ class ClientActor(val clientSocket : Socket) extends Actor {
 
   def finishHandshake(clientSocket : Socket) {
     handshakeFinished=true
-    sendBytesToClient(ByteUtil.toByteArray(EntityTypes.Scoreboard, ScoreBoard.scores))
+    sendBytesToClient(ByteUtil.toByteArray(EntityTypes.ScoreBoard, ScoreBoard.scores))
     for (name <- World.nameMap) {
       sendBytesToClient(ByteUtil.toByteArray(EntityTypes.PlayerName, name._1, name._2))
     }
