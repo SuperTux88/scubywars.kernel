@@ -11,19 +11,19 @@ import actors.Actor
 
 object ScoreBoard extends Actor {
 
-  var players = Map[Long, Int]()
+  var scores = Map[Long, Int]()
 
   def act {
     loop {
       react {
         case x : PlayerAddedMessage => {
-          players = players + (x.publicId -> 0)
+          scores = scores + (x.publicId -> 0)
         }
 
         case x : AddPointsMessage => {
-          players = players + (x.publicId -> (players.get(x.publicId).getOrElse(0) + x.points))
-          ConnectionHandler.event(ScoreBoardChangedMessage(players))
-          println(players)
+          scores = scores + (x.publicId -> (scores.get(x.publicId).getOrElse(0) + x.points))
+          ConnectionHandler.event(ScoreBoardChangedMessage(scores))
+          println(scores)
         }
 
         case x => {

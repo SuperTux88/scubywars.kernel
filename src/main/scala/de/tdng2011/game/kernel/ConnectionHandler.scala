@@ -66,8 +66,11 @@ class ClientActor(val clientSocket : Socket) extends Actor {
         case x : PlayerRemovedMessage => {
           if(handshakeFinished) { // TODO: was ist wenn ein player waehrend dem handshake von einem anderen player disconnected
             try {
-              if(clientSocket.isConnected){
-                clientSocket.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.PlayerLeft, x.player.publicId))
+              if(clientSocket.isConnected) {
+                val playerId = x.player.publicId
+                val bytes = ByteUtil.toByteArray(EntityTypes.PlayerLeft, playerId)
+                val os = clientSocket.getOutputStream
+                os.write(bytes)
               }
             }
           }
