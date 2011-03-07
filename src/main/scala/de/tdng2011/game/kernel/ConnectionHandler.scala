@@ -43,29 +43,28 @@ class ClientActor(val clientSocket : Socket) extends Actor {
   def act = {
     loop {
       react {
+        case x => sendMessageToClient(x)
+      }
+    }
+  }
+
+
+  def sendMessageToClient(message : Any) : Unit =  {
+
+    if(mailboxSize > 15){
+      println("alert, " + this + " client actor has a mailbox size of " + mailboxSize)
+    }
+
+    try {
+      if(!handshakeFinished) {
+        handshake(clientSocket);
+      }
+
+      message match {
         case x : IndexedSeq[EntityDescription] => {
-
-          if(mailboxSize > 15){
-            println("alert, " + this + " client actor has a mailbox size of " + mailboxSize)
-          }
-
-          if(handshakeFinished) {
-            try {
-              if(clientSocket.isConnected){
-                clientSocket.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.World, x.size))
-                x.foreach(b => clientSocket.getOutputStream.write(b.bytes))
-              } else {
-                removeClient
-              }
-            } catch {
-              case e => removeClient
-            }
-          } else {
-            handshake(clientSocket);
-          }
+          clientSocket.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.World, x.size))
+          x.foreach(b => clientSocket.getOutputStream.write(b.bytes))
         }
-
-        // TODO: was ist mit messages waehrend dem handshake
 
         case x : PlayerAddedMessage => {
           sendBytesToClient(ByteUtil.toByteArray(EntityTypes.PlayerJoined, x.publicId, x.name))
@@ -81,6 +80,16 @@ class ClientActor(val clientSocket : Socket) extends Actor {
 
         case _ => {}
       }
+
+    } catch {
+      case e => {
+        if(player != null){
+          println("removing client " + player);
+          World !! RemovePlayerFromWorldMessage(player)
+        }
+
+        exit
+      }
     }
   }
 
@@ -92,13 +101,6 @@ class ClientActor(val clientSocket : Socket) extends Actor {
         }
       }
     }
-  }
-
-  def removeClient {
-    if (relation == 0) {
-      World !! RemovePlayerFromWorldMessage(player)
-    }
-    exit
   }
 
   def handshake(clientSocket : Socket) {
@@ -145,21 +147,29 @@ class ClientActor(val clientSocket : Socket) extends Actor {
 
 class ReaderThread(val clientSocket : Socket, player : Actor) extends Runnable {
    override def run(){
-     val iStream = new DataInputStream(clientSocket.getInputStream)
-    while(true){
-      val buf       = StreamUtil.read(iStream, 6)
-      val typeId    = buf.getShort
-      val size      = buf.getInt
+    val iStream = new DataInputStream(clientSocket.getInputStream)
+    var reading = true
+    while(reading){
+      try {
+        val buf       = StreamUtil.read(iStream, 6)
+        val typeId    = buf.getShort
+        val size      = buf.getInt
 
-      val msgBuffer = StreamUtil.read(iStream, size)
-      if (typeId == EntityTypes.Action.id) {
-        val turnLeft = msgBuffer.get == 1
-        val turnRight = msgBuffer.get == 1
-        val thrust = msgBuffer.get == 1
-        val fire = msgBuffer.get == 1
-        player !! PlayerActionMessage(turnLeft, turnRight, thrust, fire)
+        val msgBuffer = StreamUtil.read(iStream, size)
+        if (typeId == EntityTypes.Action.id) {
+          val turnLeft = msgBuffer.get == 1
+          val turnRight = msgBuffer.get == 1
+          val thrust = msgBuffer.get == 1
+          val fire = msgBuffer.get == 1
+          player !! PlayerActionMessage(turnLeft, turnRight, thrust, fire)
+        }
+      } catch {
+        case e => println("implement debug log here: error while reading from client (reader thread!)" + e)
+        reading=false
       }
     }
+
+
   }
 }
 
