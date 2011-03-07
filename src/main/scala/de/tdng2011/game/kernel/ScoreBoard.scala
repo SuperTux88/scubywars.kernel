@@ -1,6 +1,7 @@
 package de.tdng2011.game.kernel
 
 import actors.Actor
+import de.tdng2011.game.library.util.ScubywarsLogger
 
 /**
  * Created by IntelliJ IDEA.
@@ -9,7 +10,7 @@ import actors.Actor
  * Time: 16:59
  */
 
-object ScoreBoard extends Actor {
+object ScoreBoard extends Actor with ScubywarsLogger {
 
   var scores = Map[Long, Int]()
 
@@ -27,11 +28,11 @@ object ScoreBoard extends Actor {
         case x : AddPointsMessage => {
           scores = scores + (x.publicId -> (scores.get(x.publicId).getOrElse(0) + x.points))
           ConnectionHandler.event(ScoreBoardChangedMessage(scores))
-          println(scores)
+          logger.debug("AddPointsMessage received, scores are now: " + scores)
         }
 
         case x => {
-          println("I am the score board! I received message: " + x)
+          logger.warn("Received unknown message " + x)
         }
       }
     }

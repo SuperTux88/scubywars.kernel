@@ -1,7 +1,7 @@
 package de.tdng2011.game.kernel
 
-import de.tdng2011.game.library.util.ByteUtil
 import de.tdng2011.game.library.EntityTypes
+import de.tdng2011.game.library.util.{ScubywarsLogger, ByteUtil}
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,7 +11,7 @@ import de.tdng2011.game.library.EntityTypes
  * To change this template use File | Settings | File Templates.
  */
 
-class Shot(startDirection : Float, startPos : Vec2, publicId : Long, val parentId : Long) extends Entity(startPos, publicId) {
+class Shot(startDirection : Float, startPos : Vec2, publicId : Long, val parentId : Long) extends Entity(startPos, publicId) with ScubywarsLogger {
 
   protected val entityType = EntityTypes.Shot
 
@@ -30,7 +30,7 @@ class Shot(startDirection : Float, startPos : Vec2, publicId : Long, val parentI
     }
 
     case x => {
-      println("nen dickes rohr")
+      logger.warn("Received unknown message " + x)
       None
     }
   }

@@ -1,6 +1,7 @@
 package de.tdng2011.game.kernel.collision
 
 import de.tdng2011.game.kernel._
+import de.tdng2011.game.library.util.ScubywarsLogger
 
 /**
  * Created by IntelliJ IDEA.
@@ -10,18 +11,18 @@ import de.tdng2011.game.kernel._
  * To change this template use File | Settings | File Templates.
  */
 
-object PlayerCollisionContract extends Contract {
+object PlayerCollisionContract extends Contract with ScubywarsLogger {
   onCollide {
     case (a : Player, b : Player) => {
-        println("player " + a.publicId + " & player " + b.publicId + " collided! sending respawn message!")
+        logger.debug("Player " + a.publicId + " & player " + b.publicId + " collided! sending respawn message!")
         a !! RespawnMessage()
         b !! RespawnMessage()
         ScoreBoard !! AddPointsMessage(-1, a.publicId)
         ScoreBoard !! AddPointsMessage(-1, b.publicId)
     }
 
-    case barbraStreisand => {
-      println("wuhuhuhuhu, barbra streisand")
+    case x => {
+      logger.trace("ignoring message " + x)
     }
   }
 }

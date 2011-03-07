@@ -1,5 +1,7 @@
 package de.tdng2011.game.kernel.collision
 
+import de.tdng2011.game.library.util.ScubywarsLogger
+
 /**
  * Created by IntelliJ IDEA.
  * User: benjamin
@@ -8,10 +10,10 @@ package de.tdng2011.game.kernel.collision
  * To change this template use File | Settings | File Templates.
  */
 
-object EchoContract extends Contract {
+object EchoContract extends Contract with ScubywarsLogger {
   onCollide {
     case x => {
-      println("EchoContract executed for: " +x)
+      logger.trace("EchoContract executed for: " +x)
     }
   }
 }

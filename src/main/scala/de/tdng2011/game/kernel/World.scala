@@ -4,16 +4,9 @@ import actors.Actor
 import Actor.State._
 import collision.CollisionHandler
 import util.Random
+import de.tdng2011.game.library.util.ScubywarsLogger
 
-/**
- * Created by IntelliJ IDEA.
- * User: benjamin
- * Date: 28.01.11
- * Time: 00:12
- * To change this template use File | Settings | File Templates.
- */
-
-object World extends Actor {
+object World extends Actor with ScubywarsLogger {
 
 	val size = 1000 //m
   var publicIds = 0
@@ -63,8 +56,8 @@ object World extends Actor {
           reply { Some(x.shot) }
         }
 
-        case barbraStreisand => {
-          println("[world] wuhuhuhu barbra streisand: " + barbraStreisand)
+        case x => {
+          logger.warn("Received unknown message " + x)
           reply {None}
         }
       }
