@@ -107,6 +107,7 @@ class ClientActor(val clientSocket : Socket) extends Actor {
     val typeId   = buf.getShort
     val size     = buf.getInt
     relation = buf.getShort
+    println("CLIENT HANDSHAKE: type: " + typeId + ", size: " + size + ", relation: " + relation)
     if(relation == 0) { // player case, 1 is listener
       handShakePlayer(iStream, size - 2)
     } else if(relation != 1) { // not visualizer
@@ -126,6 +127,7 @@ class ClientActor(val clientSocket : Socket) extends Actor {
 
   def handShakePlayer(iStream : DataInputStream, size : Int) {
     val name = StreamUtil.read(iStream, size).asCharBuffer.toString
+    println("name: " + name)
     World !? AddPlayerMessage(name) match {
       case x : Some[Player] => {
         player = x.get
