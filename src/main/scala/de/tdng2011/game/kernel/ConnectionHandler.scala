@@ -4,13 +4,13 @@ import java.net.{Socket, ServerSocket}
 import actors.Actor
 import Actor.State._
 import java.io.DataInputStream
-import de.tdng2011.game.library.util.{StreamUtil, ByteUtil}
 import de.tdng2011.game.library.EntityTypes
+import de.tdng2011.game.library.util.{ScubywarsLogger, StreamUtil, ByteUtil}
 
 /*
 very very quick and dirty hack, no production code!
 */
-object ConnectionHandler extends Runnable {
+object ConnectionHandler extends Runnable with ScubywarsLogger {
 
   var clientActors = List[Actor]()
   val socket = new ServerSocket(1337);
@@ -28,12 +28,12 @@ object ConnectionHandler extends Runnable {
       val clientThread = new ClientActor(clientSocket).start
       clientActors = clientThread :: clientActors
       clientActors = clientActors.filter(_.getState != Terminated)
-      println("ClientActors: " + clientActors.size)
+      logger.debug("Client Actors after filtering: " + clientActors.size)
     }
   }
 }
 
-class ClientActor(val clientSocket : Socket) extends Actor {
+class ClientActor(val clientSocket : Socket) extends Actor with ScubywarsLogger {
 
   private var player : Player = null
 
@@ -52,7 +52,7 @@ class ClientActor(val clientSocket : Socket) extends Actor {
   def sendMessageToClient(message : Any) : Unit =  {
 
     if(mailboxSize > 15){
-      println("alert, " + this + " client actor has a mailbox size of " + mailboxSize)
+      logger.warn("alert, " + this + " client actor has a mailbox size of " + mailboxSize)
     }
 
     try {
@@ -84,7 +84,7 @@ class ClientActor(val clientSocket : Socket) extends Actor {
     } catch {
       case e => {
         if(player != null){
-          println("removing client " + player);
+          logger.info("player " + player + " left the game (connection closed / error)")
           World !! RemovePlayerFromWorldMessage(player)
         }
 
@@ -109,11 +109,11 @@ class ClientActor(val clientSocket : Socket) extends Actor {
     val typeId   = buf.getShort
     val size     = buf.getInt
     relation = buf.getShort
-    println("CLIENT HANDSHAKE: type: " + typeId + ", size: " + size + ", relation: " + relation)
+    logger.debug("Client handshake type: " + typeId + ", size: " + size + ", relation: " + relation)
     if(relation == 0) { // player case, 1 is listener
       handShakePlayer(iStream, size - 2)
     } else if(relation != 1) { // not visualizer
-      println("illegal connection from " + clientSocket.getInetAddress + " - closing connection!");
+      logger.warn("Illegal connection from " + clientSocket.getInetAddress + " - closing connection!");
       clientSocket.close
     }
     finishHandshake(clientSocket)
@@ -129,23 +129,23 @@ class ClientActor(val clientSocket : Socket) extends Actor {
 
   def handShakePlayer(iStream : DataInputStream, size : Int) {
     val name = StreamUtil.read(iStream, size).asCharBuffer.toString
-    println("name: " + name)
+    logger.info("Player " + name + " connected")
     World !? AddPlayerMessage(name) match {
       case x : Some[Player] => {
         player = x.get
         new Thread(new ReaderThread(clientSocket,player)).start
-        println("started client thread")
+        logger.debug("started client thread")
         clientSocket.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.Handshake, 0.byteValue, player.publicId))
       }
       case x => {
-        println("fatal response from player add: " + x)
+        logger.error("Fatal response from player add to world: " + x)
         clientSocket.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.Handshake, 1.byteValue))
       }
     }
   }
 }
 
-class ReaderThread(val clientSocket : Socket, player : Actor) extends Runnable {
+class ReaderThread(val clientSocket : Socket, player : Actor) extends Runnable with ScubywarsLogger {
    override def run(){
     val iStream = new DataInputStream(clientSocket.getInputStream)
     var reading = true
@@ -164,7 +164,7 @@ class ReaderThread(val clientSocket : Socket, player : Actor) extends Runnable {
           player !! PlayerActionMessage(turnLeft, turnRight, thrust, fire)
         }
       } catch {
-        case e => println("implement debug log here: error while reading from client (reader thread!)" + e)
+        case e => logger.info("Reading from client failed. Stopping reader thread now." + e)
         reading=false
       }
     }
