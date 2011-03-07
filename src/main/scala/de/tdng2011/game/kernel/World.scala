@@ -19,9 +19,7 @@ object World extends Actor {
   var publicIds = 0
   var entityDescriptions : IndexedSeq[EntityDescription] = IndexedSeq()
 
-  var entityList : IndexedSeq[Entity] = for(x <- 1 to 5) yield newPlayer
-  entityList(2) !! PlayerActionMessage(true,false,true,true)
-  entityList(1) !! PlayerActionMessage(false,false,true,true)
+ var entityList : IndexedSeq[Entity] = IndexedSeq()
 
   var nameMap = Map[Long, String]()
 

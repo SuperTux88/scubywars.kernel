@@ -119,10 +119,10 @@ class ClientActor(val clientSocket : Socket) extends Actor {
 
   def finishHandshake(clientSocket : Socket) {
     handshakeFinished=true
-    sendBytesToClient(ByteUtil.toByteArray(EntityTypes.ScoreBoard, ScoreBoard.scores))
     for (name <- World.nameMap) {
       sendBytesToClient(ByteUtil.toByteArray(EntityTypes.PlayerName, name._1, name._2))
     }
+    sendBytesToClient(ByteUtil.toByteArray(EntityTypes.ScoreBoard, ScoreBoard.scores))
   }
 
   def handShakePlayer(iStream : DataInputStream, size : Int) {

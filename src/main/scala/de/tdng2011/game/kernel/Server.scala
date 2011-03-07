@@ -16,6 +16,8 @@ object Server {
     World.start
     ScoreBoard.start
 
+    startDefaultBots
+
     var lastSleepTime : Double = 0
 
     while(true){
@@ -35,4 +37,17 @@ object Server {
   }
 
 	def getTime = System.currentTimeMillis
+
+  def startDefaultBots {
+    new Thread() {
+      override def run {
+
+         World !? AddPlayerMessage("1x")
+        (World !? AddPlayerMessage("2x")).asInstanceOf[Some[Player]].get !! PlayerActionMessage(false,false,true,true)
+        (World !? AddPlayerMessage("3x")).asInstanceOf[Some[Player]].get !! PlayerActionMessage(true,false,true,true)
+
+        new de.tdng2011.game.killerclient.Client("localhost", "##OJ##")
+      }
+    }.start
+  }
 }
