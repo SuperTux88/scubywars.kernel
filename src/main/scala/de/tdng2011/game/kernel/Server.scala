@@ -16,7 +16,7 @@ object Server {
     World.start
     ScoreBoard.start
 
-    startDefaultBots
+    if (args contains "--startDefaultBots") startDefaultBots
 
     var lastSleepTime : Double = 0
 
