@@ -45,9 +45,11 @@ object World extends Actor with ScubywarsLogger {
         case x : AddPlayerMessage => {
           val player = newPlayer
           entityList = entityList :+ player
-          nameMap = nameMap + (player.publicId -> x.name)
-          ConnectionHandler.event(PlayerAddedMessage(player.publicId, x.name))
-          ScoreBoard !! PlayerAddedMessage(player.publicId, x.name)
+          val name = findFreeName(x.name)
+          logger.info("Player " + name + " connected")
+          nameMap = nameMap + (player.publicId -> name)
+          ConnectionHandler.event(PlayerAddedMessage(player.publicId, name))
+          ScoreBoard !! PlayerAddedMessage(player.publicId, name)
           reply { Some(player) }
         }
 
@@ -69,5 +71,15 @@ object World extends Actor with ScubywarsLogger {
 
   def findShotFromPlayer(player : Player) : Option[Shot] = {
     entityList.filter(_.isInstanceOf[Shot]).asInstanceOf[IndexedSeq[Shot]].find(_.parentId == player.publicId)
+  }
+
+  def findFreeName(name : String) : String = {
+    var curName = name
+    var i = 0
+    while (!nameMap.find(_._2 == curName).isEmpty) {
+      i += 1
+      curName = name + i
+    }
+    curName
   }
 }

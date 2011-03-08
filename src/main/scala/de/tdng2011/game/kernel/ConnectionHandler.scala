@@ -129,7 +129,6 @@ class ClientActor(val clientSocket : Socket) extends Actor with ScubywarsLogger 
 
   def handShakePlayer(iStream : DataInputStream, size : Int) {
     val name = StreamUtil.read(iStream, size).asCharBuffer.toString
-    logger.info("Player " + name + " connected")
     World !? AddPlayerMessage(name) match {
       case x : Some[Player] => {
         player = x.get
