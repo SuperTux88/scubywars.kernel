@@ -25,7 +25,11 @@
 			<artifactId>scubywars.library</artifactId>
 			<version>1.0-RC1</version>
 		</dependency>
-
+		<dependency>
+			<groupId>de.tdng2010.game</groupId>
+			<artifactId>scubywars.killer-client</artifactId>
+			<version>1.0-RC1</version>
+		</dependency>
 	</dependencies>
 
 	<repositories>
