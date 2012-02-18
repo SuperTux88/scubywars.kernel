@@ -462,3 +462,21 @@
 		<td>char[20] (Unicode (UTF-16) Big Endian)</td>
 	</tr>
 </table>
+
+## default values
+
+### Player
+
+radius: 15  
+speed: 100/s  
+rotSpeed: 2Pi/s
+
+### Shot
+
+radius: 5  
+speed: 400/s
+lifeTime: 1.25s
+
+### World
+
+size: 1000x1000
