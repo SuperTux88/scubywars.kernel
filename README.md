@@ -7,6 +7,14 @@
 
 **Testserver:** test.scubywars.de:1337
 
+## Other Projects
+
+[scubywars.parent](https://github.com/SuperTux88/scubywars.parent)  
+[scubywars.library](https://github.com/SuperTux88/scubywars.library)  
+[scubywars.visualizer](https://github.com/SuperTux88/scubywars.visualizer)  
+[scubywars.sampleclient](https://github.com/SuperTux88/scubywars.sampleclient)  
+[scubywars.sampleclient.java](https://github.com/SuperTux88/scubywars.sampleclient.java)  
+
 ## Protocol
 
 ###MessageLayout
