@@ -61,8 +61,8 @@
 	</build>
 
 	<scm>
-		<connection>scm:git:git://github.com/fbe/Scubywars-Server.git</connection>
-		<developerConnection>scm:git:git@github.com:fbe/Scubywars-Server.git</developerConnection>
-		<url>https://github.com/fbe/Scubywars-Server</url>
+		<connection>scm:git:git://github.com/SuperTux88/scubywars.kernel.git</connection>
+		<developerConnection>scm:git:git@github.com:SuperTux88/scubywars.kernel.git</developerConnection>
+		<url>https://github.com/SuperTux88/scubywars.kernel</url>
 	</scm>
 </project>
