@@ -291,7 +291,7 @@
 	<tr>
 		<td>playerName</td>
 		<td>40</td>
-		<td>char[20] (Unicode Big Endian)</td>
+		<td>char[20] (Unicode (UTF-16) Big Endian)</td>
 	</tr>
 </table>
 
@@ -414,7 +414,7 @@
 	<tr>
 		<td>playerName</td>
 		<td>40</td>
-		<td>char[20] (Unicode Big Endian)</td>
+		<td>char[20] (Unicode (UTF-16) Big Endian)</td>
 	</tr>
 </table>
 
