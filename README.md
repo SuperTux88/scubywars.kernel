@@ -215,7 +215,7 @@
 		<td>Short</td>
 	</tr>
 	<tr>
-		<td>Speed</td>
+		<td>speed</td>
 		<td>2</td>
 		<td>Short</td>
 	</tr>
