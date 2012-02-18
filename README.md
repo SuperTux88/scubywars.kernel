@@ -309,7 +309,7 @@
 		<th>Type</th>
 	</tr>
 	<tr>
-		<td>Ack/Nack</td>
+		<td>Ack(0)/Nack(1)</td>
 		<td>1</td>
 		<td>Byte</td>
 	</tr>
