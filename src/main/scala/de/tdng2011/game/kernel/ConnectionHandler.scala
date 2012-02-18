@@ -161,6 +161,8 @@ class ReaderThread(val clientSocket : Socket, player : Actor) extends Runnable w
           val thrust = msgBuffer.get == 1
           val fire = msgBuffer.get == 1
           player !! PlayerActionMessage(turnLeft, turnRight, thrust, fire)
+        } else {
+          logger.warn("unknown typeId: " + typeId + " with size: " + size)
         }
       } catch {
         case e => logger.error("Reading from client failed. Stopping reader thread now.", e)
