@@ -19,6 +19,9 @@
 
 ###MessageLayout
 
+<style type="text/css">
+	th {font-weight: bold;vertical-align: middle;}
+</style>
 <table border="1">
 	<tr>
 		<th colspan="3">Header</th>
