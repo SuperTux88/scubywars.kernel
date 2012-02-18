@@ -21,7 +21,7 @@
 
 <table border="1">
 	<tr>
-		<th colspan="3"><b>Header</b></th>
+		<th colspan="3"><strong>Header</strong></th>
 	</tr>
 	<tr>
 		<th>Attribute</th>
@@ -40,7 +40,9 @@
 	</tr>
 
 	<tr>
-		<th colspan="3"><b>Body</b></th>
+		<th colspan="3">
+			**Body**
+		</th>
 	</tr>
 	<tr>
 		<td colspan="3">messageLength bytes</td>
