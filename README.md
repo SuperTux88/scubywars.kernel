@@ -21,7 +21,7 @@
 
 <table border="1">
 	<tr>
-		<th colspan="3" style="font-weight: bold;vertical-align: middle;">Header</th>
+		<th colspan="3"><b>Header</b></th>
 	</tr>
 	<tr>
 		<th>Attribute</th>
@@ -40,7 +40,7 @@
 	</tr>
 
 	<tr>
-		<th colspan="3" style="font-weight: bold;vertical-align: middle;">Body</th>
+		<th colspan="3"><b>Body</b></th>
 	</tr>
 	<tr>
 		<td colspan="3">messageLength bytes</td>
@@ -49,7 +49,7 @@
 
 <table border="1">
 	<tr>
-		<th colspan="3" style="font-weight: bold;vertical-align: middle;">MessageTypeIds:</th>
+		<th colspan="3">MessageTypeIds:</th>
 	</tr>
 	<tr>
 		<td>Type</td>
@@ -117,7 +117,7 @@
 
 <table border="1">
 	<tr>
-		<th colspan="3" style="font-weight: bold;vertical-align: middle;">Player (0)</th>
+		<th colspan="3">Player (0)</th>
 	</tr>
 	<tr>
 		<th>Attribute</th>
@@ -182,7 +182,7 @@
 
 <table border="1">
 	<tr>
-		<th colspan="3" style="font-weight: bold;vertical-align: middle;">Shot (1)</th>
+		<th colspan="3">Shot (1)</th>
 	</tr>
 	<tr>
 		<th>Attribute</th>
@@ -237,7 +237,7 @@
 
 <table border="1">
 	<tr>
-		<th colspan="3" style="font-weight: bold;vertical-align: middle;">PowerUp (2)</th>
+		<th colspan="3">PowerUp (2)</th>
 	</tr>
 	<tr>
 		<th>Attribute</th>
@@ -276,7 +276,7 @@
 
 <table border="1">
 	<tr>
-		<th colspan="3" style="font-weight: bold;vertical-align: middle;">Handshake Client -&gt; Server (4)</th>
+		<th colspan="3">Handshake Client -&gt; Server (4)</th>
 	</tr>
 	<tr>
 		<th>Attribute</th>
@@ -301,7 +301,7 @@
 
 <table border="1">
 	<tr>
-		<th colspan="3" style="font-weight: bold;vertical-align: middle;">Handshake Server -&gt; Client (4)</th>
+		<th colspan="3">Handshake Server -&gt; Client (4)</th>
 	</tr>
 	<tr>
 		<th>Attribute</th>
@@ -326,7 +326,7 @@
 
 <table border="1">
 	<tr>
-		<th colspan="3" style="font-weight: bold;vertical-align: middle;">PlayerActionMessage Client -&gt; Server (5)</th>
+		<th colspan="3">PlayerActionMessage Client -&gt; Server (5)</th>
 	</tr>
 	<tr>
 		<th>Attribute</th>
@@ -361,7 +361,7 @@
 
 <table border="1">
 	<tr>
-		<th colspan="3" style="font-weight: bold;vertical-align: middle;">Scoreboard (6)</th>
+		<th colspan="3">Scoreboard (6)</th>
 	</tr>
 	<tr>
 		<th>Attribute</th>
@@ -399,7 +399,7 @@
 
 <table border="1">
 	<tr>
-		<th colspan="3" style="font-weight: bold;vertical-align: middle;">PlayerJoinedMessage (7)</th>
+		<th colspan="3">PlayerJoinedMessage (7)</th>
 	</tr>
 	<tr>
 		<th>Attribute</th>
@@ -424,7 +424,7 @@
 
 <table border="1">
 	<tr>
-		<th colspan="3" style="font-weight: bold;vertical-align: middle;">PlayerLeftMessage (8)</th>
+		<th colspan="3">PlayerLeftMessage (8)</th>
 	</tr>
 	<tr>
 		<th>Attribute</th>
@@ -444,7 +444,7 @@
 
 <table border="1">
 	<tr>
-		<th colspan="3" style="font-weight: bold;vertical-align: middle;">PlayerName (9)</th>
+		<th colspan="3">PlayerName (9)</th>
 	</tr>
 	<tr>
 		<th>Attribute</th>
