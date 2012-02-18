@@ -40,9 +40,7 @@
 	</tr>
 
 	<tr>
-		<th colspan="3">
-			**Body**
-		</th>
+		<th colspan="3"><strong>Body</strong></th>
 	</tr>
 	<tr>
 		<td colspan="3">messageLength bytes</td>
@@ -51,7 +49,7 @@
 
 <table border="1">
 	<tr>
-		<th colspan="3">MessageTypeIds:</th>
+		<th colspan="3"><strong>MessageTypeIds:</strong></th>
 	</tr>
 	<tr>
 		<td>Type</td>
@@ -119,7 +117,7 @@
 
 <table border="1">
 	<tr>
-		<th colspan="3">Player (0)</th>
+		<th colspan="3"><strong>Player (0)</strong></th>
 	</tr>
 	<tr>
 		<th>Attribute</th>
@@ -184,7 +182,7 @@
 
 <table border="1">
 	<tr>
-		<th colspan="3">Shot (1)</th>
+		<th colspan="3"><strong>Shot (1)</strong></th>
 	</tr>
 	<tr>
 		<th>Attribute</th>
@@ -239,7 +237,7 @@
 
 <table border="1">
 	<tr>
-		<th colspan="3">PowerUp (2)</th>
+		<th colspan="3"><strong>PowerUp (2)</strong></th>
 	</tr>
 	<tr>
 		<th>Attribute</th>
@@ -258,7 +256,7 @@
 
 <table border="1">
 	<tr>
-		<th colspan="3">World (3)</th>
+		<th colspan="3"><strong>World (3)</strong></th>
 	</tr>
 	<tr>
 		<th>Attribute</th>
@@ -278,7 +276,7 @@
 
 <table border="1">
 	<tr>
-		<th colspan="3">Handshake Client -&gt; Server (4)</th>
+		<th colspan="3"><strong>Handshake Client -&gt; Server (4)</strong></th>
 	</tr>
 	<tr>
 		<th>Attribute</th>
@@ -303,7 +301,7 @@
 
 <table border="1">
 	<tr>
-		<th colspan="3">Handshake Server -&gt; Client (4)</th>
+		<th colspan="3"><strong>Handshake Server -&gt; Client (4)</strong></th>
 	</tr>
 	<tr>
 		<th>Attribute</th>
@@ -328,7 +326,7 @@
 
 <table border="1">
 	<tr>
-		<th colspan="3">PlayerActionMessage Client -&gt; Server (5)</th>
+		<th colspan="3"><strong>PlayerActionMessage Client -&gt; Server (5)</strong></th>
 	</tr>
 	<tr>
 		<th>Attribute</th>
@@ -363,7 +361,7 @@
 
 <table border="1">
 	<tr>
-		<th colspan="3">Scoreboard (6)</th>
+		<th colspan="3"><strong>Scoreboard (6)</strong></th>
 	</tr>
 	<tr>
 		<th>Attribute</th>
@@ -401,7 +399,7 @@
 
 <table border="1">
 	<tr>
-		<th colspan="3">PlayerJoinedMessage (7)</th>
+		<th colspan="3"><strong>PlayerJoinedMessage (7)</strong></th>
 	</tr>
 	<tr>
 		<th>Attribute</th>
@@ -426,7 +424,7 @@
 
 <table border="1">
 	<tr>
-		<th colspan="3">PlayerLeftMessage (8)</th>
+		<th colspan="3"><strong>PlayerLeftMessage (8)</strong></th>
 	</tr>
 	<tr>
 		<th>Attribute</th>
@@ -446,7 +444,7 @@
 
 <table border="1">
 	<tr>
-		<th colspan="3">PlayerName (9)</th>
+		<th colspan="3"><strong>PlayerName (9)</strong></th>
 	</tr>
 	<tr>
 		<th>Attribute</th>
