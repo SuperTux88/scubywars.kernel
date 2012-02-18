@@ -437,3 +437,28 @@
 		<td>Long</td>
 	</tr>
 </table>
+
+<!-- .......... -->
+<!-- PlayerName -->
+<!-- .......... -->
+
+<table border="1">
+	<tr>
+		<th colspan="3">PlayerName (9)</th>
+	</tr>
+	<tr>
+		<th>Attribute</th>
+		<th>Bytes</th>
+		<th>Type</th>
+	</tr>
+	<tr>
+		<td>publicId</td>
+		<td>8</td>
+		<td>Long</td>
+	</tr>
+	<tr>
+		<td>playerName</td>
+		<td>40</td>
+		<td>char[20] (Unicode (UTF-16) Big Endian)</td>
+	</tr>
+</table>
