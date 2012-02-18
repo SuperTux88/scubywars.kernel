@@ -2,10 +2,10 @@
 
 ## Links
 
-[Website](http://scubywars.de/)
+[Website](http://scubywars.de/)  
 [Jenkins. You can download all the stuff you need there](http://jenkins.scubywars.de/)
 
-Testserver: test.scubywars.de:1337
+*Testserver:* test.scubywars.de:1337
 
 ## Protocol
 
