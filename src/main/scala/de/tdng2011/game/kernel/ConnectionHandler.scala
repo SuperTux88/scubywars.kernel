@@ -163,7 +163,7 @@ class ReaderThread(val clientSocket : Socket, player : Actor) extends Runnable w
           player !! PlayerActionMessage(turnLeft, turnRight, thrust, fire)
         }
       } catch {
-        case e => logger.info("Reading from client failed. Stopping reader thread now." + e)
+        case e => logger.error("Reading from client failed. Stopping reader thread now.", e)
         reading=false
       }
     }
