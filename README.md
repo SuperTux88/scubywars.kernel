@@ -369,7 +369,27 @@
 		<th>Type</th>
 	</tr>
 	<tr>
-		<td colspan="3">Todo: documentation here</td>
+		<td>publicId</td>
+		<td>8</td>
+		<td>Long</td>
+	</tr>
+	<tr>
+		<td>score</td>
+		<td>4</td>
+		<td>Int</td>
+	</tr>
+	<tr>
+		<td>*publicId*</td>
+		<td>*8*</td>
+		<td>*Long*</td>
+	</tr>
+	<tr>
+		<td>*score*</td>
+		<td>*4*</td>
+		<td>*Int*</td>
+	</tr>
+	<tr>
+		<td colspan="3">... (Map)</td>
 	</tr>
 </table>
 
