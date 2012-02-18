@@ -284,7 +284,7 @@
 		<th>Type</th>
 	</tr>
 	<tr>
-		<td>PlayerVisualizerFlag</td>
+		<td>PlayerVisualizerFlag (0: player / 1: listener)</td>
 		<td>2</td>
 		<td>Short</td>
 	</tr>
