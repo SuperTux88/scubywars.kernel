@@ -85,16 +85,16 @@ class ClientActor(val clientSocket : Socket) extends Actor with ScubywarsLogger 
         }
 
         // NG Messages
-        case x : ShotCollisionMessage if isNgClient => {
-          sendBytesToClient(ByteUtil.toByteArray(EntityTypes.ShotCollisionEvent, x.shot1PublicId, x.shot2PublicId, x.s1Position, x.s2Position));
+        case x : PlayerKilledMessage if isNgClient => {
+          sendBytesToClient(ByteUtil.toByteArray(EntityTypes.PlayerKilledEvent, x.victimPublicId, x.shotPublicId, x.killerPublicId, x.shotPosition, x.victimPosition));
         }
-
+        
         case x : PlayerCollisionMessage if isNgClient => {
           sendBytesToClient(ByteUtil.toByteArray(EntityTypes.PlayerCollisionEvent, x.player1PublicId, x.player2PublicId, x.player1Position, x.player2Position));
         }
 
-        case x : PlayerKilledMessage if isNgClient => {
-          sendBytesToClient(ByteUtil.toByteArray(EntityTypes.PlayerKilledEvent, x.victimPublicId, x.shotPublicId, x.killerPublicId, x.shotPosition, x.victimPosition));
+        case x : ShotCollisionMessage if isNgClient => {
+          sendBytesToClient(ByteUtil.toByteArray(EntityTypes.ShotCollisionEvent, x.shot1PublicId, x.shot2PublicId, x.s1Position, x.s2Position));
         }
 
         case x : PlayerSpawnedMessage if isNgClient => {

@@ -49,7 +49,7 @@
 
 <table border="1">
 	<tr>
-		<th colspan="3"><strong>MessageTypeIds:</strong></th>
+		<th colspan="3"><strong>MessageTypeIds</strong></th>
 	</tr>
 	<tr>
 		<td>Type</td>
@@ -107,6 +107,65 @@
 		<td>Server-&gt;Client</td> 		
 	</tr>
 
+	<tr>
+		<th colspan="3"><strong>New Protocol (PlayerNG and VisualizerNG)</strong></th>
+	</tr>
+	<tr>
+		<td>PlayerKilledEvent</td>
+		<td>10</td>
+		<td>Server-&gt;Client</td> 		
+	</tr>
+	<tr>
+		<td>PlayerCollisionEvent</td>
+		<td>11</td>
+		<td>Server-&gt;Client</td> 		
+	</tr>
+	<tr>
+		<td>ShotCollisionEvent</td>
+		<td>12</td>
+		<td>Server-&gt;Client</td> 		
+	</tr>
+	<tr>
+		<td>PlayerSpawnedEvent</td>
+		<td>13</td>
+		<td>Server-&gt;Client</td> 		
+	</tr>
+	<tr>
+		<td>ShotSpawnedEvent</td>
+		<td>14</td>
+		<td>Server-&gt;Client</td> 		
+	</tr>
+</table>
+
+<table border="1">
+	<tr>
+		<th colspan="3"><strong>PlayerRelationId</strong></th>
+	</tr>
+	<tr>
+		<td>Type</td>
+		<td>Wert</td>
+		<td>Direction</td>	
+	</tr>
+	<tr>
+		<td>Player</td>
+		<td>0</td>
+		<td>Server&lt;-&gt;Client</td> 		
+	</tr>
+	<tr>
+		<td>Visualizer</td>
+		<td>1</td>
+		<td>Server-&gt;Client</td> 		
+	</tr>
+	<tr>
+		<td>PlayerNG</td>
+		<td>2</td>
+		<td>Server&lt;-&gt;Client</td> 		
+	</tr>
+	<tr>
+		<td>VisualizerNG</td>
+		<td>3</td>
+		<td>Server-&gt;Client</td> 		
+	</tr>
 </table>
 
 ### Messagedetails
@@ -289,7 +348,7 @@
 		<th>Type</th>
 	</tr>
 	<tr>
-		<td>PlayerVisualizerFlag (0: player / 1: listener)</td>
+		<td>PlayerRelationId</td>
 		<td>2</td>
 		<td>Short</td>
 	</tr>
@@ -468,6 +527,263 @@
 	</tr>
 </table>
 
+### New Protocol (PlayerNG and VisualizerNG)
+
+<!-- .......... -->
+<!-- PlayerKilledEvent -->
+<!-- .......... -->
+
+<table border="1">
+	<tr>
+		<th colspan="3"><strong>PlayerKilledEvent (10)</strong></th>
+	</tr>
+	<tr>
+		<th>Attribute</th>
+		<th>Bytes</th>
+		<th>Type</th>
+	</tr>
+	<tr>
+		<td>victimPublicId</td>
+		<td>8</td>
+		<td>Long</td>
+	</tr>
+	<tr>
+		<td>shotPublicId</td>
+		<td>8</td>
+		<td>Long</td>
+	</tr>
+	<tr>
+		<td>killerPublicId</td>
+		<td>8</td>
+		<td>Long</td>
+	</tr>
+	<tr>
+		<td>shotPosition.x</td>
+		<td>4</td>
+		<td>Float</td>
+	</tr>
+	<tr>
+		<td>shotPosition.y</td>
+		<td>4</td>
+		<td>Float</td>
+	</tr>
+	<tr>
+		<td>victimPosition.x</td>
+		<td>4</td>
+		<td>Float</td>
+	</tr>
+	<tr>
+		<td>victimPosition.y</td>
+		<td>4</td>
+		<td>Float</td>
+	</tr>
+</table>
+
+<!-- ................. -->
+<!-- PlayerKilledEvent -->
+<!-- ................. -->
+
+<table border="1">
+	<tr>
+		<th colspan="3"><strong>PlayerKilledEvent (10)</strong></th>
+	</tr>
+	<tr>
+		<th>Attribute</th>
+		<th>Bytes</th>
+		<th>Type</th>
+	</tr>
+	<tr>
+		<td>victimPublicId</td>
+		<td>8</td>
+		<td>Long</td>
+	</tr>
+	<tr>
+		<td>shotPublicId</td>
+		<td>8</td>
+		<td>Long</td>
+	</tr>
+	<tr>
+		<td>killerPublicId</td>
+		<td>8</td>
+		<td>Long</td>
+	</tr>
+	<tr>
+		<td>shotPosition.x</td>
+		<td>4</td>
+		<td>Float</td>
+	</tr>
+	<tr>
+		<td>shotPosition.y</td>
+		<td>4</td>
+		<td>Float</td>
+	</tr>
+	<tr>
+		<td>victimPosition.x</td>
+		<td>4</td>
+		<td>Float</td>
+	</tr>
+	<tr>
+		<td>victimPosition.y</td>
+		<td>4</td>
+		<td>Float</td>
+	</tr>
+</table>
+
+<!-- .................... -->
+<!-- PlayerCollisionEvent -->
+<!-- .................... -->
+
+<table border="1">
+	<tr>
+		<th colspan="3"><strong>PlayerCollisionEvent (11)</strong></th>
+	</tr>
+	<tr>
+		<th>Attribute</th>
+		<th>Bytes</th>
+		<th>Type</th>
+	</tr>
+	<tr>
+		<td>player1PublicId</td>
+		<td>8</td>
+		<td>Long</td>
+	</tr>
+	<tr>
+		<td>player2PublicId</td>
+		<td>8</td>
+		<td>Long</td>
+	</tr>
+	<tr>
+		<td>player1Position.x</td>
+		<td>4</td>
+		<td>Float</td>
+	</tr>
+	<tr>
+		<td>player1Position.y</td>
+		<td>4</td>
+		<td>Float</td>
+	</tr>
+	<tr>
+		<td>player2Position.x</td>
+		<td>4</td>
+		<td>Float</td>
+	</tr>
+	<tr>
+		<td>player2Position.y</td>
+		<td>4</td>
+		<td>Float</td>
+	</tr>
+</table>
+
+<!-- .................. -->
+<!-- ShotCollisionEvent -->
+<!-- .................. -->
+
+<table border="1">
+	<tr>
+		<th colspan="3"><strong>ShotCollisionEvent (12)</strong></th>
+	</tr>
+	<tr>
+		<th>Attribute</th>
+		<th>Bytes</th>
+		<th>Type</th>
+	</tr>
+	<tr>
+		<td>shot1PublicId</td>
+		<td>8</td>
+		<td>Long</td>
+	</tr>
+	<tr>
+		<td>shot2PublicId</td>
+		<td>8</td>
+		<td>Long</td>
+	</tr>
+	<tr>
+		<td>s1Position.x</td>
+		<td>4</td>
+		<td>Float</td>
+	</tr>
+	<tr>
+		<td>s1Position.y</td>
+		<td>4</td>
+		<td>Float</td>
+	</tr>
+	<tr>
+		<td>s2Position.x</td>
+		<td>4</td>
+		<td>Float</td>
+	</tr>
+	<tr>
+		<td>s2Position.y</td>
+		<td>4</td>
+		<td>Float</td>
+	</tr>
+</table>
+
+<!-- .................. -->
+<!-- PlayerSpawnedEvent -->
+<!-- .................. -->
+
+<table border="1">
+	<tr>
+		<th colspan="3"><strong>PlayerSpawnedEvent (13)</strong></th>
+	</tr>
+	<tr>
+		<th>Attribute</th>
+		<th>Bytes</th>
+		<th>Type</th>
+	</tr>
+	<tr>
+		<td>publicId</td>
+		<td>8</td>
+		<td>Long</td>
+	</tr>
+	<tr>
+		<td>pos.x</td>
+		<td>4</td>
+		<td>Float</td>
+	</tr>
+	<tr>
+		<td>pos.y</td>
+		<td>4</td>
+		<td>Float</td>
+	</tr>
+</table>
+
+<!-- ................ -->
+<!-- ShotSpawnedEvent -->
+<!-- ................ -->
+
+<table border="1">
+	<tr>
+		<th colspan="3"><strong>ShotSpawnedEvent (14)</strong></th>
+	</tr>
+	<tr>
+		<th>Attribute</th>
+		<th>Bytes</th>
+		<th>Type</th>
+	</tr>
+	<tr>
+		<td>publicId</td>
+		<td>8</td>
+		<td>Long</td>
+	</tr>
+	<tr>
+		<td>parentId</td>
+		<td>8</td>
+		<td>Long</td>
+	</tr>
+	<tr>
+		<td>pos.x</td>
+		<td>4</td>
+		<td>Float</td>
+	</tr>
+	<tr>
+		<td>pos.y</td>
+		<td>4</td>
+		<td>Float</td>
+	</tr>
+</table>
+
 ## default values
 
 ### Player
@@ -479,7 +795,7 @@ rotSpeed: 2Pi/s
 ### Shot
 
 radius: 5  
-speed: 400/s
+speed: 400/s  
 lifeTime: 1.25s
 
 ### World
