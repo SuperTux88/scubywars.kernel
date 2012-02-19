@@ -6,6 +6,7 @@ import Actor.State._
 import java.io.DataInputStream
 import de.tdng2011.game.library.EntityTypes
 import de.tdng2011.game.library.util.{ScubywarsLogger, StreamUtil, ByteUtil}
+import collection.immutable.Map
 
 /*
 very very quick and dirty hack, no production code!
@@ -20,7 +21,6 @@ object ConnectionHandler extends Runnable with ScubywarsLogger {
   }
 
   new Thread(this).start
-
 
   override def run(){
     while(true) {
@@ -40,6 +40,7 @@ class ClientActor(val clientSocket : Socket) extends Actor with ScubywarsLogger 
   var relation = 0
 
   private var handshakeFinished = false;
+
   def act = {
     loop {
       react {
@@ -47,7 +48,6 @@ class ClientActor(val clientSocket : Socket) extends Actor with ScubywarsLogger 
       }
     }
   }
-
 
   def sendMessageToClient(message : Any) : Unit =  {
 
@@ -62,8 +62,8 @@ class ClientActor(val clientSocket : Socket) extends Actor with ScubywarsLogger 
 
       message match {
         case x : IndexedSeq[EntityDescription] => {
-          clientSocket.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.World, x.size))
-          x.foreach(b => clientSocket.getOutputStream.write(b.bytes))
+          sendBytesToClient(ByteUtil.toByteArray(EntityTypes.World, x.size))
+          x.foreach(b => sendBytesToClient(b.bytes))
         }
 
         case x : PlayerAddedMessage => {
@@ -97,7 +97,9 @@ class ClientActor(val clientSocket : Socket) extends Actor with ScubywarsLogger 
     if(handshakeFinished) {
       try {
         if(clientSocket.isConnected){
+          TimeoutCleanupTread.addSocket(clientSocket)
           clientSocket.getOutputStream.write(bytes)
+          TimeoutCleanupTread.removeSocket(clientSocket)
         }
       }
     }
@@ -134,6 +136,7 @@ class ClientActor(val clientSocket : Socket) extends Actor with ScubywarsLogger 
         player = x.get
         new Thread(new ReaderThread(clientSocket,player)).start
         logger.debug("started client thread")
+
         clientSocket.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.Handshake, 0.byteValue, player.publicId))
       }
       case x => {
@@ -169,11 +172,30 @@ class ReaderThread(val clientSocket : Socket, player : Actor) extends Runnable w
         reading=false
       }
     }
-
-
   }
 }
 
+object TimeoutCleanupTread extends Runnable with ScubywarsLogger {
+  var socketMap = Map[Socket, Long]()
 
+  new Thread(this).start
 
+  override def run(){
+    while(true) {
+      Thread sleep 100
+      socketMap.foreach(s => if(System.currentTimeMillis() - s._2  > 2000) {
+        logger.info("write timeout, closing socket")
+        s._1.close()
+        removeSocket(s._1)
+      })
+    }
+  }
 
+  def addSocket(socket : Socket) {
+    socketMap = socketMap + (socket -> System.currentTimeMillis())
+  }
+
+  def removeSocket(socket : Socket) {
+    socketMap = socketMap - socket
+  }
+}

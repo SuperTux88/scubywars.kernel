@@ -12,7 +12,7 @@ object World extends Actor with ScubywarsLogger {
   var publicIds = 0
   var entityDescriptions : IndexedSeq[EntityDescription] = IndexedSeq()
 
- var entityList : IndexedSeq[Entity] = IndexedSeq()
+  var entityList : IndexedSeq[Entity] = IndexedSeq()
 
   var nameMap = Map[Long, String]()
 
