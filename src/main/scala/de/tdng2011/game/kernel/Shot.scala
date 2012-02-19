@@ -1,7 +1,7 @@
 package de.tdng2011.game.kernel
 
 import de.tdng2011.game.library.EntityTypes
-import de.tdng2011.game.library.util.{ScubywarsLogger, ByteUtil}
+import de.tdng2011.game.library.util.{ScubywarsLogger, ByteUtil, Vec2}
 
 /**
  * Created by IntelliJ IDEA.
@@ -38,7 +38,7 @@ class Shot(startDirection : Float, startPos : Vec2, publicId : Long, val parentI
   private def updatePosition(x : ThinkMessage) {
     val len = x.time * speed
     val step = ahead * len.floatValue
-    pos=(pos + step).norm
+    pos=Vec2Internal(pos + step).norm
   }
 
   private def getEntityDescription = {

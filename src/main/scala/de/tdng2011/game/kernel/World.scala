@@ -4,7 +4,7 @@ import actors.Actor
 import Actor.State._
 import collision.CollisionHandler
 import util.Random
-import de.tdng2011.game.library.util.ScubywarsLogger
+import de.tdng2011.game.library.util.{ScubywarsLogger, Vec2}
 
 object World extends Actor with ScubywarsLogger {
 

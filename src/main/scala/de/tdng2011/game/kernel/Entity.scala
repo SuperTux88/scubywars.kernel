@@ -2,6 +2,7 @@ package de.tdng2011.game.kernel
 
 import actors.Actor
 import de.tdng2011.game.library.EntityTypes
+import de.tdng2011.game.library.util.Vec2
 
 abstract class Entity(var pos : Vec2, val publicId : Long) extends Actor {
 

@@ -1,6 +1,7 @@
 package de.tdng2011.game.kernel
 
 import actors.Actor
+import de.tdng2011.game.library.util.Vec2
 
 /**
  * Created by IntelliJ IDEA.

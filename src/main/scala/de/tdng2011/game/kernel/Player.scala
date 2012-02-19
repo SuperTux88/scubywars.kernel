@@ -2,7 +2,7 @@ package de.tdng2011.game.kernel
 
 import scala.math.Pi
 import java.util.Random
-import de.tdng2011.game.library.util.ByteUtil
+import de.tdng2011.game.library.util.{ByteUtil, Vec2}
 import de.tdng2011.game.library.EntityTypes
 import actors.Actor
 import Actor.State._
@@ -75,7 +75,7 @@ class Player(startPos : Vec2, publicId : Long) extends Entity(startPos, publicId
     // calc new pos
     val len = x.time * speed
     val step = if (thrust) ahead * len.floatValue else Vec2(0,0)
-    pos=(pos + step).norm
+    pos=Vec2Internal(pos + step).norm
   }
 
   private def createShot {
