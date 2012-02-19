@@ -10,7 +10,10 @@ import Actor.State._
 class Player(startPos : Vec2, publicId : Long) extends Entity(startPos, publicId) {
 
   protected val entityType = EntityTypes.Player
-
+  private var lastShotFired = now
+  
+  def now = new java.util.Date().getTime()
+  
   direction = Player.defaultDirection
   radius    = Player.defaultRadius
   speed     = Player.defaultSpeed // m/s
@@ -30,7 +33,10 @@ class Player(startPos : Vec2, publicId : Long) extends Entity(startPos, publicId
 
       if(fire){
         if(shot == null || !x.entities.contains(shot)) {
-          createShot
+          if(now - lastShotFired > 2000) {
+	          createShot
+	          lastShotFired = now
+          }
         }
       }
       getEntityDescription
