@@ -67,9 +67,9 @@ class Player(startPos : Vec2, publicId : Long) extends Entity(startPos, publicId
   private def updatePosition(x : ThinkMessage) {
     if (turnLeft) direction -= (x.time * rotSpeed).floatValue
     if (turnRight) direction += (x.time * rotSpeed).floatValue
-    direction %= 2 * Pi.shortValue
+    direction %= 2 * Pi.floatValue
     if (direction < 0)
-      direction += 2 * Pi.shortValue
+      direction += 2 * Pi.floatValue
 
     // calc new pos
     val len = x.time * speed
