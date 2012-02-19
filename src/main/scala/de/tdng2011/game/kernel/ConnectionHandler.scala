@@ -1,11 +1,11 @@
 package de.tdng2011.game.kernel
 
-import java.net.{Socket, ServerSocket}
+import java.net.{ Socket, ServerSocket }
 import actors.Actor
 import Actor.State._
 import java.io.DataInputStream
 import de.tdng2011.game.library.EntityTypes
-import de.tdng2011.game.library.util.{ScubywarsLogger, StreamUtil, ByteUtil}
+import de.tdng2011.game.library.util.{ ScubywarsLogger, StreamUtil, ByteUtil }
 import collection.immutable.Map
 
 /*
@@ -16,14 +16,14 @@ object ConnectionHandler extends Runnable with ScubywarsLogger {
   var clientActors = List[Actor]()
   val socket = new ServerSocket(1337);
 
-  def event(event : Any){
-    clientActors.foreach(a => if(a.getState != Terminated) a !! event)
+  def event(event: Any) {
+    clientActors.foreach(a => if (a.getState != Terminated) a !! event)
   }
 
   new Thread(this).start
 
-  override def run(){
-    while(true) {
+  override def run() {
+    while (true) {
       val clientSocket = socket.accept
       val clientThread = new ClientActor(clientSocket).start
       clientActors = clientThread :: clientActors
@@ -33,13 +33,15 @@ object ConnectionHandler extends Runnable with ScubywarsLogger {
   }
 }
 
-class ClientActor(val clientSocket : Socket) extends Actor with ScubywarsLogger {
+class ClientActor(val clientSocket: Socket) extends Actor with ScubywarsLogger {
 
-  private var player : Player = null
+  private var player: Player = null
 
   var relation = 0
 
-  private var handshakeFinished = false;
+  private var handshakeFinished = false
+
+  handshake
 
   def act = {
     loop {
@@ -53,65 +55,59 @@ class ClientActor(val clientSocket : Socket) extends Actor with ScubywarsLogger 
   def isNgPlayer = relation == 2
   def isNgClient = isNgPlayer || isNgVisualizer
 
-  def sendMessageToClient(message : Any) : Unit =  {
+  def sendMessageToClient(message: Any): Unit = {
 
-    if(mailboxSize > 15){
+    if (mailboxSize > 15) {
       logger.warn("alert, " + this + " client actor has a mailbox size of " + mailboxSize)
     }
 
     try {
-      if(!handshakeFinished) {
-        handshake(clientSocket);
-        // TODO
-        // return
-      }
-
       message match {
-        case x : IndexedSeq[EntityDescription] => {
-          sendBytesToClient(ByteUtil.toByteArray(EntityTypes.World, x.size))
-          x.foreach(b => sendBytesToClient(b.bytes))
+        case m: IndexedSeq[EntityDescription] => {
+          sendBytesToClient(ByteUtil.toByteArray(EntityTypes.World, m.size))
+          m.foreach(b => sendBytesToClient(b.bytes))
         }
 
-        case x : PlayerAddedMessage => {
-          sendBytesToClient(ByteUtil.toByteArray(EntityTypes.PlayerJoined, x.publicId, x.name))
+        case m: PlayerAddedMessage => {
+          sendBytesToClient(ByteUtil.toByteArray(EntityTypes.PlayerJoined, m.publicId, m.name))
         }
 
-        case x : PlayerRemovedMessage => {
-          sendBytesToClient(ByteUtil.toByteArray(EntityTypes.PlayerLeft, x.player.publicId))
+        case m: PlayerRemovedMessage => {
+          sendBytesToClient(ByteUtil.toByteArray(EntityTypes.PlayerLeft, m.player.publicId))
         }
 
-        case x : ScoreBoardChangedMessage => {
-          sendBytesToClient(ByteUtil.toByteArray(EntityTypes.ScoreBoard, x.scoreBoard))
+        case m: ScoreBoardChangedMessage => {
+          sendBytesToClient(ByteUtil.toByteArray(EntityTypes.ScoreBoard, m.scoreBoard))
         }
 
         // NG Messages
-        case x : PlayerKilledMessage if isNgClient => {
-          sendBytesToClient(ByteUtil.toByteArray(EntityTypes.PlayerKilledEvent, x.victimPublicId, x.shotPublicId, x.killerPublicId, x.shotPosition, x.victimPosition));
-        }
-        
-        case x : PlayerCollisionMessage if isNgClient => {
-          sendBytesToClient(ByteUtil.toByteArray(EntityTypes.PlayerCollisionEvent, x.player1PublicId, x.player2PublicId, x.player1Position, x.player2Position));
-        }
+        case m if isNgClient => m match {
+          case m: PlayerKilledMessage => {
+            sendBytesToClient(ByteUtil.toByteArray(EntityTypes.PlayerKilledEvent, m.victimPublicId, m.shotPublicId, m.killerPublicId, m.shotPosition, m.victimPosition));
+          }
 
-        case x : ShotCollisionMessage if isNgClient => {
-          sendBytesToClient(ByteUtil.toByteArray(EntityTypes.ShotCollisionEvent, x.shot1PublicId, x.shot2PublicId, x.s1Position, x.s2Position));
-        }
+          case m: PlayerCollisionMessage => {
+            sendBytesToClient(ByteUtil.toByteArray(EntityTypes.PlayerCollisionEvent, m.player1PublicId, m.player2PublicId, m.player1Position, m.player2Position));
+          }
 
-        case x : PlayerSpawnedMessage if isNgClient => {
-          sendBytesToClient(ByteUtil.toByteArray(EntityTypes.PlayerSpawnedEvent, x.publicId, x.position))
-        }
+          case m: ShotCollisionMessage => {
+            sendBytesToClient(ByteUtil.toByteArray(EntityTypes.ShotCollisionEvent, m.shot1PublicId, m.shot2PublicId, m.s1Position, m.s2Position));
+          }
 
-        case x : ShotSpawnedMessage if isNgClient => {
-           sendBytesToClient(ByteUtil.toByteArray(EntityTypes.ShotSpawnedEvent, x.publicId, x.parentId, x.position))
-        }
+          case m: PlayerSpawnedMessage => {
+            sendBytesToClient(ByteUtil.toByteArray(EntityTypes.PlayerSpawnedEvent, m.publicId, m.position))
+          }
 
+          case m: ShotSpawnedMessage => {
+            sendBytesToClient(ByteUtil.toByteArray(EntityTypes.ShotSpawnedEvent, m.publicId, m.parentId, m.position))
+          }
+        }
 
         case _ => {}
       }
-
     } catch {
       case e => {
-        if(player != null){
+        if (player != null) {
           logger.info("player " + player + " left the game (connection closed / error)")
           World !! RemovePlayerFromWorldMessage(player)
         }
@@ -121,48 +117,48 @@ class ClientActor(val clientSocket : Socket) extends Actor with ScubywarsLogger 
     }
   }
 
-  def sendBytesToClient(bytes : Array[Byte]) {
-    if(handshakeFinished) {
-      try {
-        if(clientSocket.isConnected){
-          TimeoutCleanupTread.addSocket(clientSocket)
-          clientSocket.getOutputStream.write(bytes)
-          TimeoutCleanupTread.removeSocket(clientSocket)
-        }
+  def sendBytesToClient(bytes: Array[Byte]) {
+    if (handshakeFinished) try {
+      if (clientSocket.isConnected) {
+        TimeoutCleanupTread.addSocket(clientSocket)
+        clientSocket.getOutputStream.write(bytes)
+        TimeoutCleanupTread.removeSocket(clientSocket)
+      } else {
+        World !! RemovePlayerFromWorldMessage(player)
       }
     }
   }
 
-  def handshake(clientSocket : Socket) {
-    val iStream  = new DataInputStream(clientSocket.getInputStream)
-    val buf      = StreamUtil.read(iStream, 8)
-    val typeId   = buf.getShort
-    val size     = buf.getInt
+  def handshake {
+    val iStream = new DataInputStream(clientSocket.getInputStream)
+    val buf = StreamUtil.read(iStream, 8)
+    val typeId = buf.getShort
+    val size = buf.getInt
     relation = buf.getShort
-    logger.debug("Client handshake type: " + typeId + ", size: " + size + ", relation: " + relation)
-    if(relation == 0 || relation == 2) { // player case, 1 is listener
+    logger.debug("Client handshake from " + clientSocket.getInetAddress + ", type: " + typeId + ", size: " + size + ", relation: " + relation)
+    if (relation == 0 || relation == 2) { // player case, 1 or 3 is listener
       handShakePlayer(iStream, size - 2)
-    } else if(relation != 3 && relation != 1) { // not visualizer
+    } else if (relation != 3 && relation != 1) { // not visualizer
       logger.warn("Illegal connection from " + clientSocket.getInetAddress + " - closing connection!");
       clientSocket.close
     }
-    finishHandshake(clientSocket)
+    finishHandshake
   }
 
-  def finishHandshake(clientSocket : Socket) {
-    handshakeFinished=true
+  def finishHandshake {
+    handshakeFinished = true
     for (name <- World.nameMap) {
       sendBytesToClient(ByteUtil.toByteArray(EntityTypes.PlayerName, name._1, name._2))
     }
     sendBytesToClient(ByteUtil.toByteArray(EntityTypes.ScoreBoard, ScoreBoard.scores))
   }
 
-  def handShakePlayer(iStream : DataInputStream, size : Int) {
+  def handShakePlayer(iStream: DataInputStream, size: Int) {
     val name = StreamUtil.read(iStream, size).asCharBuffer.toString
     World !? AddPlayerMessage(name) match {
-      case x : Some[Player] => {
+      case x: Some[Player] => {
         player = x.get
-        new Thread(new ReaderThread(clientSocket,player)).start
+        new Thread(new ReaderThread(clientSocket, player)).start
         logger.debug("started client thread")
 
         clientSocket.getOutputStream.write(ByteUtil.toByteArray(EntityTypes.Handshake, 0.byteValue, player.publicId))
@@ -175,15 +171,15 @@ class ClientActor(val clientSocket : Socket) extends Actor with ScubywarsLogger 
   }
 }
 
-class ReaderThread(val clientSocket : Socket, player : Actor) extends Runnable with ScubywarsLogger {
-   override def run(){
+class ReaderThread(val clientSocket: Socket, player: Actor) extends Runnable with ScubywarsLogger {
+  override def run() {
     val iStream = new DataInputStream(clientSocket.getInputStream)
     var reading = true
-    while(reading){
+    while (reading) {
       try {
-        val buf       = StreamUtil.read(iStream, 6)
-        val typeId    = buf.getShort
-        val size      = buf.getInt
+        val buf = StreamUtil.read(iStream, 6)
+        val typeId = buf.getShort
+        val size = buf.getInt
 
         val msgBuffer = StreamUtil.read(iStream, size)
         if (typeId == EntityTypes.Action.id) {
@@ -196,8 +192,9 @@ class ReaderThread(val clientSocket : Socket, player : Actor) extends Runnable w
           logger.warn("unknown typeId: " + typeId + " with size: " + size)
         }
       } catch {
-        case e => logger.error("Reading from client failed. Stopping reader thread now.", e)
-        reading=false
+        case e =>
+          logger.error("Reading from client failed. Stopping reader thread now.", e)
+          reading = false
       }
     }
   }
@@ -208,10 +205,10 @@ object TimeoutCleanupTread extends Runnable with ScubywarsLogger {
 
   new Thread(this).start
 
-  override def run(){
-    while(true) {
+  override def run() {
+    while (true) {
       Thread sleep 100
-      socketMap.foreach(s => if(System.currentTimeMillis() - s._2  > 2000) {
+      socketMap.foreach(s => if (System.currentTimeMillis() - s._2 > 2000) {
         logger.info("write timeout, closing socket")
         s._1.close()
         removeSocket(s._1)
@@ -219,11 +216,11 @@ object TimeoutCleanupTread extends Runnable with ScubywarsLogger {
     }
   }
 
-  def addSocket(socket : Socket) {
+  def addSocket(socket: Socket) {
     socketMap = socketMap + (socket -> System.currentTimeMillis())
   }
 
-  def removeSocket(socket : Socket) {
+  def removeSocket(socket: Socket) {
     socketMap = socketMap - socket
   }
 }
