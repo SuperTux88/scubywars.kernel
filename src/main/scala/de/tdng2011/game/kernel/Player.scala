@@ -86,7 +86,7 @@ class Player(startPos : Vec2, publicId : Long) extends Entity(startPos, publicId
   }
 
   private def getEntityDescription = {
-    val bytes = ByteUtil.toByteArray(entityType, publicId, pos.x, pos.y, direction, radius, speed, rotSpeed, turnLeft, turnRight, thrust, fire)
+    val bytes = ByteUtil.toByteArray(entityType, publicId, pos, direction, radius, speed, rotSpeed, turnLeft, turnRight, thrust, fire)
     Some(EntityDescription (pos, publicId, direction, speed, radius, entityType, this, bytes))
   }
 }
