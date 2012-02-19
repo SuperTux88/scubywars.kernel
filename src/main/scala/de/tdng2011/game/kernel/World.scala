@@ -46,7 +46,7 @@ object World extends Actor with ScubywarsLogger {
           val player = newPlayer
           entityList = entityList :+ player
           val name = findFreeName(x.name)
-          logger.info("Player " + name + " connected")
+          logger.info("Player " + name + " connected with id " + player.publicId)
           nameMap = nameMap + (player.publicId -> name)
           ConnectionHandler.event(PlayerAddedMessage(player.publicId, name))
           ScoreBoard !! PlayerAddedMessage(player.publicId, name)
