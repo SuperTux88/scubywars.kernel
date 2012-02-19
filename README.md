@@ -168,6 +168,8 @@
 	</tr>
 </table>
 
+All values are big endian.
+
 ### Messagedetails
 
 <!-- ...... -->
@@ -355,7 +357,7 @@
 	<tr>
 		<td>playerName</td>
 		<td>40</td>
-		<td>char[20] (Unicode (UTF-16) Big Endian)</td>
+		<td>char[20] (Unicode (UTF-16))</td>
 	</tr>
 </table>
 
@@ -478,7 +480,7 @@
 	<tr>
 		<td>playerName</td>
 		<td>40</td>
-		<td>char[20] (Unicode (UTF-16) Big Endian)</td>
+		<td>char[20] (Unicode (UTF-16))</td>
 	</tr>
 </table>
 
@@ -523,7 +525,7 @@
 	<tr>
 		<td>playerName</td>
 		<td>40</td>
-		<td>char[20] (Unicode (UTF-16) Big Endian)</td>
+		<td>char[20] (Unicode (UTF-16))</td>
 	</tr>
 </table>
 
@@ -797,6 +799,8 @@ rotSpeed: 2Pi/s
 radius: 5  
 speed: 400/s  
 lifeTime: 1.25s
+
+spawn every 2 seconds
 
 ### World
 
