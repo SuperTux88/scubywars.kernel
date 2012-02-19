@@ -140,9 +140,9 @@ class ClientActor(val clientSocket : Socket) extends Actor with ScubywarsLogger 
     val size     = buf.getInt
     relation = buf.getShort
     logger.debug("Client handshake type: " + typeId + ", size: " + size + ", relation: " + relation)
-    if(relation == 0) { // player case, 1 is listener
+    if(relation == 0 || relation == 2) { // player case, 1 is listener
       handShakePlayer(iStream, size - 2)
-    } else if(relation != 1) { // not visualizer
+    } else if(relation != 3 && relation != 1) { // not visualizer
       logger.warn("Illegal connection from " + clientSocket.getInetAddress + " - closing connection!");
       clientSocket.close
     }
