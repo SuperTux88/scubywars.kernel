@@ -150,7 +150,12 @@
 		<td>Short</td>
 	</tr>
 	<tr>
-		<td>Rotation Speed</td>
+		<td>speed</td>
+		<td>2</td>
+		<td>Short</td>
+	</tr>
+	<tr>
+		<td>rotationSpeed</td>
 		<td>4</td>
 		<td>Float</td>
 	</tr>
