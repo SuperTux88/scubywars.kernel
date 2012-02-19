@@ -12,16 +12,15 @@ import actors.Actor
 
 abstract class Contract {
 
-  private var collisionHandler : PartialFunction[Any, Unit] = {
+  private var collisionHandler: PartialFunction[Any, Unit] = {
     case _ => {}
   }
 
-  final def handleCollision(a : Actor, b : Actor) = {
-      collisionHandler(a,b);
+  final def handleCollision(a: Actor, b: Actor) = {
+    collisionHandler(a, b);
   }
 
-   final def onCollide(handler : PartialFunction[Any,Unit]){
-     collisionHandler = handler;
-   }
-
+  final def onCollide(handler: PartialFunction[Any, Unit]) {
+    collisionHandler = handler;
+  }
 }

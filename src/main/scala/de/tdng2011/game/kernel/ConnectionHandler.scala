@@ -103,7 +103,7 @@ class ClientActor(val clientSocket: Socket) extends Actor with ScubywarsLogger {
           }
         }
 
-        case _ => {}
+        case m => logger.trace("ignoring message " + m)
       }
     } catch {
       case e => {

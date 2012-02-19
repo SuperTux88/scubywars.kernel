@@ -13,7 +13,7 @@ import de.tdng2011.game.library.util.ScubywarsLogger
 object EchoContract extends Contract with ScubywarsLogger {
   onCollide {
     case x => {
-      logger.trace("EchoContract executed for: " +x)
+      logger.trace("EchoContract executed for: " + x)
     }
   }
 }

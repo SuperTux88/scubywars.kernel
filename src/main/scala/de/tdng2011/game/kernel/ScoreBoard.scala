@@ -17,15 +17,15 @@ object ScoreBoard extends Actor with ScubywarsLogger {
   def act {
     loop {
       react {
-        case x : PlayerAddedMessage => {
+        case x: PlayerAddedMessage => {
           scores = scores + (x.publicId -> 0)
         }
 
-        case x : PlayerRemovedMessage => {
+        case x: PlayerRemovedMessage => {
           scores = scores - x.player.publicId
         }
 
-        case x : AddPointsMessage => {
+        case x: AddPointsMessage => {
           scores = scores + (x.publicId -> (scores.get(x.publicId).getOrElse(0) + x.points))
           ConnectionHandler.event(ScoreBoardChangedMessage(scores))
           logger.debug("AddPointsMessage received, scores are now: " + scores)

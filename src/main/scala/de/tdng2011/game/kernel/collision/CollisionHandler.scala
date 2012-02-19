@@ -15,18 +15,17 @@ object CollisionHandler {
 
   val contracts = List(PlayerShotContract, EchoContract, PlayerCollisionContract, ShotShotContract);
 
-  private def handleCollision(a : Actor, b : Actor){
-    contracts.foreach(_.handleCollision(a,b));
+  private def handleCollision(a: Actor, b: Actor) {
+    contracts.foreach(_.handleCollision(a, b));
   }
 
-  def handleCollisions(entityDescriptions : IndexedSeq[EntityDescription]){
-    var trackedCollisions = Set[(Actor,Actor)]()
-    for(a <- entityDescriptions)
-        for(b <- entityDescriptions)
-          if((a.pos-b.pos).length < a.radius + b.radius && a.publicId != b.publicId && !trackedCollisions.contains((a.actor,b.actor)) && !trackedCollisions.contains((b.actor,a.actor))){
-            CollisionHandler.handleCollision(a.actor,b.actor)
-            trackedCollisions = trackedCollisions + ((a.actor,b.actor))
-          }
+  def handleCollisions(entityDescriptions: IndexedSeq[EntityDescription]) {
+    var trackedCollisions = Set[(Actor, Actor)]()
+    for (a <- entityDescriptions)
+      for (b <- entityDescriptions)
+        if ((a.pos - b.pos).length < a.radius + b.radius && a.publicId != b.publicId && !trackedCollisions.contains((a.actor, b.actor)) && !trackedCollisions.contains((b.actor, a.actor))) {
+          CollisionHandler.handleCollision(a.actor, b.actor)
+          trackedCollisions = trackedCollisions + ((a.actor, b.actor))
+        }
   }
-
 }
