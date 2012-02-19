@@ -49,6 +49,10 @@ class ClientActor(val clientSocket : Socket) extends Actor with ScubywarsLogger 
     }
   }
 
+  def isNgVisualizer = relation == 3
+  def isNgPlayer = relation == 2
+  def isNgClient = isNgPlayer || isNgVisualizer
+
   def sendMessageToClient(message : Any) : Unit =  {
 
     if(mailboxSize > 15){
@@ -58,6 +62,8 @@ class ClientActor(val clientSocket : Socket) extends Actor with ScubywarsLogger 
     try {
       if(!handshakeFinished) {
         handshake(clientSocket);
+        // TODO
+        // return
       }
 
       message match {
@@ -77,6 +83,28 @@ class ClientActor(val clientSocket : Socket) extends Actor with ScubywarsLogger 
         case x : ScoreBoardChangedMessage => {
           sendBytesToClient(ByteUtil.toByteArray(EntityTypes.ScoreBoard, x.scoreBoard))
         }
+
+        // NG Messages
+        case x : ShotCollisionMessage if isNgClient => {
+          sendBytesToClient(ByteUtil.toByteArray(EntityTypes.ShotCollisionEvent, x.shot1PublicId, x.shot2PublicId, x.s1Position, x.s2Position));
+        }
+
+        case x : PlayerCollisionMessage if isNgClient => {
+          sendBytesToClient(ByteUtil.toByteArray(EntityTypes.PlayerCollisionEvent, x.player1PublicId, x.player2PublicId, x.player1Position, x.player2Position));
+        }
+
+        case x : PlayerKilledMessage if isNgClient => {
+          sendBytesToClient(ByteUtil.toByteArray(EntityTypes.PlayerKilledEvent, x.victimPublicId, x.shotPublicId, x.killerPublicId, x.shotPosition, x.victimPosition));
+        }
+
+        case x : PlayerSpawnedMessage if isNgClient => {
+          sendBytesToClient(ByteUtil.toByteArray(EntityTypes.PlayerSpawnedEvent, x.publicId, x.position))
+        }
+
+        case x : ShotSpawnedMessage if isNgClient => {
+           sendBytesToClient(ByteUtil.toByteArray(EntityTypes.ShotSpawnedEvent, x.publicId, x.parentId, x.position))
+        }
+
 
         case _ => {}
       }

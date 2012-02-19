@@ -55,6 +55,7 @@ object World extends Actor with ScubywarsLogger {
 
         case x : ShotCreatedMessage => {
           entityList = entityList :+ x.shot
+          ConnectionHandler.event(ShotSpawnedMessage(x.shot.publicId, x.shot.parentId, x.shot.pos))
           reply { Some(x.shot) }
         }
 

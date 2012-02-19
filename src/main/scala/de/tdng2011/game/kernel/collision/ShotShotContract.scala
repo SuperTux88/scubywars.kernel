@@ -19,6 +19,7 @@ object ShotShotContract extends Contract with ScubywarsLogger {
     logger.debug("Shot " + a.publicId + " & shot " + b.publicId + " collided! sending remove message to world")
     World !! RemoveShotFromWorldMessage(a)
     World !! RemoveShotFromWorldMessage(b)
+    ConnectionHandler event ShotCollisionMessage(a.publicId, b.publicId, a.pos, b.pos)
   }
 
 }

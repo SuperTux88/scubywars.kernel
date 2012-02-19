@@ -19,6 +19,7 @@ object PlayerCollisionContract extends Contract with ScubywarsLogger {
         b !! RespawnMessage()
         ScoreBoard !! AddPointsMessage(-1, a.publicId)
         ScoreBoard !! AddPointsMessage(-1, b.publicId)
+        ConnectionHandler event PlayerCollisionMessage(a.publicId, b.publicId, a.pos, b.pos)
     }
 
     case x => {

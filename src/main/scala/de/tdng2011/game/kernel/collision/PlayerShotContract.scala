@@ -32,6 +32,7 @@ object PlayerShotContract extends Contract {
     ScoreBoard !! AddPointsMessage(2, b.parentId)
     a !! RespawnMessage()
     World !! RemoveShotFromWorldMessage(b)
+    ConnectionHandler event PlayerKilledMessage(a.publicId, b.publicId, b.parentId, b.pos, a.pos)
 
   }
 

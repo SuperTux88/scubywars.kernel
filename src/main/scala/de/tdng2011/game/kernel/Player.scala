@@ -22,7 +22,7 @@ class Player(startPos : Vec2, publicId : Long) extends Entity(startPos, publicId
   protected var thrust    = false
   protected var fire      = false
 
-  protected var shot : Entity = null;
+  protected var shot : Shot = null;
 
   think {
     case x : ThinkMessage => {
@@ -62,6 +62,7 @@ class Player(startPos : Vec2, publicId : Long) extends Entity(startPos, publicId
 
   private def respawn {
     pos=Vec2(new Random().nextInt(1000), new Random().nextInt(1000))    // TODO Game field size
+    ConnectionHandler event PlayerSpawnedMessage(publicId, pos)
   }
 
   private def updatePosition(x : ThinkMessage) {
