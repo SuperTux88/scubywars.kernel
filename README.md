@@ -197,11 +197,13 @@ All values are big endian.
 		<td>pos.x</td>
 		<td>4</td>
 		<td>Float</td>
+		<td></td>
 	</tr>
 	<tr>
 		<td>pos.y</td>
 		<td>4</td>
 		<td>Float</td>
+		<td></td>
 	</tr>
 	<tr>
 		<td>direction</td>
@@ -231,21 +233,25 @@ All values are big endian.
 		<td>turn left</td>
 		<td>1</td>
 		<td>Byte</td>
+		<td></td>
 	</tr>
 	<tr>
 		<td>turn right</td>
 		<td>1</td>
 		<td>Byte</td>
+		<td></td>
 	</tr>
 	<tr>
 		<td>thrust</td>
 		<td>1</td>
 		<td>Byte</td>
+		<td></td>
 	</tr>
 	<tr>
 		<td>fire</td>
 		<td>1</td>
 		<td>Byte</td>
+		<td></td>
 	</tr>
 </table>
 
@@ -273,11 +279,13 @@ All values are big endian.
 		<td>pos.x</td>
 		<td>4</td>
 		<td>Float</td>
+		<td></td>
 	</tr>
 	<tr>
 		<td>pos.y</td>
 		<td>4</td>
 		<td>Float</td>
+		<td></td>
 	</tr>
 	<tr>
 		<td>direction</td>
