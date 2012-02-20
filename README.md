@@ -757,7 +757,7 @@ All values are big endian.
 
 radius: 15  
 speed: 100/s  
-rotSpeed: 2Pi/s
+rotSpeed: 2&pi;/s
 
 ### Shot
 
