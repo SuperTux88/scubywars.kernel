@@ -25,6 +25,7 @@ object ConnectionHandler extends Runnable with ScubywarsLogger {
   override def run() {
     while (true) {
       val clientSocket = socket.accept
+      clientSocket.setTcpNoDelay(true)
       val clientThread = new ClientActor(clientSocket).start
       clientActors = clientThread :: clientActors
       clientActors = clientActors.filter(_.getState != Terminated)
@@ -122,6 +123,7 @@ class ClientActor(val clientSocket: Socket) extends Actor with ScubywarsLogger {
       if (clientSocket.isConnected) {
         TimeoutCleanupTread.addSocket(clientSocket)
         clientSocket.getOutputStream.write(bytes)
+        clientSocket.getOutputStream.flush
         TimeoutCleanupTread.removeSocket(clientSocket)
       } else {
         World !! RemovePlayerFromWorldMessage(player)
