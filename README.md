@@ -143,13 +143,13 @@
 	</tr>
 	<tr>
 		<td>Type</td>
-		<td>Wert</td>
-		<td>Direction</td>	
+		<td>Value</td>
+		<td>Direction</td>
 	</tr>
 	<tr>
 		<td>Player</td>
 		<td>0</td>
-		<td>Server&lt;-&gt;Client</td> 		
+		<td>Server&lt;-&gt;Client</td>
 	</tr>
 	<tr>
 		<td>Visualizer</td>
@@ -167,6 +167,7 @@
 		<td>Server-&gt;Client</td> 		
 	</tr>
 </table>
+Short: Server does not accept any commands from a visualizer
 
 All values are big endian.
 
@@ -178,67 +179,79 @@ All values are big endian.
 
 <table border="1">
 	<tr>
-		<th colspan="3"><strong>Player (0)</strong></th>
+		<th colspan="4"><strong>Player (0)</strong></th>
 	</tr>
 	<tr>
 		<th>Attribute</th>
 		<th>Bytes</th>
 		<th>Type</th>
+		<th>Detail</th>
 	</tr>
 	<tr>
 		<td>publicId</td>
 		<td>8</td>
 		<td>Long</td>
+		<td>unique player ID</td>
 	</tr>
 	<tr>
 		<td>pos.x</td>
 		<td>4</td>
 		<td>Float</td>
+		<td></td>
 	</tr>
 	<tr>
 		<td>pos.y</td>
 		<td>4</td>
 		<td>Float</td>
+		<td></td>
 	</tr>
 	<tr>
 		<td>direction</td>
 		<td>4</td>
 		<td>Float</td>
+		<td>0&deg; = right &nbsp; 360&deg; = 2&pi; &asymp; 6.28</td>
 	</tr>
 	<tr>
 		<td>radius</td>
 		<td>2</td>
 		<td>Short</td>
+		<td>player default: 15</td>
 	</tr>
 	<tr>
 		<td>speed</td>
 		<td>2</td>
 		<td>Short</td>
+		<td>player default: 100/s</td>
 	</tr>
 	<tr>
 		<td>rotationSpeed</td>
 		<td>4</td>
 		<td>Float</td>
+		<td>player default: 2&pi; per second</td>
 	</tr>
 	<tr>
 		<td>turn left</td>
 		<td>1</td>
 		<td>Byte</td>
+		<td></td>
 	</tr>
 	<tr>
 		<td>turn right</td>
 		<td>1</td>
 		<td>Byte</td>
+		<td></td>
 	</tr>
 	<tr>
 		<td>thrust</td>
 		<td>1</td>
 		<td>Byte</td>
+		<td></td>
 	</tr>
 	<tr>
 		<td>fire</td>
 		<td>1</td>
 		<td>Byte</td>
+		<td></td>
 	</tr>
 </table>
 
@@ -248,52 +261,61 @@ All values are big endian.
 
 <table border="1">
 	<tr>
-		<th colspan="3"><strong>Shot (1)</strong></th>
+		<th colspan="4"><strong>Shot (1)</strong></th>
 	</tr>
 	<tr>
 		<th>Attribute</th>
 		<th>Bytes</th>
 		<th>Type</th>
+		<th>Detail</th>
 	</tr>
 	<tr>
 		<td>publicId</td>
 		<td>8</td>
 		<td>Long</td>
+		<td>unique shot ID</td>
 	</tr>
 	<tr>
 		<td>pos.x</td>
 		<td>4</td>
 		<td>Float</td>
+		<td></td>
 	</tr>
 	<tr>
 		<td>pos.y</td>
 		<td>4</td>
 		<td>Float</td>
+		<td></td>
 	</tr>
 	<tr>
 		<td>direction</td>
 		<td>4</td>
 		<td>Float</td>
+		<td>same as in Player(0)</td>
 	</tr>
 	<tr>
 		<td>radius</td>
 		<td>2</td>
 		<td>Short</td>
+		<td>shot default: 5</td>
 	</tr>
 	<tr>
 		<td>speed</td>
 		<td>2</td>
 		<td>Short</td>
+		<td>shot default: 400/s</td>
 	</tr>
 	<tr>
 		<td>parentId</td>
 		<td>8</td>
 		<td>Long</td>
+		<td>ID of the player who raised the shot</td>
 	</tr>
 	<tr>
 		<td>lifeTime</td>
 		<td>4</td>
 		<td>Float</td>
+		<td>remaining lifeTime; spawn value: 1.25s</td>
 	</tr>
 </table>
 
@@ -357,7 +379,7 @@ All values are big endian.
 	<tr>
 		<td>playerName</td>
 		<td>40</td>
-		<td>char[20] (Unicode (UTF-16))</td>
+		<td>char[20] (UTF-16 Big Endian)</td>
 	</tr>
 </table>
 
@@ -420,6 +442,7 @@ All values are big endian.
 		<td>Byte</td>
 	</tr>
 </table>
+(turnLeft && turnRight) == (!turnLeft && !turnRight)
 
 <!-- ........... -->
 <!-- Scoreboard  -->
@@ -480,7 +503,7 @@ All values are big endian.
 	<tr>
 		<td>playerName</td>
 		<td>40</td>
-		<td>char[20] (Unicode (UTF-16))</td>
+		<td>char[20] (UTF-16 Big Endian)</td>
 	</tr>
 </table>
 
@@ -525,61 +548,11 @@ All values are big endian.
 	<tr>
 		<td>playerName</td>
 		<td>40</td>
-		<td>char[20] (Unicode (UTF-16))</td>
+		<td>char[20] (UTF-16 Big Endian)</td>
 	</tr>
 </table>
 
 ### New Protocol (PlayerNG and VisualizerNG)
-
-<!-- .......... -->
-<!-- PlayerKilledEvent -->
-<!-- .......... -->
-
-<table border="1">
-	<tr>
-		<th colspan="3"><strong>PlayerKilledEvent (10)</strong></th>
-	</tr>
-	<tr>
-		<th>Attribute</th>
-		<th>Bytes</th>
-		<th>Type</th>
-	</tr>
-	<tr>
-		<td>victimPublicId</td>
-		<td>8</td>
-		<td>Long</td>
-	</tr>
-	<tr>
-		<td>shotPublicId</td>
-		<td>8</td>
-		<td>Long</td>
-	</tr>
-	<tr>
-		<td>killerPublicId</td>
-		<td>8</td>
-		<td>Long</td>
-	</tr>
-	<tr>
-		<td>shotPosition.x</td>
-		<td>4</td>
-		<td>Float</td>
-	</tr>
-	<tr>
-		<td>shotPosition.y</td>
-		<td>4</td>
-		<td>Float</td>
-	</tr>
-	<tr>
-		<td>victimPosition.x</td>
-		<td>4</td>
-		<td>Float</td>
-	</tr>
-	<tr>
-		<td>victimPosition.y</td>
-		<td>4</td>
-		<td>Float</td>
-	</tr>
-</table>
 
 <!-- ................. -->
 <!-- PlayerKilledEvent -->
@@ -792,7 +765,7 @@ All values are big endian.
 
 radius: 15  
 speed: 100/s  
-rotSpeed: 2Pi/s
+rotSpeed: 2&pi;/s
 
 ### Shot
 
@@ -800,8 +773,7 @@ radius: 5
 speed: 400/s  
 lifeTime: 1.25s
 
-spawn every 2 seconds
-
 ### World
 
 size: 1000x1000
+

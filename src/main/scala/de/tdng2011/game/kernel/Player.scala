@@ -33,10 +33,8 @@ class Player(startPos : Vec2, publicId : Long) extends Entity(startPos, publicId
 
       if(fire){
         if(shot == null || !x.entities.contains(shot)) {
-          if(now - lastShotFired > 2000) {
-	          createShot
-	          lastShotFired = now
-          }
+        	createShot
+	        lastShotFired = now
         }
       }
       getEntityDescription
