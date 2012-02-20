@@ -135,7 +135,7 @@ class ClientActor(val clientSocket: Socket) extends Actor with ScubywarsLogger {
     val typeId = buf.getShort
     val size = buf.getInt
     relation = buf.getShort
-    logger.debug("Client handshake from " + clientSocket.getInetAddress + ", type: " + typeId + ", size: " + size + ", relation: " + relation)
+    logger.info("Client handshake from " + clientSocket.getInetAddress + ", type: " + typeId + ", size: " + size + ", relation: " + relation)
     if (relation == 0 || relation == 2) { // player case, 1 or 3 is listener
       handShakePlayer(iStream, size - 2)
     } else if (relation != 3 && relation != 1) { // not visualizer
