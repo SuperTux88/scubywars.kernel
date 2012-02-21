@@ -15,6 +15,13 @@
 [scubywars.sampleclient](https://github.com/SuperTux88/scubywars.sampleclient)  
 [scubywars.sampleclient.java](https://github.com/SuperTux88/scubywars.sampleclient.java)  
 
+## Clients
+
+[Killer-Client](https://github.com/jucknath/Killer-client) (Scala-Client)  
+[Scandroid](https://github.com/uditaren/Scandroid) (Android-App in Scala)  
+[Scubla](https://github.com/uditaren/Scubla) (Other Scala-Client with Viewer)  
+[pyDSLForScubyWars](https://github.com/joergh/pyDSLForScubyWars) (python Client)  
+
 ## Protocol
 
 ###MessageLayout
