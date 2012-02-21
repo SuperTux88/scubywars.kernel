@@ -66,7 +66,7 @@ object World extends Actor with ScubywarsLogger {
     }
   }
 
-  def newPlayer = new Player(Vec2(new Random().nextInt(500), new Random().nextInt(499)), (IdActor !? IdRequestMessage).asInstanceOf[Long]).start.asInstanceOf[Player]
+  def newPlayer = new Player(Vec2(new Random().nextInt(500), new Random().nextInt(499)), IdActor.getNextId).start.asInstanceOf[Player]
 
   def findShotFromPlayer(player: Player): Option[Shot] = {
     entityList.filter(_.isInstanceOf[Shot]).asInstanceOf[IndexedSeq[Shot]].find(_.parentId == player.publicId)

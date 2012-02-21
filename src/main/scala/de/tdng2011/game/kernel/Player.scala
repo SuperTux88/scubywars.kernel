@@ -84,7 +84,7 @@ class Player(startPos: Vec2, publicId: Long) extends Entity(startPos, publicId) 
 
   private def createShot {
     val shotPos = pos + ahead * (radius + Shot.defaultRadius)
-    shot = new Shot(direction, shotPos, (IdActor !? IdRequestMessage).asInstanceOf[Long], publicId)
+    shot = new Shot(direction, shotPos, IdActor.getNextId, publicId)
     shot.start
     World !! ShotCreatedMessage(shot)
   }
