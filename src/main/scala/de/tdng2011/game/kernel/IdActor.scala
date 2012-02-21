@@ -5,6 +5,8 @@ import actors.Actor
 object IdActor extends Actor {
   var publicIds = 0
 
+  start
+
   def act = {
     loop {
       react {
