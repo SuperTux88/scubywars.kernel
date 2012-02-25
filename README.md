@@ -20,7 +20,10 @@
 [Killer-Client](https://github.com/jucknath/Killer-client) (Scala-Client)  
 [Scandroid](https://github.com/uditaren/Scandroid) (Android-App in Scala)  
 [Scubla](https://github.com/uditaren/Scubla) (Other Scala-Client with Viewer)  
-[pyDSLForScubyWars](https://github.com/joergh/pyDSLForScubyWars) (python Client)  
+[pyDSLForScubyWars](https://github.com/joergh/pyDSLForScubyWars) (Python Client with DSL)  
+[ScubyNet](https://github.com/SuperTux88/ScubyNet) (C# Client with DSL)  
+[scubywars.gameclient.interactive.python](https://github.com/r41d/scubywars.gameclient.interactive.python) (Interactive Python Client)  
+[scubywars.client.joe](https://github.com/r41d/scubywars.client.joe) (Python Bot)  
 
 ## Protocol
 
