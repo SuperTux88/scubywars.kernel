@@ -24,7 +24,7 @@
 [pyDSLForScubyWars](https://github.com/joergh/pyDSLForScubyWars) (Python Client with DSL)  
 [ScubyNet](https://github.com/SuperTux88/ScubyNet) (C# Client with DSL)  
 [scubywars.gameclient.interactive.python](https://github.com/r41d/scubywars.gameclient.interactive.python) (Interactive Python Client)  
-[scubywars.client.joe](https://github.com/r41d/scubywars.client.joe) (Python Bot)  
+[scubywars.client.joe](https://github.com/joergh/scubywars.client.joe) (Python Bot)  
 
 ## Protocol
 
